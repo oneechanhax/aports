@@ -1,7 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=kactivitymanagerd
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="System service to manage user's activities and track the usage patterns"
 arch="all !armhf" # disable armhf due to missing qt5-qtdeclarative
@@ -9,11 +10,12 @@ url="https://www.kde.org/workspaces/plasmadesktop/"
 license="GPL-2.0-only OR GPL-3.0-only"
 depends="qt5-qtbase-sqlite"
 makedepends="extra-cmake-modules boost-dev qt5-qtbase-dev kdbusaddons-dev ki18n-dev kconfig-dev kcoreaddons-dev kwindowsystem-dev kglobalaccel-dev kxmlgui-dev kio-dev"
-source="https://download.kde.org/stable/plasma/$pkgver/kactivitymanagerd-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/kactivitymanagerd-$_pkgver.tar.xz"
 subpackages="$pkgname-lang"
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -21,11 +23,11 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {
 	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="3e387114cb4245357d8c7a042077b9591de1743a89efdeb0199ff354d67670d5021bca69bcb70679ea5f9f61ba95aed209370f98c48ce3c7f051b7f9dd9a55b3  kactivitymanagerd-5.18.2.tar.xz"
+sha512sums="b3231305643247fa82f267ac942878136f1710faf1fe3b084efad25e8a3fb124ebbab5cf88251dd54d8e8bbbf3ac31088b25bf8047307adef95b5d40c8175ee0  kactivitymanagerd-5.18.4.1.tar.xz"

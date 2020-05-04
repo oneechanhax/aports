@@ -1,7 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=plasma-integration
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="Qt Platform Theme integration plugins for the Plasma workspaces"
 arch="all !armhf" # Blocked by qt5-qtdeclarative
@@ -10,12 +11,13 @@ license="(LGPL-2.1-only OR LGPL-3.0-only) AND LGPL-2.1-only AND ((LGPL-2.1-only 
 depends="font-noto ttf-hack qqc2-desktop-style"
 makedepends="extra-cmake-modules qt5-qtbase-dev qt5-qtx11extras-dev qt5-qtquickcontrols2-dev kconfig-dev kconfigwidgets-dev ki18n-dev kiconthemes-dev kio-dev knotifications-dev kwayland-dev kwidgetsaddons-dev kwindowsystem-dev breeze-dev libxcursor-dev"
 checkdepends="xvfb-run"
-source="https://download.kde.org/stable/plasma/$pkgver/plasma-integration-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/plasma-integration-$_pkgver.tar.xz"
 subpackages="$pkgname-lang"
 options="!check" # Broken
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
@@ -25,11 +27,11 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest
 }
 
 package() {
 	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="d605bba7e1ac1786bbdceecd38a571cf8f9d71f95b31a9beb66100af85d0d607304ee00d7df135e7f76c295e4832ccd197e666dd2ea3c3842307fb649ff53559  plasma-integration-5.18.2.tar.xz"
+sha512sums="ebc6080457d1958e2cccc7db25b30443e21759c95c29dc8f72538ec2945f99019ad0598369253ec552c4a77dc49979ef3e1a46da93362a34793c0af6209c5e3d  plasma-integration-5.18.4.1.tar.xz"

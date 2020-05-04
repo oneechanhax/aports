@@ -1,31 +1,27 @@
 # Contributor: Adrian Siekierka <kontakt@asie.pl>
 # Maintainer: Adrian Siekierka <kontakt@asie.pl>
 pkgname=openttd
-pkgver=1.8.0
-pkgrel=1
+pkgver=1.10.1
+pkgrel=0
 pkgdesc="Open source version of the Transport Tycoon Deluxe simulator"
-url="http://openttd.org"
+url="https://www.openttd.org"
 arch="all"
-license="GPL-2.0-only"
-depends=""
-makedepends="fontconfig-dev freetype-dev libpng-dev lzo-dev sdl-dev xz-dev zlib-dev"
+license="GPL-2.0-or-later"
+makedepends="fontconfig-dev freetype-dev icu-dev libpng-dev lzo-dev sdl2-dev xz-dev zlib-dev"
+checkdepends="openttd-opengfx"
 subpackages="$pkgname-doc $pkgname-lang::noarch"
-source="https://binaries.openttd.org/releases/$pkgver/$pkgname-$pkgver-source.tar.xz
-	fix-pthread-stacksize.patch"
-builddir="$srcdir/$pkgname-$pkgver"
+source="https://cdn.openttd.org/openttd-releases/$pkgver/openttd-$pkgver-source.tar.xz"
 
 build() {
-	cd "$builddir"
-
 	# OpenTTD's builtin strip does not work when cross-compiling,
 	# but it will be done automatically later in the package build.
 	./configure \
-		--build=$CBUILD \
-		--host=$CHOST \
+		--build="$CBUILD" \
+		--host="$CHOST" \
 		--disable-strip \
 		--prefix-dir=/usr \
 		--binary-dir=bin \
-		--install-dir="${pkgdir}" \
+		--install-dir="$pkgdir" \
 		--with-sdl \
 		--with-zlib \
 		--with-liblzma \
@@ -37,12 +33,10 @@ build() {
 }
 
 check() {
-	cd "$builddir"
-	bin/openttd --version
+	make test
 }
 
 package() {
-	cd "$builddir"
 	make install
 }
 
@@ -51,12 +45,8 @@ lang() {
 
 	cd "$pkgdir"
 	mkdir -p "$subpkgdir"/usr/share/games/openttd/lang
-
-	local i
-	for i in $(find usr/share/games/openttd/lang/ ! -name 'english.lng' -type f); do
-		mv "$i" "$subpkgdir"/"$i"
-	done
+	find usr/share/games/openttd/lang/ ! -name 'english.lng' -type f \
+		-exec mv {} "$subpkgdir"/{} \;
 }
 
-sha512sums="a2d61b3c94a550c8f3a581127df8c3459b1ddff5ba924942c468cbc70e88e0bf4405cecb68a91243b544ead64f215aa8d489a07b38dce507ae7d59e8ec155d7a  openttd-1.8.0-source.tar.xz
-90db187919cb802ea6abddc03f09e85fe278175f5830f26e86d4a3b98f60bf233b0acaafd7e7a8f01c8e9a6bc059c171c88f8fcf36fc713624f972a8a8ad073f  fix-pthread-stacksize.patch"
+sha512sums="9e391c2c18687ce9d6fb1094da5dac1166ec409b17f5f4745486b24185e01380cfd806157b7fb9298c58f790995b43bc8c93d993e6a7e36a5b7cf153b7a1de89  openttd-1.10.1-source.tar.xz"

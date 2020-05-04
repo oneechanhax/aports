@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=kservice
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="Advanced plugin and service introspection"
 arch="all !armhf" # armhf blocked by extra-cmake-modules
 url="https://community.kde.org/Frameworks"
@@ -12,32 +12,24 @@ makedepends="$depends_dev extra-cmake-modules kdoctools-dev doxygen qt5-qttools-
 source="https://download.kde.org/stable/frameworks/${pkgver%.*}/kservice-$pkgver.tar.xz"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DBUILD_QCH=ON
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
-	# ksycoca_xdgdirstest and kmimeassociationstest are broken
+	cd build
+	# ksycoca_xdgdirstest, kmimeassociationstest and kapplicationtradertest are broken
 	# ksycocatest requires running X
-	CTEST_OUTPUT_ON_FAILURE=TRUE ctest -E '(ksycoca_xdgdirs|kmimeassociations|ksycoca)test'
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest -E '(ksycoca_xdgdirs|kmimeassociations|ksycoca|kapplicationtrader)test'
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="d6f700f1e8a9b178e5141e4336ef395da06fbf859cdc303d54e36a84189c0d9ee6413f394e69e169fc65850dc2b7b9849b72207c2b2177c430fdd8aa4616e395  kservice-5.67.0.tar.xz"
+sha512sums="01390611eaf18870a32faa2e976b548d6ee9b270daee986fd57a200720a7ae442b288a91387f564d49db80c98ca5406d226cdcf2103537210b1710d8dd96363e  kservice-5.69.0.tar.xz"

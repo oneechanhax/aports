@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=catch2
-pkgver=2.11.1
-pkgrel=1
+pkgver=2.12.1
+pkgrel=0
 arch="noarch"
 url="https://github.com/catchorg/Catch2"
 pkgdesc="A modern, C++-native, header-only, test framework for unit-tests"
@@ -13,30 +13,22 @@ source="https://github.com/catchorg/Catch2/archive/v$pkgver/catch2-v$pkgver.tar.
 subpackages="$pkgname-doc"
 builddir="$srcdir/Catch2-$pkgver"
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
-	make
+	cmake --build build
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	# ApprovalTests is broken
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest -E "ApprovalTests"
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" cmake --build build --target install
 }
 
-sha512sums="fe4474f7c40500bd91009cfc68a0ebb138d9c5f37d4184fed754a447983bc4716f11b3f9ae1a984d2b12d48e7909a5c20096be624b6eafcf60885fffc70051b0  catch2-v2.11.1.tar.gz"
+sha512sums="b9d4995fd6a2674aa420f64bb62213d127b86f293c349d39ec5b3880c17676fb1cf97d8fc6ab792990fe592d906cac98a128d0013787dd6469fd654d8fc3a288  catch2-v2.12.1.tar.gz"

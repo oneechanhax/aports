@@ -1,12 +1,12 @@
 # Maintainer: Leo <thinkabit.ukim@gmail.com>
 # Contributor: Leo <thinkabit.ukim@gmail.com>
 pkgname=telegram-desktop
-pkgver=1.9.19
-pkgrel=0
+pkgver=2.1.1
+pkgrel=1
 pkgdesc="Telegram Desktop messaging app"
 options="!check" # Requires Catch2 to be packaged.
 url="https://desktop.telegram.org/"
-arch="all !s390x" # Need support on lib_base
+arch="all !s390x !mips !mips64" # Need support on lib_base
 license="GPL-3.0-or-later WITH OpenSSL"
 depends="qt5-qtimageformats libappindicator"
 makedepends="
@@ -68,7 +68,7 @@ build() {
 		-DTDESKTOP_FORCE_GTK_FILE_DIALOG=ON \
 		-DDESKTOP_APP_USE_PACKAGED_GSL=OFF \
 		-DDESKTOP_APP_USE_PACKAGED_VARIANT=OFF \
-		${CMAKE_CROSSOPTS} .
+		$CMAKE_CROSSOPTS .
 	ninja -C build
 }
 
@@ -78,10 +78,9 @@ package() {
 				"$pkgdir"/usr/share/appdata \
 				"$pkgdir"/usr/share/kservices5 \
 
-	strip -s build/bin/telegram-desktop
 	install -m755 build/bin/telegram-desktop -t "$pkgdir"/usr/bin
-	install -m644 lib/xdg/telegramdesktop.desktop -t "$pkgdir"/usr/share/applications
-	install -m644 lib/xdg/telegramdesktop.appdata.xml -t "$pkgdir"/usr/share/appdata
+	install -m644 lib/xdg/telegramdesktop.desktop "$pkgdir"/usr/share/applications/org.telegram.desktop.desktop
+	install -m644 build/Telegram/telegramdesktop.appdata.xml "$pkgdir"/usr/share/appdata/org.telegram.desktop.appdata.xml
 
 	for icon_size in 16 32 48 64 128 256 512; do
 		icon_dir="$pkgdir/usr/share/icons/hicolor/${icon_size}x$icon_size/apps"
@@ -92,6 +91,6 @@ package() {
 	done
 }
 
-sha512sums="29070c6e1d813943d5062dc1703f383a18323b5698fbc4e6f2c89b33366da9da5d1ec84dc29950288e7e7d112024de2924244ec9c800d59d4b210e6288c7291d  tdesktop-1.9.19-full.tar.gz
+sha512sums="aa542c029ead2d1b6c398ecca949b86fae8f37094ceb462ace4628f8e53882faf35b3c2e4fe03dd2e4e17b07412896f7b05d6748b13c99a3bac117b7449d69a8  tdesktop-2.1.1-full.tar.gz
 183767e9a291dd605797cdc46382d8cb6a73a342348a40df7d52864ea27b3aa8709808cd51c46f5e611c247229ed336cb569bed1185c4c97b03171b56bbe5653  qt-plugin-path.patch
 3d1b8e6f870fc780f9ae8bc6a67eb676a5c5f686dc79e84cd6d64cb3cfafb1be626d0cc3960ffc67cecca21568764a0137c7303a89045fa59f91ba4eb5d8caed  small-sizes.patch"

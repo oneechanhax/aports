@@ -1,17 +1,16 @@
 # Contributor: Łukasz Jendrysik <scadu@yandex.com>
-# Maintainer: Bart Ribbers <bribbers@disroot.org>
+# Contributor: Bart Ribbers <bribbers@disroot.org>
+# Maintainer: Ariadne Conill <ariadne@dereferenced.org>
 pkgname=audacious-plugins
-pkgver=3.10.1
-pkgrel=4
+pkgver=4.0.2
+pkgrel=1
 pkgdesc="A playlist-oriented media player with multiple interfaces (plugins)"
 url="https://audacious-media-player.org/"
 arch="all !s390x"
-license="ISC"
+license="BSD-2-Clause AND BSD-3-Clause AND ISC AND GPL-2.0-only AND GPL-2.0-or-later AND GPL-3.0-only AND GPL-3.0-or-later"
 depends="audacious"
 install_if="audacious=$pkgver"
 makedepends="
-	libmowgli-dev
-	libguess-dev
 	dbus-glib-dev
 	audacious-dev>=${pkgver%.*}
 	libxml2-dev
@@ -41,17 +40,13 @@ makedepends="
 	autoconf
 	"
 subpackages="$pkgname-lang $pkgname-dbg"
-source="http://distfiles.audacious-media-player.org/$pkgname-$pkgver.tar.bz2"
+source="http://distfiles.audacious-media-player.org/audacious-plugins-$pkgver.tar.bz2"
+options="!check" # No test suite (or any plans for one)
 
-prepare() {
-	default_prepare
-
-	aclocal -I m4 && autoheader && autoconf
-
-	# workaround bug in busybox
-	sed -e "/touch/s/0001010000/200001010000/g" \
-		-i configure
-}
+case "$CTARGET_ARCH" in
+	arm*|aarch64) _qtglspectrum="--disable-qtglspectrum" ;;
+	*) _qtglspectrum="--enable-qtglspectrum" ;;
+esac
 
 build() {
 	./configure \
@@ -62,7 +57,8 @@ build() {
 		--mandir=/usr/share/man \
 		--infodir=/usr/share/info \
 		--disable-gtk \
-		--enable-qt
+		--enable-qt \
+		$_qtglspectrum
 	make
 }
 
@@ -70,4 +66,4 @@ package() {
 	DESTDIR="$pkgdir" make install
 }
 
-sha512sums="454e9ce4061e92a0ecda40f562d4cc7453fc0019fd76b25dbe9e319319fa37c22f9785cb29563e8074de8a88e6130106aca1e431790297e1b4636dc974fde565  audacious-plugins-3.10.1.tar.bz2"
+sha512sums="0d3aa46f6ad75e6d541de7b7f24de2cc169a8856c5a204688231b6233131a1ce55feb9bb126eed89d05a8ee21e3a441449a1e11fd20b4fc10724afebb4318118  audacious-plugins-4.0.2.tar.bz2"

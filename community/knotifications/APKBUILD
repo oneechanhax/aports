@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=knotifications
-pkgver=5.67.0
-pkgrel=2
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="Abstraction for system notifications"
 arch="all !armhf" # armhf blocked by extra-cmake-modules
 url="https://community.kde.org/Frameworks"
@@ -23,11 +23,11 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {
 	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="3ee74f84d8157142e943b348d12601ada8c5741026098abddd1433379753352b7f775d2382f02f7b1d8c8ef3387a3a23a3eecc80826718b5ff07946d5925e300  knotifications-5.67.0.tar.xz"
+sha512sums="46a675a1083891a356c299bbb461be80e65adc7bf674c5676d54b96b1f293718f1d2eb28f74d601748f0ddeef14969dc3024ba23b6089c32420bf11e8e4d3887  knotifications-5.69.0.tar.xz"

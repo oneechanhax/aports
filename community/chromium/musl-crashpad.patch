@@ -1,5 +1,5 @@
 diff --git a/third_party/crashpad/crashpad/util/linux/ptracer.cc b/third_party/crashpad/crashpad/util/linux/ptracer.cc
-index 63bee1e..24ef002 100644
+index c6c9229..a5336b6 100644
 --- ./third_party/crashpad/crashpad/util/linux/ptracer.cc
 +++ ./third_party/crashpad/crashpad/util/linux/ptracer.cc
 @@ -26,6 +26,7 @@
@@ -10,3 +10,16 @@ index 63bee1e..24ef002 100644
  #endif
  
  namespace crashpad {
+diff --git a/third_party/crashpad/crashpad/util/linux/thread_info.h b/third_party/crashpad/crashpad/util/linux/thread_info.h
+index 5b55c24..08cec52 100644
+--- ./third_party/crashpad/crashpad/util/linux/thread_info.h
++++ ./third_party/crashpad/crashpad/util/linux/thread_info.h
+@@ -273,7 +273,7 @@ union FloatContext {
+                 "Size mismatch");
+ #elif defined(ARCH_CPU_ARMEL)
+   static_assert(sizeof(f32_t::fpregs) == sizeof(user_fpregs), "Size mismatch");
+-#if !defined(__GLIBC__)
++#if defined(OS_ANDROID)
+   static_assert(sizeof(f32_t::vfp) == sizeof(user_vfp), "Size mismatch");
+ #endif
+ #elif defined(ARCH_CPU_ARM64)

@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=baloo
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="A framework for searching and managing metadata"
 arch="all !armhf" # armhf blocked by qt5-qtdeclarative
 url="https://community.kde.org/Frameworks"
@@ -13,23 +13,15 @@ source="https://download.kde.org/stable/frameworks/${pkgver%.*}/baloo-$pkgver.ta
 subpackages="$pkgname-dev $pkgname-lang"
 options="!check" # Tons of broken tests
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
-	make
+	make -C build
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="065fb29c86e29a848c0bcac68851eb6b02b46e9f32269175a6d8cae80325dc619e020ac1c1f564998381a678d8918c1d7ddb81697e475663816eecb127831d5c  baloo-5.67.0.tar.xz"
+sha512sums="0716208265b141c9e4cf4920c310b73f26e3abb56bddd60d8ea426f2e26b0cfe66c8b93cab09707ef7b94444d43b8336a1274e862a811e20c0437faf65cccc66  baloo-5.69.0.tar.xz"

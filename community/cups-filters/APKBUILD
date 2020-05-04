@@ -1,6 +1,6 @@
 # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=cups-filters
-pkgver=1.27.2
+pkgver=1.27.4
 pkgrel=0
 pkgdesc="OpenPrinting CUPS filters and backends"
 url="https://wiki.linuxfoundation.org/openprinting/cups-filters"
@@ -66,4 +66,4 @@ libs() {
 	mv "$pkgdir"/usr/lib/lib*.so.* "$subpkgdir"/usr/lib/
 }
 
-sha512sums="c0e1456dd3f512ae2215e566f853e47b66de46d0d1301fc5a6f3674ac7d1ddb03c3bb236b0419b20168742076381c58581cc3e582cf7abf76139367d549a6c46  cups-filters-1.27.2.tar.xz"
+sha512sums="8005e94bb6b06d0a15fa4dfd8455d0bc67418478bf517e205af1c8c0018681a97ae9ea486db07570050ebeeb7f63f75319a8fe012c112c6d16c0941299eaa50e  cups-filters-1.27.4.tar.xz"

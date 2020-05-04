@@ -2,10 +2,10 @@
 # Maintainer: Stuart Cardall <developer@it-offshore.co.uk>
 pkgname=py3-tox
 _pkgname=${pkgname#py3-*}
-pkgver=3.14.5
+pkgver=3.15.0
 pkgrel=0
 pkgdesc="virtualenv management and test command line tool"
-options="!check" # Requires unpackaged py3-pytest extensions
+options="!check" #  Requires community/py3-pathlib2, and unpackaged flaky
 url="https://tox.readthedocs.org/"
 arch="noarch"
 license="MIT"
@@ -17,6 +17,7 @@ depends="
 	py3-virtualenv
 	py3-toml
 	py3-filelock
+	py3-setuptools
 	"
 checkdepends="py3-pytest"
 source="https://files.pythonhosted.org/packages/source/${_pkgname:0:1}/$_pkgname/$_pkgname-$pkgver.tar.gz"
@@ -37,4 +38,4 @@ check() {
 	python3 setup.py test
 }
 
-sha512sums="8916efc0078f51f10cc7600e7c7879863011ca375f1d88a45266406243df767ebd1d286f36c0b5d818407ade4a2790e4aa49cb257ae23dde3e4c51c5f05c7459  tox-3.14.5.tar.gz"
+sha512sums="65c85af0cd475ed2337d0b8ae6adbddbe16a3859b872b8271a499578a0e984595206d13c25fe35e2636f2fdecda0485a802f128a9f79533970f154d7ff4ff94d  tox-3.15.0.tar.gz"

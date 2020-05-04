@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=kauth
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="Abstraction to system policy and authentication features"
 arch="all !armhf" # armhf blocked by extra-cmake-modules
 url="https://community.kde.org/Frameworks"
@@ -12,30 +12,22 @@ makedepends="$depends_dev extra-cmake-modules qt5-qttools-dev doxygen"
 source="https://download.kde.org/stable/frameworks/${pkgver%.*}/kauth-$pkgver.tar.xz"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DBUILD_QCH=ON
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	# KAuthHelperTest hangs
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest -E '(KAuthHelperTest)'
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="f4ed8ffd339c5c7ce3cd974cbdee3ce4a4b766062bf3ad2845596317ea8bc27460767ca48c8a7262cc5778a130d957221612a4b0329ea735ca2b175e209669a5  kauth-5.67.0.tar.xz"
+sha512sums="c54577ed1bed46af5f08dcc7a55ade35f0feaa1e88465d587dbc9cf22cd2fc9801fc19cca73a5cf41acef2e6d39e51a0a30859c4c8736b11226d87be36598bb3  kauth-5.69.0.tar.xz"

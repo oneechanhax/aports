@@ -1,7 +1,7 @@
 # Contributor: August Klein <amatcoder@gmail.com>
 # Maintainer: August Klein <amatcoder@gmail.com>
 pkgname=libtorrent-rasterbar
-pkgver=1.2.4
+pkgver=1.2.6
 _pkgver=${pkgver//./_}
 pkgrel=0
 pkgdesc="Feature complete C++ bittorrent implementation"
@@ -44,4 +44,4 @@ _py3() {
 	mv "$pkgdir"/usr/lib/python* "$subpkgdir"/usr/lib/
 }
 
-sha512sums="2328747f9b03cd61c7c3eac095225b9e6fa78238346ac96a961394639790135deda009cf597c0538570ade8bf4c0e027062720c1776c72228d1c51ec16ef0e13  libtorrent-rasterbar-1.2.4.tar.gz"
+sha512sums="78f9120b1b824dac37ec8bd16a29abdfcd7fd6af3c56e0cc9048d74412d000ef5ea1e8421f757eddb914f8bb20de9fb4192d5b8a3f781fa2e1d4f134ea24b1ee  libtorrent-rasterbar-1.2.6.tar.gz"

@@ -4,11 +4,11 @@
 # Maintainer: Francesco Colista <fcolista@alpinelinux.org>
 pkgname=py3-numpy
 _pkgname=numpy
-pkgver=1.18.1
+pkgver=1.18.4
 pkgrel=0
 pkgdesc="Scientific tools for Python"
 url="https://www.numpy.org/"
-arch="all"
+arch="all !mips !mips64"
 license="BSD-3-Clause"
 options="!check"
 replaces="py-numpy"
@@ -55,6 +55,6 @@ dev() {
 	default_dev
 }
 
-sha512sums="df08d1ce8451fda15284a38b9f4069759ab11449d7eb381276f4983a9e20b4351eb7e794f2d1ac1fcc0f32a2792794e8e4ea3b00c5ec809b8c184c1437c1dd45  numpy-1.18.1.tar.gz
+sha512sums="8a238fccb686de9a59c6e8511a43f552394ede8519fe0d16e82549b9ebbef192788f3be9e0a57ee254c23e987d6260a30bc86d5f5d36c31c110708c1e042c9ea  numpy-1.18.4.tar.gz
 f9f2a89ad4409b14e2b46acedadfc5e8d79a749af6cad3c8d168bcaf21ca4379cd03be95f22485c35b41114604599bbeb9adaa96dff4194b01dc73e90c04a29f  numpy-1.17.0-musl.patch
 21ca8db304cbbf5949f07702f2a42bb5e5a0d641921e36649555a41b0e48f04e96f53760417823177ac27f6de24b2191e6e1d5f0eb393beafa29f7484e23284f  site.cfg"

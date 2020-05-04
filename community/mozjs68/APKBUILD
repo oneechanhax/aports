@@ -1,8 +1,8 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=mozjs68
-pkgver=68.5.0
-pkgrel=2
+pkgver=68.7.0
+pkgrel=1
 pkgdesc="Standalone Mozilla JavaScript engine"
 url="https://developer.mozilla.org/en-US/docs/Mozilla/Projects/SpiderMonkey"
 arch="x86_64 armv7 armhf aarch64 x86 ppc64le" # limited by rust and cargo
@@ -13,6 +13,7 @@ depends_dev="
 	libffi-dev
 	readline-dev
 	"
+_llvmver=10
 makedepends="
 	$depends_dev
 	zlib-dev
@@ -24,7 +25,7 @@ makedepends="
 	linux-headers
 	rust
 	cargo
-	llvm9
+	llvm$_llvmver
 	clang-dev
 	"
 subpackages="$pkgname-dev"
@@ -39,11 +40,31 @@ builddir="$srcdir"/firefox-$pkgver
 _builddir="$builddir/js/src"
 
 # secfixes:
+#   68.7.0-r0:
+#     - CVE-2020-6821
+#     - CVE-2020-6822
+#     - CVE-2020-6825
+#     - CVE-2020-6819
+#     - CVE-2020-6820
+#   68.6.0-r0:
+#     - CVE-2019-20503
+#     - CVE-2020-6805
+#     - CVE-2020-6806
+#     - CVE-2020-6807
+#     - CVE-2020-6811
+#     - CVE-2020-6812
+#     - CVE-2020-6814
 #   60.7.2-r0:
 #     - CVE-2019-11708
 #     - CVE-2019-11707
 
 build() {
+	local _clangver=$(clang --version | awk '$3 == "version" {print $4}')
+	if [ "${_clangver#$_llvmver}" = "$_clangver" ]; then
+		error "clang version $_clangver does not match llvm version $_llvmver"
+		return 1
+	fi
+
 	cd "$_builddir"
 
 	export LDFLAGS="$LDFLAGS -Wl,-z,stack-size=1048576"
@@ -59,26 +80,7 @@ build() {
 			;;
 	esac
 
-	case "$CARCH" in
-		x86)
-			export RUST_TARGET="i686-unknown-linux-musl"
-			;;
-		x86_64)
-			export RUST_TARGET="$CTARGET"
-			;;
-		aarch64)
-			export RUST_TARGET="aarch64-unknown-linux-musl"
-			;;
-		armv7)
-			export RUST_TARGET="armv7-unknown-linux-musleabihf"
-			;;
-		armhf)
-			export RUST_TARGET="arm-unknown-linux-musleabihf"
-			;;
-		ppc64le)
-			export RUST_TARGET="powerpc64le-unknown-linux-musl"
-			;;
-	esac
+	export RUST_TARGET="$CTARGET"
 
 	export SHELL=/bin/ash
 	export PYTHON=/usr/bin/python2
@@ -119,7 +121,7 @@ package() {
 	rm -f "$pkgdir"/usr/lib/*.ajs
 }
 
-sha512sums="0acf4ecd47bccf062ab330231e36355f5d84e66ab411f653ae3160583613840925bb473c0f7dfa4b15311a543940293c4633516851c9466c4b0133c9271710d3  firefox-68.5.0esr.source.tar.xz
+sha512sums="a3ddcf8ffe5f568b30b1fc9ddcaa5cebe600bf11ce353c09507d5466f999022d45a0dee9a08f53f37b10202a2e2ce4c180743cd6a2ca38dfea1c3e4487b18593  firefox-68.7.0esr.source.tar.xz
 4d30f4b64b6d9ba03099831aef18f6dffa7f0ff537d71502b8975329c9fa5025f02a43f45cf1311116d917fb507d5961163d659bb4c9f43c22bd61d14d0afb2f  0001-silence-sandbox-violations.patch
 6e9e7d811b92e32af29cebec6cb59763004f30b990842b8dd036f971f10d6659e8dbd771f0d61c8a42ea0ac4a6937466c1e6fd450a08efab8a0c7bab4ef3a1ec  disable-jslint.patch
 bc91c2fb15eb22acb8acc36d086fb18fbf6f202b4511d138769b5ecaaed4a673349c55f808270c762616fafa42e3b01e74dc0af1dcbeea1289e043926e2750c8  fix-musl-build.patch

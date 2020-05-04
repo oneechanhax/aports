@@ -1,14 +1,13 @@
 # Contributor: Carlo Landmeter <clandmeter@alpinelinux.org>
 # Maintainer: Carlo Landmeter <clandmeter@alpinelinux.org>
 pkgname=py3-img2pdf
-pkgver=0.3.3
-pkgrel=3
+pkgver=0.3.6
+pkgrel=0
 pkgdesc="Convert images to PDF via direct JPEG inclusion"
 url="https://gitlab.mister-muffin.de/josch/img2pdf"
-arch="noarch !s390x"
+arch="noarch"
 license="LGPL-3.0-or-later"
-depends="py3-pillow"
-makedepends="py3-setuptools"
+depends="python3 py3-pillow py3-setuptools"
 checkdepends="py3-pdfrw"
 source="https://pypi.python.org/packages/source/i/img2pdf/img2pdf-$pkgver.tar.gz"
 builddir="$srcdir/img2pdf-$pkgver"
@@ -34,4 +33,4 @@ package() {
 	python3 setup.py install --prefix=/usr --root="$pkgdir"
 }
 
-sha512sums="234e0031d75727d2f5d2b82603bb447d9101ace81e604b6d5eb358d0b4681e209dbd737775b90b44096cf84239aac9e87e2369e0c6112a17f24ccbf10a20cdd5  img2pdf-0.3.3.tar.gz"
+sha512sums="2a9d31b9de52123941fd650123a483f4dc0757edda304da994353b5f3167bddbb25fa1ed8fededcf859c5d07b65b9c2d5185000949002a68dcae1e7bf0f1547d  img2pdf-0.3.6.tar.gz"

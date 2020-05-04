@@ -5,7 +5,7 @@ pkgver=3.5.3
 pkgrel=0
 pkgdesc="Application containers focused on reproducibility for scientific computing and HPC world."
 url="https://www.sylabs.io/singularity/"
-arch="all"
+arch="all !mips !mips64" # fails to build on mips
 license="BSD-3-Clause BSD-3-Clause-LBNL"
 options="chmod-clean suid !check" # no test suite from upstream
 depends="squashfs-tools"
@@ -24,7 +24,7 @@ source="$pkgname-$pkgver.tar.gz::https://github.com/sylabs/singularity/archive/v
 builddir="$srcdir/src/github.com/sylabs/$pkgname"
 
 # secfixes:
-#   3.5.2:
+#   3.5.2-r0:
 #     - CVE-2019-19724
 
 prepare() {

@@ -1,8 +1,8 @@
 # Contributor: Kevin Daudt <kdaudt@alpinelinux.org>
 # Maintainer: Kevin Daudt <kdaudt@alpinelinux.org>
-pkgname="chezmoi"
-pkgver=1.7.15
-pkgrel=0
+pkgname=chezmoi
+pkgver=1.8.0
+pkgrel=1
 pkgdesc="Manage your dotfiles across multiple machines, securely."
 url="https://www.chezmoi.io/"
 arch="all"
@@ -22,8 +22,8 @@ export GOPATH="$srcdir"
 build() {
 	go build \
 		-ldflags "
-		-X \"github.com/twpayne/chezmoi/cmd.VersionStr=$pkgver\" \
-		-X \"github.com/twpayne/chezmoi/cmd.Date=$(date --utc +%Y-%M-%dT%H:%I:%SZ)\" \
+		-X \"main.version=$pkgver\" \
+		-X \"main.date=$(date --utc +%Y-%M-%dT%H:%I:%SZ)\" \
 		-X \"github.com/twpayne/chezmoi/cmd.DocsDir=/usr/share/doc/chezmoi/\"
 		" \
 		-tags noupgrade \
@@ -76,4 +76,4 @@ cleanup_srcdir() {
 	default_cleanup_srcdir
 }
 
-sha512sums="2c64a01a8313377cb75341dab7342ccd506cbcaab5454c64bf3015ae399bc71db8ef1e717af25fb6a26e03ea325f020c0206e2acd8f62102690dff8bf3c02be2  chezmoi-1.7.15.tar.gz"
+sha512sums="768b315746b0a4cfe90e172146392e5324fa25accfee53f4f092251f4840a2115dab47515dac595f52d6b7793fd65c3a9d7bef7ea2dc9f10906a89dacf1d9f29  chezmoi-1.8.0.tar.gz"

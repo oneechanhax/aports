@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=knewstuff
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="Framework for downloading and sharing additional application data"
 arch="all !armhf" # armhf blocked by qt5-qtdeclarative
 url="https://community.kde.org/Frameworks"
@@ -16,29 +16,21 @@ checkdepends="xvfb-run"
 source="https://download.kde.org/stable/frameworks/${pkgver%.*}/knewstuff-$pkgver.tar.xz"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DBUILD_QCH=ON
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest
 }
 
 package() {
-	cd "$builddir"/build
-	make DESTDIR="$pkgdir" install
+	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="fc9a791f6b8330a8e674d8fc3c6f46d96a43266689552bdd7f0bee53b2ad157ccfc75fab07ba3215e2598127f0c3a6c77a2db96aad338d5c3e6bc2b47e2b2bf6  knewstuff-5.67.0.tar.xz"
+sha512sums="a2ecffe277a4c7a079419b34da8426bb963a108d0f69ea2542391fea9825898813e644bd06291e5034d26554412c1a548e717fa7da6da228c0ef275a75e91ec8  knewstuff-5.69.0.tar.xz"

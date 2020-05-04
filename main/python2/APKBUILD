@@ -2,19 +2,17 @@
 
 pkgname=python2
 # the python2-tkinter's pkgver needs to be synchronized with this.
-pkgver=2.7.17
+pkgver=2.7.18
 _verbase=${pkgver%.*}
 pkgrel=0
 pkgdesc="A high-level scripting language"
 url="https://www.python.org/"
 arch="all"
 license="custom"
-provides="python=$pkgver-r$pkgrel"
-replaces="python"
 subpackages="$pkgname-dbg $pkgname-dev $pkgname-doc $pkgname-tests py-gdbm:gdbm
 	$pkgname-wininst"
 makedepends="expat-dev openssl-dev zlib-dev ncurses-dev bzip2-dev
-	gdbm-dev sqlite-dev libffi-dev readline-dev linux-headers paxmark"
+	gdbm-dev sqlite-dev libffi-dev readline-dev linux-headers"
 source="https://www.python.org/ftp/python/$pkgver/Python-$pkgver.tar.xz
 	musl-find_library.patch
 	unchecked-ioctl.patch
@@ -22,21 +20,23 @@ source="https://www.python.org/ftp/python/$pkgver/Python-$pkgver.tar.xz
 builddir="$srcdir/Python-$pkgver"
 
 # secfixes:
+#   2.7.18-r0:
+#     - CVE-2019-18348
 #   2.7.17-r0:
-#   - CVE-2019-15903
+#     - CVE-2019-15903
 #   2.7.16-r3:
-#   - CVE-2019-16056
-#   - CVE-2019-16935
+#     - CVE-2019-16056
+#     - CVE-2019-16935
 #   2.7.16-r1:
-#   - CVE-2019-9636
-#   - CVE-2019-9948
+#     - CVE-2019-9636
+#     - CVE-2019-9948
 #   2.7.16-r0:
-#   - CVE-2018-14647
+#     - CVE-2018-14647
 #   2.7.15-r3:
-#   - CVE-2019-5010
+#     - CVE-2019-5010
 #   2.7.15-r0:
-#   - CVE-2018-1060
-#   - CVE-2018-1061
+#     - CVE-2018-1060
+#     - CVE-2018-1061
 
 prepare() {
 	default_prepare
@@ -53,7 +53,6 @@ prepare() {
 }
 
 build() {
-	cd "$builddir"
 	export OPT="$CFLAGS -DTHREAD_STACK_SIZE=0x100000"
 	./configure \
 		--build=$CBUILD \
@@ -71,8 +70,6 @@ build() {
 }
 
 check() {
-	cd "$builddir"
-
 	# test that we reach recursionlimit before we segfault
 	cat > test-stacksize.py <<-EOF
 	import threading
@@ -91,13 +88,13 @@ EOF
 }
 
 package() {
-	cd "$builddir"
 	make -j1 DESTDIR="$pkgdir" install
 	install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
 	rm "$pkgdir/usr/bin/2to3"
-	# we need to enable emutramp - needed for virt-manager
-	# disable mprotect - needed for cffi
-	paxmark -zm "$pkgdir"/usr/bin/python$_verbase
+
+	# This symlink should be owned by python3 but due to lots of packages
+	# wanting it to be python2, leave it as is
+	# rm -f "$pkgdir"/usr/bin/python
 }
 
 _mv_files() {
@@ -109,9 +106,6 @@ _mv_files() {
 }
 
 dev() {
-	provides="python-dev=$pkgver-r$pkgrel"
-	replaces="python-dev"
-
 	# pyconfig.h is needed runtime so we move it back
 	default_dev
 	mkdir -p "$pkgdir"/usr/include/python$_verbase
@@ -145,6 +139,6 @@ wininst() {
 		"$subpkgdir"/usr/lib/python$_verbase/distutils/command
 }
 
-sha512sums="2dc19a0b0d818c71429dae94783e58b2aac0fa31f5faa1e840cac06245a59932ecc4658d913515736601bcf70a78c9ec60367aed75f4567d1e41ff3bb104da9a  Python-2.7.17.tar.xz
+sha512sums="a7bb62b51f48ff0b6df0b18f5b0312a523e3110f49c3237936bfe56ed0e26838c0274ff5401bda6fc21bf24337477ccac49e8026c5d651e4b4cafb5eb5086f6c  Python-2.7.18.tar.xz
 ab8eaa2858d5109049b1f9f553198d40e0ef8d78211ad6455f7b491af525bffb16738fed60fc84e960c4889568d25753b9e4a1494834fea48291b33f07000ec2  musl-find_library.patch
 5a8e013a4132d71c4360771f130d27b37275ae59330cf9a75378dc8a11236017f540eb224f2a148984e82ca3fb6b29129375b1080ba05b81044faa717520ab82  unchecked-ioctl.patch"

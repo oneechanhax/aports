@@ -1,10 +1,10 @@
 # Contributor: Carlo Landmeter <clandmeter@alpinelinux.org>
 # Maintainer: Galen Abell <galen@galenabell.com>
 pkgname=riot-web
-pkgver=1.5.10
+pkgver=1.5.15
 pkgrel=0
 pkgdesc="A glossy Matrix collaboration client for the web"
-url="http://riot.im/"
+url="https://riot.im/"
 arch="noarch"
 options="!check"
 license="Apache-2.0"
@@ -25,4 +25,4 @@ package() {
 		"$pkgdir"/usr/share/webapps/riot-web/config.json
 }
 
-sha512sums="3c22dc13817d17eef61067286faa13e388265adc1ce4999f8e95e5d0d7b0f5724954dde63806f3a1a335785c550a7f3954d88531e5a937b5fd77832b3a29e439  riot-v1.5.10.tar.gz"
+sha512sums="9715c7a4a0083e8bcd14a42f315cfdf5a5f2011afbc09e3c5c1474bad336670e139e8b91b378458647000612634bed04f8b9c59a6c4ffb50bb72c774805e7f9f  riot-v1.5.15.tar.gz"

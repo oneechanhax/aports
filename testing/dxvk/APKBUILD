@@ -1,10 +1,10 @@
 # Contributor: Leo <thinkabit.ukim@gmail.com>
 # Maintainer:
 pkgname=dxvk
-pkgver=1.5.4
+pkgver=1.6.1
 pkgrel=0
 pkgdesc="Vulkan-based compatibility layer for Direct3D 10/11"
-options="!strip !check"
+options="!check"
 url="https://github.com/doitsujin/dxvk"
 arch="x86_64 x86"
 license="Zlib"
@@ -33,12 +33,12 @@ esac
 
 build() {
 	meson . $_outdir \
-		--cross-file $_crossfile \
-		--prefix $_prefix \
-		--bindir "" --libdir "" \
-		--buildtype release \
-		--strip \
-		-D enable_tests=false
+		--cross-file=$_crossfile \
+		--prefix=$_prefix \
+		--bindir="" \
+		--libdir="" \
+		--buildtype=plain \
+		-Denable_tests=false
 	ninja -C $_outdir
 }
 
@@ -49,4 +49,4 @@ package() {
 	ln -s /usr/share/dxvk/setup_dxvk.sh "$pkgdir"/usr/bin/setup_dxvk
 	chmod +x "$pkgdir"/usr/share/dxvk/setup_dxvk.sh
 }
-sha512sums="3c870e906228d400c476c44e98d4f2a00fa2acbd660f23e6ae05ba323839452755c7650127630b381c73dddbb7900bf338165a1fd5da45cddb8072d2f2e20598  dxvk-1.5.4.tar.gz"
+sha512sums="0f3cb7096643d1bcb1db51696824c8ca16720adfe6894392122b21f400cfa416e79eb74cdcc46d1a63a276697d324324d7657afb70b9490e22e6792643fc5805  dxvk-1.6.1.tar.gz"

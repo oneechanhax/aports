@@ -1,11 +1,11 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=mutter
-pkgver=3.34.4
-pkgrel=1
+pkgver=3.36.2
+pkgrel=0
 pkgdesc="clutter-based window manager and compositor"
 url="https://wiki.gnome.org/Projects/Mutter/"
-arch="all !s390x" # limited by gnome-settings-daemon
+arch="all !s390x !mips !mips64" # limited by gnome-settings-daemon
 license="GPL-2.0-or-later"
 depends="xkeyboard-config zenity gsettings-desktop-schemas xorg-server-xwayland"
 makedepends="gnome-desktop-dev libcanberra-dev upower-dev json-glib-dev
@@ -13,7 +13,7 @@ makedepends="gnome-desktop-dev libcanberra-dev upower-dev json-glib-dev
 	libgudev-dev libinput-dev gnome-common itstool libxml2-utils
 	libxcomposite-dev libxdamage-dev elogind-dev meson pipewire-dev
 	gnome-settings-daemon-dev libice-dev libsm-dev startup-notification-dev
-	xorg-server"
+	xorg-server graphene-dev"
 options="!check" # Can't be run with release builds
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang $pkgname-dbg"
 source="https://download.gnome.org/sources/mutter/${pkgver%.*}/mutter-$pkgver.tar.xz
@@ -49,6 +49,6 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="6cae8473071d9ab105a3635cee314157a268894fc3b18e53857e097223a9c2677e1cd51b10b501a3b85f74c83470c2ce87986972218f9833c9f6ad31b1910f6a  mutter-3.34.4.tar.xz
+sha512sums="ff354cf4c869dc769605446f1d7347869445bd3aca4188e07c0bd5cb705d823c2ba5b246c1bcc925982326b45db7fbab7ee03e9ef130e4c3b1ec9ad89f0ed8a8  mutter-3.36.2.tar.xz
 7959d301a89ba067b7b34a474abcc0f22a2355571b5a10508efd852b3f1a1bd6f17f0e16345552ebc3654d07bb7167588afee1d73ad66bc0237ee308757ac3b8  fix-cogl-path-build-ordering.patch
 6f21171bbd0ad0fc67cbaf5fb1478b22b482a9ae33b9328cc51a5dd31bcf7d95cd41e6cbbac21d3d8801cc064a62a64ae38ed7d0501ab605b861058c32f3bc30  fixudev-req.patch"

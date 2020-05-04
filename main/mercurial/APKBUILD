@@ -1,7 +1,7 @@
 # Contributor: Sören Tempel <soeren+alpine@soeren-tempel.net>
 # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=mercurial
-pkgver=5.2.2
+pkgver=5.3.2
 pkgrel=0
 pkgdesc="Scalable distributed SCM tool"
 url="https://www.mercurial-scm.org"
@@ -19,7 +19,7 @@ source="https://www.mercurial-scm.org/release/mercurial-$pkgver.tar.gz"
 
 # secfixes:
 #   4.9-r0:
-#   - CVE-2019-3902
+#     - CVE-2019-3902
 
 build() {
 	HGPYTHON3=1 python3 setup.py build
@@ -65,4 +65,4 @@ bashcomp() {
 		"$subpkgdir"/usr/share/bash-completion/completions/$pkgname
 }
 
-sha512sums="875e75587ab1f1c54edd2f7198dff21e6b287425f215a9d28ef98d5359420df90ca7ef0128ec7b772c4a31dc95b1082b4d6d28f1754968a08408516ba9ec91ee  mercurial-5.2.2.tar.gz"
+sha512sums="b0afcf82b51676d2e7592eb9b29f9611d59816399166400027b6c8b29c10c9ddc96b57f7913e78f938b1345bb7ac29ecd4ddc793165b7cf192c3c7a95712cc99  mercurial-5.3.2.tar.gz"

@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=bluez-qt
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 arch="all !armhf" # armhf blocked by qt5-qtdeclarative
 pkgdesc="Qt wrapper for Bluez 5 DBus API"
 url="https://community.kde.org/Frameworks"
@@ -13,24 +13,16 @@ source="https://download.kde.org/stable/frameworks/${pkgver%.*}/bluez-qt-$pkgver
 subpackages="$pkgname-dev $pkgname-doc"
 options="!check" # Multiple tests either hang or fail completely
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DBUILD_QCH=ON
-	make
+	make -C build
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="a90f79960d22ff3fb939d09df226bb5ae8a66e93963b0ff73f6eafcf4d21d003b2e690843527bcfca66208f1e4c1da04d2bf368ce09ba2112a35c2af5cde2787  bluez-qt-5.67.0.tar.xz"
+sha512sums="d59f12c750c0f47f1ce855f3787629c4a43977d32dd7fdebe1ab57ca1d08eab30da063e827d5266f8b0e316bc3d479857407875e1e1d6e51fd9379e1ff41bd1e  bluez-qt-5.69.0.tar.xz"

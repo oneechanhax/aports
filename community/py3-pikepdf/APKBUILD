@@ -1,14 +1,14 @@
 # Maintainer: Carlo Landmeter <clandmeter@alpinelinux.org>
 pkgname=py3-pikepdf
 _pyname=pikepdf
-pkgver=1.10.2
+pkgver=1.11.1
 pkgrel=0
 pkgdesc="A Python library for reading and writing PDF"
 url=https://github.com/pikepdf/pikepdf
 arch="all"
 license="MPL-2.0"
-depends="python3 py3-lxml py3-pybind11>=2.4.3"
-makedepends="py3-pybind11-dev py3-setuptools python3-dev qpdf-dev"
+depends="py3-lxml py3-pybind11>=2.4.3 py3-setuptools python3"
+makedepends="py3-pybind11-dev python3-dev qpdf-dev"
 _pypiprefix="${_pyname%${_pyname#?}}"
 source="https://files.pythonhosted.org/packages/source/$_pypiprefix/$_pyname/$_pyname-$pkgver.tar.gz"
 builddir=$srcdir/$_pyname-$pkgver
@@ -22,4 +22,4 @@ package() {
 	python3 setup.py install --prefix=/usr --root="$pkgdir"
 }
 
-sha512sums="830f4698399943e59e8c98216670753e05e39307f0bdf9f271eb3e1ac633d25dab8fe47580d58419bccdd383037e1b6c6a724e6ce1ad4122e657b58d18b2ce97  pikepdf-1.10.2.tar.gz"
+sha512sums="8a8dc8a9106399e08d63783cd76c3c794b66f076303208bab3fbed55014a402457bfeebe16bcf0f0f973708fbe09c0524e43ac88a3746a30ef66e31b9b0314a3  pikepdf-1.11.1.tar.gz"

@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=plasma-framework
-pkgver=5.67.0
-pkgrel=2
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="Plasma library and runtime components based upon KF5 and Qt5"
 arch="all !armhf" # armhf blocked by qt5-qtdeclarative
 url="https://community.kde.org/Frameworks"
@@ -24,11 +24,11 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest
 }
 
 package() {
 	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="3708262501b39698a84656b1ec0ea461011369301c7e1f1e5858fdc5b3e06f4fd3a5d7511dba1f91e08e89b2331fcc3204561efd1e06440f97e6b4a32cbd8f92  plasma-framework-5.67.0.tar.xz"
+sha512sums="37fcd4c3bb531e72616a3f128342a470e9a938b9e99012dcda89e99d8eca6a856b48bf050794b1cae561fd3006d7189a0711b172d6982fc7a5c2813bcf7048a6  plasma-framework-5.69.0.tar.xz"

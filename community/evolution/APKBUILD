@@ -2,8 +2,8 @@
 # Contributor: Natanael Copa <ncopa@alpinelinux.org>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=evolution
-pkgver=3.34.4
-pkgrel=1
+pkgver=3.36.2
+pkgrel=0
 pkgdesc="evolution mail client"
 url="https://projects.gnome.org/evolution"
 arch="all !s390x" # Limited by gnome-autoar
@@ -20,9 +20,7 @@ subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 source="https://download.gnome.org/sources/evolution/${pkgver%.*}/evolution-$pkgver.tar.xz"
 
 build() {
-	mkdir -p "$builddir"/build
-	cd "$builddir"/build
-	cmake \
+	cmake -B build \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DSYSCONF_INSTALL_DIR=/etc \
 		-DCMAKE_BUILD_TYPE=None \
@@ -32,9 +30,8 @@ build() {
 		-DENABLE_PST_IMPORT=OFF \
 		-DENABLE_SMIME=ON \
 		-DENABLE_SCHEMAS_COMPILE=OFF \
-		-DWITH_GLADE_CATALOG=ON \
-		..
-	make
+		-DWITH_GLADE_CATALOG=ON
+	make -C build
 }
 
 check() {
@@ -45,11 +42,4 @@ package() {
 	make -C build DESTDIR="$pkgdir" install
 }
 
-dev() {
-	default_dev
-	mkdir -p "$subpkgdir"/usr/lib "$subpkgdir"/usr/share
-	mv "$pkgdir"/usr/lib/glade/modules "$subpkgdir"/usr/lib/
-	mv "$pkgdir"/usr/share/glade/catalogs "$subpkgdir"/usr/share/
-}
-
-sha512sums="54ff4b191237b291e3e008ca8691624ac0af35bae096c20615ac5a51be033c97ea28be6629362a3676bee9285afab666c4624cfcca536bf5255ecd38dcf3ac58  evolution-3.34.4.tar.xz"
+sha512sums="2dccf69d32c4381f40ccdf84b621b8241c22bdb992cb77a87ce2e62e3598c436e7d0f8b72ce4fe504399c04a38266b0b0c2abf04000267a16c242d2dec7b9e9c  evolution-3.36.2.tar.xz"

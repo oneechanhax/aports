@@ -3,8 +3,8 @@
 # Maintainer: Francesco Colista <fcolista@alpinelinux.org>
 pkgname=perl-test-simple
 _pkgreal=Test-Simple
-pkgver=1.302171
-pkgrel=1
+pkgver=1.302175
+pkgrel=0
 pkgdesc="Basic utilities for writing tests."
 url="https://metacpan.org/release/Test-Simple"
 arch="noarch"
@@ -43,4 +43,4 @@ doc() {
 	replaces="perl-doc"
 }
 
-sha512sums="abae294e5c941c807b08ceafb2b30603c013fa669e9e6605c3495f6468a65303d5a639af719651b1f0bab6ea10771fc38cd2443a93142511ee27a1cd840d7ef9  Test-Simple-1.302171.tar.gz"
+sha512sums="526b876f7e8b783e1f5c4b16a40d1a1392f4c43c782106117bfebecf3d7eddc0b98c6168b6baae7da48d1df15079ca9c35787310f0785a7ba7ce806b2fb177a7  Test-Simple-1.302175.tar.gz"

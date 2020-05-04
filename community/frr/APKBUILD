@@ -1,0 +1,130 @@
+# Maintainer: Daniel Corbe <daniel@corbe.net>
+pkgname=frr
+pkgver=7.3
+pkgrel=1
+pkgdesc="Free Range Routing is a fork of Quagga"
+pkgusers="frr"
+pkggroups="frr frrvty"
+url="https://frrouting.org/"
+arch="all !s390x" # failing tests
+license="GPL-2.0-or-later"
+depends="iproute2 bash libcap"
+makedepends="autoconf automake libtool
+	bsd-compat-headers
+	c-ares-dev
+	flex bison
+	json-c-dev
+	libyang-dev
+	linux-headers
+	net-snmp-dev
+	py3-sphinx
+	python3-dev
+	readline-dev
+	rtrlib-dev
+	texinfo
+	libcap-dev
+	"
+checkdepends="py3-pytest"
+install="$pkgname.pre-install"
+subpackages="$pkgname-dbg
+	$pkgname-doc::noarch
+	$pkgname-openrc::noarch
+	$pkgname-pythontools::noarch
+	$pkgname-rpki
+	$pkgname-snmp
+	"
+source="https://github.com/FRRouting/frr/archive/frr-$pkgver.tar.gz
+	json-c-0.14.patch
+	frr.initd
+	"
+builddir="$srcdir"/$pkgname-$pkgname-$pkgver
+
+_sysconfdir=/etc/frr
+
+prepare() {
+	default_prepare
+	./bootstrap.sh
+}
+
+build() {
+	export PYTHON=python3
+
+	./configure \
+		--prefix=/usr \
+		--enable-exampledir=/usr/share/doc/frr/examples/ \
+		--localstatedir=/run/frr \
+		--sbindir=/usr/lib/frr \
+		--sysconfdir=$_sysconfdir \
+		--libdir=/usr/lib/frr \
+		--with-moduledir=/usr/lib/frr/modules \
+		LIBTOOLFLAGS="-rpath /usr/lib/frr" \
+		--disable-dependency-tracking \
+		--enable-systemd=no \
+		--enable-rpki \
+		--with-libpam \
+		--enable-doc \
+		--enable-doc-html \
+		--enable-snmp \
+		--enable-fpm \
+		--disable-protobuf \
+		--disable-zeromq \
+		--enable-ospfapi \
+		--enable-bgp-vnc \
+		--enable-multipath=256 \
+		--enable-user=${pkgusers%% *} \
+		--enable-group=${pkggroups%% *} \
+		--enable-vty-group=frrvty \
+		--enable-configfile-mask=0640 \
+		--enable-logfile-mask=0640
+	make
+}
+
+check() {
+	export PYTHON=python3
+	make -j 1 check
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+
+	# Remove development files, static libraries and headers.
+	# They are internal and should not be shipped as a package.
+	# Compare https://github.com/FRRouting/frr/blob/frr-7.0/debian/rules#L89
+	find "$pkgdir" \( -name '*.la' -o -name '*.a' -o -name 'lib*.so' \) -exec rm -f {} +
+	rm -rf "$pkgdir"/usr/include
+	rm -f "$pkgdir"/usr/lib/frr/ssd
+
+	# FRR currently installs two flavours of scripts for starting and stopping it.
+	# Remove the deprecated one.
+	rm -f "$pkgdir"/usr/lib/frr/frr
+	rm -f "$pkgdir"/usr/lib/frr/frr-reload
+
+	install -d "$pkgdir"$_sysconfdir
+	install -Dm644 "$builddir"/tools/etc/frr/daemons "$pkgdir"$_sysconfdir
+	chown -R ${pkgusers%% *}:${pkggroups%% *} "$pkgdir"$_sysconfdir
+	install -Dm755 "$srcdir"/frr.initd "$pkgdir"/etc/init.d/frr
+}
+
+pythontools() {
+	pkgdesc="$pkgdesc (tools)"
+	depends="python3 py3-ipaddr"
+	mkdir -p "$subpkgdir"/usr/lib/frr
+	mv "$pkgdir"/usr/lib/frr/frr-reload.py "$subpkgdir/usr/lib/frr"
+}
+
+rpki() {
+	pkgdesc="$pkgdesc (BGP RPKI support)"
+	install -d "$subpkgdir/usr/lib/frr/modules"
+	mv "$pkgdir"/usr/lib/frr/modules/bgpd_rpki.so "$subpkgdir/usr/lib/frr/modules"
+}
+
+snmp() {
+	pkgdesc="$pkgdesc (net-snmp bindings)"
+	install -d "$subpkgdir/usr/lib/frr/modules"
+	mv "$pkgdir"/usr/lib/frr/modules/*_snmp.so "$subpkgdir/usr/lib/frr/modules"
+	mv "$pkgdir"/usr/lib/frr/libfrrsnmp.* "$subpkgdir/usr/lib/frr"
+}
+
+sha512sums="7ac0049e2934105f5d8baedcce66117c7a946b3ffcba1dba7c9e332d8f10dbfd49e2758282c6487bec619f7610c122827f03fd1ef055896a130e8792478af9ef  frr-7.3.tar.gz
+4124390c3756ce8a1dddc1753373b0ae668f0dc81e3a125758283b78a86a32e423f5a39d6cbe350ad8c84fac7079d12255e35cbbdd320f182c4d47e1444ee4a5  json-c-0.14.patch
+b495b2be9f2cbb065104ccc0c3474471e870b53ac62ed4fba40020c8d50866e637a99ef3d7af5de1018ff659c4757baac4f40d7648a9de99ed14db33c8992b54  frr.initd"

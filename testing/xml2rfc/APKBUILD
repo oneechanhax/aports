@@ -1,8 +1,8 @@
 # Contributor:
 # Maintainer:
 pkgname=xml2rfc
-pkgver=2.8.2
-pkgrel=3
+pkgver=2.44.0
+pkgrel=0
 pkgdesc="A tool for converting XML documents into internet drafts and RFCs"
 url="https://tools.ietf.org/"
 arch="noarch"
@@ -18,4 +18,4 @@ package() {
 	python3 setup.py install --prefix=/usr --root="$pkgdir"
 }
 
-sha512sums="48e79d3d00b02670261c37b60e3dfe238407a49efdfc8146e57bd5bf350877680baa1024b7f81263f6a7312e189171e37f2d77c2f7ab1754a1b1590ae02dda29  xml2rfc-2.8.2.tar.gz"
+sha512sums="fc6cf12963ad115e52e4aa830cc4ce7a6b2a9d716411f9bcde0e2aaa97efcb2f0745af1b54b4a3a70727ed68c3af6b47b9b3d3d90e8eaa54094f0016046a1c5d  xml2rfc-2.44.0.tar.gz"

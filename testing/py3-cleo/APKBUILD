@@ -2,7 +2,7 @@
 # Maintainer:
 pkgname=py3-cleo
 _realname=cleo
-pkgver=0.7.6
+pkgver=0.8.1
 pkgrel=0
 pkgdesc="Python3 library to create beautiful and testable command-line interfaces"
 options="!check" # No tests on pypi tarball, github uses pyproject.toml
@@ -22,4 +22,4 @@ package() {
 	python3 setup.py install --prefix=/usr --root="$pkgdir"
 }
 
-sha512sums="088d8f46cd680cadcf74d94be2f7b3cabbb7d91822eab03ffe13e29607b08d6887fa65965587db1f94cb2d8a0efb7470d196b0e07c71197d04b3b63298012d03  cleo-0.7.6.tar.gz"
+sha512sums="dd7b7e4a6574f3ff47089d42aab7ca5ea0d04fe1affb7015a6c9edadc655fe9a76afcef2a3fd776d9745216581d4f7d7a330e366748bac2fa831840eceee44d3  cleo-0.8.1.tar.gz"

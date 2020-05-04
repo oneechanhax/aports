@@ -3,8 +3,8 @@
 # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=perl-encode
 _pkgreal=Encode
-pkgver=3.02
-pkgrel=1
+pkgver=3.06
+pkgrel=0
 pkgdesc="character encodings in Perl"
 url="https://metacpan.org/release/Encode/"
 arch="all"
@@ -16,6 +16,8 @@ source="https://cpan.metacpan.org/authors/id/D/DA/DANKOGAI/$_pkgreal-$pkgver.tar
 builddir="$srcdir/$_pkgreal-$pkgver"
 
 prepare() {
+	default_prepare
+
 	export CFLAGS=$(perl -MConfig -E 'say $Config{ccflags}')
 	PERL_MM_USE_DEFAULT=1 perl Makefile.PL INSTALLDIRS=vendor
 }
@@ -65,4 +67,4 @@ doc() {
 	done
 }
 
-sha512sums="9a2ccb01f23e9fd27cf3f50ee0dfdfdd2a1b299215d56d7bf77f3adadd85d40a2cbd884c2f4980752e0e365e241252e4672222b239568259ae9701f188d9cb00  Encode-3.02.tar.gz"
+sha512sums="3609b2b7c4ed7303c3fca160a93390c91df9266bf03e53a98255b8c230615aa8f05a88e816744ecabbec4493de4b7ef2d7eb92afd2536ed48b0ff8a6be7a1532  Encode-3.06.tar.gz"

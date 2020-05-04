@@ -1,18 +1,20 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=kinfocenter
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="A utility that provides information about a computer system"
 arch="all !armhf" # armhf blocked by extra-cmake-modules
-url="https://www.kde.org/applications/system/kinfocenter"
+url="https://www.kde.org/workspaces/plasmadesktop/"
 license="(GPL-2.0-only OR GPL-3.0-only) AND (LGPL-2.1-only OR LGPL-3.0-only)"
 makedepends="extra-cmake-modules qt5-qtbase-dev kcompletion-dev kconfig-dev kconfigwidgets-dev kcoreaddons-dev kcrash-dev kdbusaddons-dev kdoctools-dev ki18n-dev kiconthemes-dev kcmutils-dev kio-dev kservice-dev solid-dev kwidgetsaddons-dev kwindowsystem-dev kxmlgui-dev kdeclarative-dev kpackage-dev solid-dev kwayland-dev glu-dev"
-source="https://download.kde.org/stable/plasma/$pkgver/kinfocenter-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/kinfocenter-$_pkgver.tar.xz"
 subpackages="$pkgname-doc $pkgname-lang"
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -20,7 +22,7 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
@@ -28,4 +30,4 @@ package() {
 	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="de8786eba290778af51eed8335a7026f06fac809a913b340321739b0e815e37c19b91b544c86054aedf835d6316d8b897547e9bdd3fa823a5d1e9c5e2439067e  kinfocenter-5.18.2.tar.xz"
+sha512sums="6b7c5c4c755afdc3c04ca15f6a958cf541d33b03c731fa77a5cf99fa015d0e35a00016ab7f21b6b1f30afd7c423dc4fdde03557645b040d325509a6ae8c44dcb  kinfocenter-5.18.4.1.tar.xz"

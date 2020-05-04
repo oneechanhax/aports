@@ -1,33 +1,33 @@
-# Maintainer: Leo <thinkabit.ukim@gmail.com>
+# Contributor: Leo <thinkabit.ukim@gmail.com>
+# Maintainer:
 pkgname=gotop
-pkgver=3.0.0
+pkgver=3.5.2
 pkgrel=1
 pkgdesc="Terminal based graphical activity monitor"
-url="https://github.com/cjbassi/gotop"
+url="https://github.com/xxxserxxx/gotop"
 arch="all"
 license="AGPL-3.0-or-later"
-depends="procps" # Remove once #138 on cjbassi/gotop is fixed
+options="!check" # No test suite
+depends="procps" # Remove once #20 on xxxserxxx/gotop is fixed
 makedepends="git go"
-source="$pkgname-$pkgver.tar.gz::https://github.com/cjbassi/gotop/archive/$pkgver.tar.gz"
-builddir="$srcdir/src/github.com/cjbassi/gotop"
+options="net"
+source="$pkgname-$pkgver.tar.gz::https://github.com/xxxserxxx/gotop/archive/v$pkgver.tar.gz"
+builddir="$srcdir/src/github.com/xxxserxxx/gotop"
 
 prepare() {
 	default_prepare
-	mkdir -p "$srcdir"/src/github.com/cjbassi
+	mkdir -p "$srcdir"/src/github.com/xxxserxxx
 	mv "$srcdir"/$pkgname-$pkgver "$builddir"/
 }
 
 build() {
-	GOPATH="$srcdir" go build -v -o bin/$pkgname .
-}
-
-check() {
-	# No testsuite is provided
-	./bin/$pkgname --help
+	mkdir bin
+	GOPATH="$srcdir" go build -v -o bin/ ./...
 }
 
 package() {
-	install -Dm755 bin/$pkgname "$pkgdir"/usr/bin/$pkgname
+	mkdir -p "$pkgdir"/usr/bin/
+	install -m755 ./bin/* "$pkgdir"/usr/bin/
 }
 
 cleanup_srcdir() {
@@ -35,4 +35,4 @@ cleanup_srcdir() {
 	default_cleanup_srcdir
 }
 
-sha512sums="012cc627fa7013409f3775d5bf2528e25e275fc285fea7ae93a1afec33474c923cc6cd9accb24fce479ab229c98d6438cc9f5eb7dea37f72c1905516d5fdbf6e  gotop-3.0.0.tar.gz"
+sha512sums="5dd3f978edf4edd3975eddf72562489c443cbba3985f7c2c323762a656b5e8d401d75e4e07696559b4560993b26723e69b1c9b1411a7a6ea71ffeae86ca7d096  gotop-3.5.2.tar.gz"

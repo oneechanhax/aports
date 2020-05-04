@@ -1,8 +1,8 @@
 # Contributor: Bhushan Shah <bshah@kde.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=libphonenumber
-pkgver=8.11.4
-pkgrel=2
+pkgver=8.12.2
+pkgrel=0
 pkgdesc="Library for parsing, formatting, and validating international phone numbers."
 url="https://github.com/googlei18n/libphonenumber"
 arch="all"
@@ -11,25 +11,23 @@ depends_dev="boost-dev protobuf-dev icu-dev"
 makedepends="$depends_dev cmake gtest-dev"
 checkdepends="gtest"
 subpackages="$pkgname-static $pkgname-dev"
-source="$pkgname-$pkgver.tar.gz::https://github.com/googlei18n/libphonenumber/archive/v$pkgver.tar.gz"
+source="https://github.com/googlei18n/libphonenumber/archive/v$pkgver/libphonenumber-v$pkgver.tar.gz"
+builddir="$srcdir/$pkgname-$pkgver/cpp"
 
 build() {
-	cd "$builddir/cpp"
-	# TODO: Switch to the CMake None build type.
-	cmake \
-		-DCMAKE_BUILD_TYPE=RelWithDebInfo \
+	cmake -B build \
+		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir/cpp"
-	./libphonenumber_test
-}
-package() {
-	cd "$builddir/cpp"
-	DESTDIR="$pkgdir" make install
+	./build/libphonenumber_test
 }
 
-sha512sums="6ef958db4b9470a3bfc8cc7169213ef0a7e90247f3e1911e179602810b2a8f8c227422c4f624aa5eb32497712fae878f1cfc053b9189cdc2d4102aa73c6dcfd1  libphonenumber-8.11.4.tar.gz"
+package() {
+	DESTDIR="$pkgdir" make -C build install
+}
+
+sha512sums="fb0b02a733e673ff3a8e651f5fc5a15ca6f4fbf0f41c21e42ca36b6bcb899c9fc3d504a10c22f4f5d03c860db3c7f040800aedf1e0886c728976626dd4ff0e16  libphonenumber-v8.12.2.tar.gz"

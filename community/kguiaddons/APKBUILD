@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=kguiaddons
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="Addons to QtGui"
 arch="all !armhf" # armhf blocked by extra-cmake-modules
 url="https://community.kde.org/Frameworks"
@@ -12,31 +12,23 @@ checkdepends="xvfb-run"
 source="https://download.kde.org/stable/frameworks/${pkgver%.*}/kguiaddons-$pkgver.tar.xz"
 subpackages="$pkgname-dev $pkgname-doc"
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DBUILD_QCH=ON
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest
 }
 
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="4c4c580d6f1af072efc744bd217d25d366b000918c1aec0bd5bde985b00a5f50e560407e53044b098056e7a1a1b77dc1710d15d768196b99b688d38ff1000566  kguiaddons-5.67.0.tar.xz"
+sha512sums="736f50e99d7911d0df788962ab712b26a1e0dc4b7fa00329727016613189cae2bff188aff7862097e8c5bd5ca33a46c4c2f3b59f2b6b8a3fe59bc8ad91ddac39  kguiaddons-5.69.0.tar.xz"

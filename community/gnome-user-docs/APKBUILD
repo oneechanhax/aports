@@ -1,7 +1,7 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gnome-user-docs
-pkgver=3.34.1
+pkgver=3.36.2
 pkgrel=0
 pkgdesc="GNOME User Documentation"
 url="https://gitlab.gnome.org/GNOME/gnome-user-docs"
@@ -26,4 +26,4 @@ package() {
 	make DESTDIR="$pkgdir" install
 }
 
-sha512sums="f9e65f4d0770ce97493f2eaa6b7743575e3bca3d816d0cd06ee35af99016722631086502450db5900693527a71bec9d65c97829c1486b6aff4a137a7f6016baf  gnome-user-docs-3.34.1.tar.xz"
+sha512sums="6f9d5e6c86a377a7c77a89246b1c0555a5ddbbf9e0ec983182b9cc019c03c53d585c71f63fedb67ff1e0547ec65e1c2d832947d7e58ac2f1491c268735617c77  gnome-user-docs-3.36.2.tar.xz"

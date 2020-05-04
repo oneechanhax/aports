@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=kio
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="Resource and network access abstraction"
 arch="all !armhf"
 url="https://community.kde.org/Frameworks"
@@ -18,29 +18,21 @@ source="https://download.kde.org/stable/frameworks/${pkgver%.*}/kio-$pkgver.tar.
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 options="!check" # Fails due to requiring physical devices not normally available and test 14 hangs
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DBUILD_QCH=ON
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="baf1e6abc6ae1ffa4010245a79cb676787217d365fb033f620a9da293565ec267186afaac08791104cead3ce5c87d3a76ec89b796355361b326b16f044691d72  kio-5.67.0.tar.xz"
+sha512sums="872155ad2115e744ca25f99c225141e381512cd5eb371b8bc59f7793248f574c64af9d0b9f4673a0ea8f16951a82efc186a7796f2971c9af356d55f57a6640ce  kio-5.69.0.tar.xz"

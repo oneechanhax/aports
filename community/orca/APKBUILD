@@ -1,7 +1,7 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=orca
-pkgver=3.34.2
+pkgver=3.36.2
 pkgrel=0
 pkgdesc="Orca is an extensible screen reader"
 url="https://wiki.gnome.org/Projects/Orca"
@@ -33,4 +33,4 @@ package() {
 	make DESTDIR="$pkgdir" install
 }
 
-sha512sums="b685bd8e417d74ccc0d0ce6b15b3220e5079320198886f568147480f107f7d0273cbd412fdc2c6cc509d3210b36c40aecb50e167d43120f6770ce02a0891ad20  orca-3.34.2.tar.xz"
+sha512sums="8f48d248f27bff3fc0d0ad43b42f52827771442f8cfbf904c51dc6e38846ebe4212332e888491ff54458e1daeb46942adf5a07b4ff9d12a59860b15e41668086  orca-3.36.2.tar.xz"

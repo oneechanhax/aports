@@ -1,7 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=polkit-kde-agent-1
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="Daemon providing a polkit authentication UI for KDE"
 arch="all !armhf" # armhf blocked by extra-cmake-modules
@@ -9,11 +10,12 @@ url="https://www.kde.org/workspaces/plasmadesktop/"
 license="GPL-2.0-or-later"
 depends="polkit-elogind"
 makedepends="extra-cmake-modules qt5-qtbase-dev ki18n-dev kwindowsystem-dev kdbusaddons-dev kwidgetsaddons-dev kcoreaddons-dev kcrash-dev kiconthemes-dev polkit-qt-1-dev"
-source="https://download.kde.org/stable/plasma/$pkgver/polkit-kde-agent-1-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/polkit-kde-agent-1-$_pkgver.tar.xz"
 subpackages="$pkgname-lang"
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -21,7 +23,7 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
@@ -29,4 +31,4 @@ package() {
 	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="a34515c1173bc439b0659df891ac35830dfc05916b4c3c622045cbaef2ce93f91be000eac31c8c0f669e7064628d09a999251237bdd5c381f74dd34e06a722fe  polkit-kde-agent-1-5.18.2.tar.xz"
+sha512sums="e83c762fce852fb3835e53db8f4940a8b02f06b505f4347027c23171ce6e4cad512b002a0154459c952305f922b8f881b3c0b51ca7b9553d16a78e668deadfe3  polkit-kde-agent-1-5.18.4.1.tar.xz"

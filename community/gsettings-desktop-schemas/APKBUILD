@@ -2,8 +2,8 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gsettings-desktop-schemas
-pkgver=3.34.0
-pkgrel=3
+pkgver=3.36.1
+pkgrel=0
 pkgdesc="A collection of GSettings schemas"
 url="https://gitlab.gnome.org/GNOME/gsettings-desktop-schemas"
 arch="noarch"
@@ -31,4 +31,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="6cbe59facf77566ed93faabafc6b00ad03fb398a9a4686ba94a08b1c2d0df1d44bd673fb4d51340209a66ebc0aa32095615e7e63b78f4cc4c10d240a7b0a8fa1  gsettings-desktop-schemas-3.34.0.tar.xz"
+sha512sums="623a3759fe84cc5ea897043cc7c337a4f83302ebe5cfb9d214210a48e460e22b180518f5d768382ec18396bb2e86f22649dbc9b367a858e56b1ee8d2cab58fa8  gsettings-desktop-schemas-3.36.1.tar.xz"

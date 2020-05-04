@@ -1,7 +1,8 @@
 # Contributor: Bhushan Shah <bshah@kde.org>
 # Maintainer: Bhushan Shah <bshah@kde.org>
 pkgname=kwayland-integration
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="KWayland integration"
 url="https://www.kde.org/workspaces/plasmadesktop/"
@@ -9,11 +10,12 @@ arch="all !armhf" # armhf blocked by extra-cmake-modules
 license="LGPL-2.1-only OR LGPL-3.0-only"
 depends="kwayland kglobalaccel kidletime"
 makedepends="cmake extra-cmake-modules qt5-qtbase-dev kwayland-dev kwindowsystem-dev kidletime-dev kguiaddons-dev"
-source="https://download.kde.org/stable/plasma/$pkgver/kwayland-integration-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/kwayland-integration-$_pkgver.tar.xz"
 options="!check" # Broken
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -24,4 +26,4 @@ package() {
 	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="9a5d3c92cfe0df518886ecaac6d6813ee870847727dc1ca780a2655701eabde32a61974fb0dfc47f2df69b60fb3645ac5bb0b1efbc0c0ada274550ecf294593d  kwayland-integration-5.18.2.tar.xz"
+sha512sums="0ed673ad47091d946aca199d7e28db4ccac0b7274b2e5c774765cc8d6f9e91dc531bbffc50c448947cd144ad8c0766d7efc4b31826b7bf250bcbe9c9844a22fd  kwayland-integration-5.18.4.1.tar.xz"

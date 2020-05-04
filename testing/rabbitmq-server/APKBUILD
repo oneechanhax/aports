@@ -5,7 +5,7 @@ pkgver=3.7.18
 pkgrel=1
 pkgdesc="RabbitMQ is an open source multi-protocol messaging broker."
 url="https://www.rabbitmq.com/"
-arch="noarch !s390x"
+arch="noarch !s390x !mips !mips64"
 license="MPL-1.1"
 depends="erlang erlang-tools erlang-runtime-tools erlang-stdlib
 	logrotate erlang-ssl erlang-crypto erlang-parsetools
@@ -27,7 +27,7 @@ source="
 options="!check" # test suite broken
 
 # secfixes:
-#   3.7.17:
+#   3.7.17-r0:
 #     - CVE-2015-9251
 #     - CVE-2017-16012
 #     - CVE-2019-11358

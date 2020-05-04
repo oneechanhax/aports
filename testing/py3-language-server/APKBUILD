@@ -1,7 +1,7 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname="py3-language-server"
-pkgver="0.31.8"
+pkgver="0.31.9"
 pkgrel=0
 pkgdesc="An implementation of the Language Server Protocol for Python"
 url="https://github.com/palantir/python-language-server"
@@ -17,6 +17,9 @@ builddir="$srcdir/python-language-server-$pkgver"
 case "$CARCH" in
 	# Missing checkdepends: py3-qt5
 	armhf) options="$options !check" ;;
+
+	# Missing checkdepends: py3-numpy
+	mips*) options="$options !check" ;;
 esac
 
 build() {
@@ -31,4 +34,4 @@ package() {
 	python3 setup.py install --prefix=/usr --root="$pkgdir"
 }
 
-sha512sums="d6569ac39d96c78485d87b5ed3e60a10f45e43ed7961260a426a4356a4923a4aef366b088db3964f1aa87a2e95b21ed9d17094d1b1c5154c72fc8371e61f24d8  python-language-server-0.31.8.tar.gz"
+sha512sums="b63be132a5eca3e5e59745f64edf56b8451c71f9f019b0760adb989180e11ba91bee574d62d980d8d25fc61e2eaac44beddb93e1e0fb221c90dd6fe789e52633  python-language-server-0.31.9.tar.gz"

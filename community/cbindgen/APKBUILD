@@ -1,7 +1,9 @@
 # Contributor: Leo <thinkabit.ukim@gmail.com>
-# Maintainer:
+# Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=cbindgen
-pkgver=0.13.1
+# Please be VERY careful bumping this - Firefox regularly fails to build
+# with new versions!
+pkgver=0.14.1
 pkgrel=0
 pkgdesc="Tool to generate C bindings from Rust code"
 url="https://github.com/eqrion/cbindgen"
@@ -24,4 +26,4 @@ package() {
 	install -Dm0755 target/release/cbindgen -t "$pkgdir"/usr/bin
 }
 
-sha512sums="faaf76c95e3111931fbe044909be385c2af3366ee07cd4c5d9aeb02a9715ff75c3a78370a3b5c50af145970851feadb2aef983ff0c3aaae63626d25f40a656b8  cbindgen-0.13.1.tar.gz"
+sha512sums="a6937dd4eec1a1075265d3f6ff38694018fb9dee300b349062fbfa490b2d67c16d4a9154309367eec36686abeadf2fa61fd47170860e81893e91ad4cba820ed7  cbindgen-0.14.1.tar.gz"

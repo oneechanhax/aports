@@ -1,11 +1,11 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gnome-games
-pkgver=3.34.2
-pkgrel=2
-pkgdesc="Browser and play your games"
+pkgver=3.36.1
+pkgrel=0
+pkgdesc="Browse and play your games"
 url="https://wiki.gnome.org/Apps/Games"
-arch="all !s390x" # needs librsvg
+arch="all !s390x !mips !mips64" # needs librsvg
 license="GPL-3.0-or-later"
 makedepends="meson gtk+3.0-dev vala grilo-dev libhandy-dev librsvg-dev libmanette-dev
 	libsoup-dev tracker-dev sqlite-dev libxml2-dev libarchive-dev retro-gtk-dev"
@@ -32,4 +32,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="df83535f253306b0399843fe899487079244a3640e72a0a85a0221cebf595c2bbf27fa4fc1182e529004a656e30d346eb6c30a9c19c2fbf45cefc8517ab30c86  gnome-games-3.34.2.tar.xz"
+sha512sums="27404bf2d9fc3dd1a0e9d6dc194b62ad3110c0237fd42e2ef05fc1fe3d53087b9265a984cb450009fc2f8e2660840c832d708a26ce5f06074f84e2d5e61382a1  gnome-games-3.36.1.tar.xz"

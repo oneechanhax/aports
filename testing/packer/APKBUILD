@@ -1,7 +1,7 @@
 # Maintainer: Galen Abell <galen@galenabell.com>
 # Contributor: Galen Abell <galen@galenabell.com>
 pkgname=packer
-pkgver=1.5.4
+pkgver=1.5.6
 pkgrel=0
 pkgdesc="Build Automated Machine Images"
 url="https://www.packer.io/"
@@ -36,4 +36,4 @@ cleanup_srcdir() {
 	default_cleanup_srcdir
 }
 
-sha512sums="faa1046030fb46cef907c85fa66a980b8d3abc17130396f6bc00250bc42465f1c7be065508e7dc63970bcb8a064f1585c7f762b9dd337389dbf46e4bbc7193ee  packer-1.5.4.tar.gz"
+sha512sums="993f54a1bf98abd5bc450bafaf202fbbfbad009b661d49783ff82cba9891b8556340801680c0fdc33b90396a3101a2ed93a11798ad51c10d7bd5f81fef4f5a31  packer-1.5.6.tar.gz"

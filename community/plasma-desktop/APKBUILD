@@ -1,12 +1,13 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=plasma-desktop
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="KDE Plasma Desktop"
-# s390x blocked by ibus
+# s390x, mips, mips64 blocked by ibus
 # armhf blocked by qt5-qtdeclarative
-arch="all !s390x !armhf"
+arch="all !s390x !armhf !mips !mips64"
 url='https://www.kde.org/workspaces/plasmadesktop/'
 license="GPL-2.0-only AND LGPL-2.1-only"
 depends="kirigami2 plasma-workspace setxkbmap qqc2-desktop-style ibus-emoji"
@@ -50,12 +51,13 @@ depends_dev="
 	"
 makedepends="$depends_dev extra-cmake-modules kdoctools-dev"
 checkdepends="xvfb-run iso-codes"
-source="https://download.kde.org/stable/plasma/$pkgver/plasma-desktop-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/plasma-desktop-$_pkgver.tar.xz"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang knetattach"
 options="!check" # Requires running dbus
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -63,7 +65,7 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest
 }
 
@@ -81,4 +83,4 @@ knetattach() {
 	cd "$builddir"/build/knetattach
 	DESTDIR="$subpkgdir" make install
 }
-sha512sums="3f850eb9ab6f7a7ee86b11d024a0e9c5552fbfb24a17502bca141bd01e52a99a509e64669abd708ec7a2617fcbb5c65eaa401084388a812785573ed1c5f9c097  plasma-desktop-5.18.2.tar.xz"
+sha512sums="4cac140ddca8ce57a6e27cfac2946824db40a0adf9f0a9b6fe6079f9b899f4b145941803d4a0f1c575a27a8c76d6a7e889c3218287a126efedd9e722fa9d7089  plasma-desktop-5.18.4.1.tar.xz"

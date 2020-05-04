@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=kfilemetadata
-pkgver=5.67.0
-pkgrel=1
+pkgver=5.69.0
+pkgrel=0
 pkgdesc="A library for extracting file metadata"
 arch="all !armhf" # armhf blocked by extra-cmake-modules
 url="https://community.kde.org/Frameworks"
@@ -12,32 +12,36 @@ makedepends="$depends_dev extra-cmake-modules qt5-qttools-dev doxygen"
 source="https://download.kde.org/stable/frameworks/${pkgver%.*}/kfilemetadata-$pkgver.tar.xz"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-lang"
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib \
 		-DBUILD_QCH=ON
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
-	# extractorcoveragetest, propertyinfotest_localized, extractorcollectiontest fail on armhf
-	CTEST_OUTPUT_ON_FAILURE=TRUE ctest -E '(extractorcoveragetest|propertyinfotest_localized|extractorcollectiontest)'
+	cd build
+
+	# Broken tests
+	local skipped_tests="("
+	local tests="
+		usermetadatawritertest
+		extractorcoveragetest
+		propertyinfotest_localized
+		extractorcollectiontest
+		"
+	for test in $tests; do
+		skipped_tests="$skipped_tests|$test"
+	done
+	skipped_tests="$skipped_tests)test"
+	CTEST_OUTPUT_ON_FAILURE=TRUE ctest -E "$skipped_tests"
 }
 
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="f15836611b86b93a055b62d4c7f08e35ee7d5d6fe07a7330dce5c251beea72e972c7ad3d4aec251f86d67704aeefed6037b3546a528f6c0653ac6185e86b604b  kfilemetadata-5.67.0.tar.xz"
+sha512sums="148ad4e1c2ab86692206c11c731bb2a526b680f0df87000e48737ba7f87046d7526e657e44e9e5b61fe9b3d6516784291c1c4dd15d39c486df2c72a460e4d1c6  kfilemetadata-5.69.0.tar.xz"

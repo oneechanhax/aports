@@ -1,12 +1,12 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gnome-boxes
-pkgver=3.34.4
-pkgrel=1
+pkgver=3.36.3
+pkgrel=0
 pkgdesc="Virtualization made simple"
 url="https://wiki.gnome.org/Apps/Boxes"
 # https://build.alpinelinux.org/buildlogs/build-edge-ppc64le/testing/gnome-boxes/gnome-boxes-3.34.0-r0.log
-arch="all !ppc64le"
+arch="all !ppc64le !mips !mips64" # blocked by webkit2gtk on mips
 license="GPL-2.0-only"
 depends="libvirt-daemon"
 makedepends="meson vala libarchive-dev glib-dev gtk+3.0-dev gtk-vnc-dev
@@ -35,4 +35,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="025bfe6fe583cedd80b376b96e87a8ecbbb8f4d723490cf18cc2ca73cb959d9e2bae1b784cc1018866c594962d1e508e5a3b9c9562763eb76e7291c5f6189463  gnome-boxes-3.34.4.tar.xz"
+sha512sums="3a806322a2c86e8afe069daa8935f31d36cf0be318fe37aa1582f8df968bd5ed89ec4b3ac5ef70d9a3b94ab01ed09478db7cc67f77a14a8f8aeb2d4ed02a257a  gnome-boxes-3.36.3.tar.xz"

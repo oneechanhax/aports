@@ -1,7 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=sddm-kcm
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="Config module for SDDM"
 arch="all !armhf" # armhf blocked by qt5-qtdeclarative
@@ -9,11 +10,12 @@ url="https://www.kde.org"
 license="GPL-2.0-or-later AND (GPL-2.0-only OR GPL-3.0-only) AND LGPL-2.1-or-later AND GPL-2.0-only"
 depends="sddm systemsettings"
 makedepends="extra-cmake-modules qt5-qtbase-dev qt5-qtx11extras-dev qt5-qtdeclarative-dev kcoreaddons-dev ki18n-dev kxmlgui-dev kauth-dev kconfigwidgets-dev kio-dev karchive-dev knewstuff-dev xcb-util-image-dev libxcursor-dev"
-source="https://download.kde.org/stable/plasma/$pkgver/sddm-kcm-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/sddm-kcm-$_pkgver.tar.xz"
 subpackages="$pkgname-lang"
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -21,11 +23,11 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {
 	DESTDIR="$pkgdir" make -C build install
 }
-sha512sums="0d08f06ec50ae48453e8e4fecb80fced6d237d89ca85a7d9776b312c1e224e631e2e8407db34d9c98593f2e99f1520a0861e17de776f3228ec3f63268db78fe0  sddm-kcm-5.18.2.tar.xz"
+sha512sums="6500b3a721e4f8798fe1e79647beac11ae6d22bb5df1f5c35d815956535e74aadc9c4ffaee72afd99c2f5ea7acefca040185fe1fc106f3e0a7d62f862c8cfdf0  sddm-kcm-5.18.4.1.tar.xz"

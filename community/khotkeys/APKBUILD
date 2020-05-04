@@ -1,19 +1,21 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=khotkeys
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 arch="all !armhf" # armhf blocked by extra-cmake-modules
 url="https://www.kde.org/workspaces/plasmadesktop/"
 pkgdesc="Key Accelerator Application"
 license="GPL-2.0-only AND LGPL-2.0-or-later"
 makedepends="extra-cmake-modules qt5-qtbase-dev qt5-qtx11extras-dev kglobalaccel-dev ki18n-dev kio-dev kxmlgui-dev kdelibs4support-dev kdbusaddons-dev kcmutils-dev plasma-framework-dev plasma-workspace-dev kdoctools-dev"
-source="https://download.kde.org/stable/plasma/$pkgver/khotkeys-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/khotkeys-$_pkgver.tar.xz"
 subpackages="$pkgname-doc $pkgname-lang $pkgname-dev"
 options="!check" # No tests
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -21,7 +23,7 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
@@ -29,4 +31,4 @@ package() {
 	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="5acf66cf3bc7fb3c9ea5bda5e7af9af04883d7e00b82d66357bbc7651d279e9a7f280d94cce7da8427df9377c8161332676333f3ae8d38ef11f0ccf25b2cbb80  khotkeys-5.18.2.tar.xz"
+sha512sums="9c290c75caf175e66b69f182cb81348d0926b03dd569533dd6da380c299d416fd42f06d6c18fc6791c913e31f955c9adc98c20215442d7d93561b9bdb278e36d  khotkeys-5.18.4.1.tar.xz"

@@ -1,7 +1,7 @@
 # Contributor: Leo <thinkabit.ukim@gmail.com>
 # Maintainer:
 pkgname=py3-deprecated
-pkgver=1.2.7
+pkgver=1.2.9
 pkgrel=0
 pkgdesc="@deprecated decorator to deprecate old python classes, functions or methods."
 url="https://github.com/tantale/deprecated"
@@ -25,4 +25,4 @@ package() {
 	python3 setup.py install --prefix=/usr --root="$pkgdir"
 }
 
-sha512sums="da99a22410fdcc2a96cb5b15c489971078ce34e251406ae3dce6b3f97e284a4f09aaf1c5702407abe85a94cb6c8d9237f373a3096d6182e4a9cd1990be2817f1  py3-deprecated-1.2.7.tar.gz"
+sha512sums="04a248d78021c45a1254f80966e6e4e6817ff3f8312d36fa9874c300fc106b7bed3600702a6953044f88cfa08f8ea8d6447c160554d8c1e1568051d3ce4a175b  py3-deprecated-1.2.9.tar.gz"

@@ -1,10 +1,10 @@
 # Contributor: Leo <thinkabit.ukim@gmail.com>
 # Maintainer:
 pkgname=libplacebo
-pkgver=1.29.1
-pkgrel=2
+pkgver=2.43.1
+pkgrel=0
 pkgdesc="Reusable library for GPU-accelerated video/image rendering"
-url="https://github.com/haasn/libplacebo"
+url="https://code.videolan.org/videolan/libplacebo"
 arch="all"
 license="LGPL-2.1-or-later"
 makedepends="
@@ -15,9 +15,11 @@ makedepends="
 	shaderc-dev
 	vulkan-headers
 	lcms2-dev
+	libepoxy-dev
 	"
 subpackages="$pkgname-dev"
-source="$pkgname-$pkgver.tar.gz::https://github.com/haasn/libplacebo/archive/v$pkgver.tar.gz"
+source="https://code.videolan.org/videolan/libplacebo/-/archive/v$pkgver/libplacebo-v$pkgver.tar.gz"
+builddir="$srcdir/libplacebo-v$pkgver"
 
 build() {
 	meson \
@@ -43,4 +45,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="8cf1a53ec601d6b244dfa91501ed2beb3b8c58637c934785db53d33e339add0874369d6fd74deede332fab485e8af80e7fcc37b97c93be123ce1f9ea3b90fddc  libplacebo-1.29.1.tar.gz"
+sha512sums="62463dfee6e6fd450395e42d7af2b6e0caa0b183c0d00f5ba0c5ddc893a47cdd0371d37fc72a7361228324b0dc9c55dd0309a5a7210cf753618fde18a094abcb  libplacebo-v2.43.1.tar.gz"

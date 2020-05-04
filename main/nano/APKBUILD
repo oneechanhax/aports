@@ -1,7 +1,7 @@
 # Contributor: Michael Mason <ms13sp@gmail.com>
 # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=nano
-pkgver=4.8
+pkgver=4.9.2
 pkgrel=0
 pkgdesc="Enhanced clone of the Pico text editor"
 url="https://www.nano-editor.org"
@@ -9,7 +9,7 @@ arch="all"
 license="GPL-3.0-or-later"
 makedepends="file-dev linux-headers ncurses-dev"
 subpackages="$pkgname-doc $pkgname-syntax::noarch"
-source="https://www.nano-editor.org/dist/v${pkgver%.*}/nano-$pkgver.tar.xz"
+source="https://www.nano-editor.org/dist/v${pkgver%.*.*}/nano-$pkgver.tar.xz"
 
 build() {
 	./configure \
@@ -47,4 +47,4 @@ syntax() {
 		"$subpkgdir"/usr/share/$pkgname/
 }
 
-sha512sums="9799d93f322ac12d95784b6ecc7f7f9037f0a395be0cafe238b9e0ae2d8d93181a8a114a11ccccb20bcf07375ddaf842f49f7d23372f0d330ce67a66d0318ae8  nano-4.8.tar.xz"
+sha512sums="532f706ec0797247f59283f93de7858fb8b66ca4eabc020218cc912f893c354ff79a4c828a16f89146d7a512dd5046009c8118f0a1726718cd32275ca2c095cf  nano-4.9.2.tar.xz"

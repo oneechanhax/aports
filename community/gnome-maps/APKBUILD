@@ -1,11 +1,11 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gnome-maps
-pkgver=3.34.3
-pkgrel=2
+pkgver=3.36.2
+pkgrel=0
 pkgdesc="A simple map client"
 url="https://wiki.gnome.org/Apps/Maps"
-arch="all !s390x" # gjs missing
+arch="all !s390x !mips !mips64" # gjs missing
 license="GPL-2.0-or-later"
 depends="gfbgraph gjs geoclue"
 makedepends="meson glib-dev gjs-dev gtk+3.0-dev gobject-introspection-dev geoclue-dev
@@ -33,4 +33,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="63261fb77ea1260aacaf502950f89ba6e5294271526b25302258df4fb40f4e04e3a4697750b2f7238f45a8d4bdbe9e583d45a4de02ce178e8f6716b44a7c8ba0  gnome-maps-3.34.3.tar.xz"
+sha512sums="cfd474b609c85ed2e25230a9555a0e17072544bb7b8bda142e7d67824bc129f0f544f3d921e6dfce93cca62e8cf1958b9cf7d1e8c5b1b84828b1e0cf4903350b  gnome-maps-3.36.2.tar.xz"

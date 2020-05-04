@@ -1,18 +1,18 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=epiphany
-pkgver=3.34.4
-pkgrel=3
+pkgver=3.36.1
+pkgrel=1
 pkgdesc="A simple, clean, beautiful view of the web"
 url="https://wiki.gnome.org/Apps/Web"
-arch="all !s390x" # libhandy is not available on s390x
+arch="all !s390x !mips !mips64" # libhandy is not available on s390x
 license="GPL-3.0-or-later"
 depends="gsettings-desktop-schemas dbus:org.freedesktop.Secrets"
 makedepends="meson iso-codes-dev gtk+3.0-dev gsettings-desktop-schemas-dev
 	icu-dev json-glib-dev libdazzle-dev libhandy-dev libnotify-dev libsecret-dev
 	libsoup-dev libxml2-dev nettle-dev sqlite-dev webkit2gtk-dev gcr-dev itstool"
 checkdepends="appstream-glib desktop-file-utils xvfb-run ibus"
-subpackages="$pkgname-lang $pkgname-doc"
+subpackages="$pkgname-lang $pkgname-doc $pkgname-dbg"
 source="https://download.gnome.org/sources/epiphany/${pkgver%.*}/epiphany-$pkgver.tar.xz"
 
 build() {
@@ -35,4 +35,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="d9700196e0397032dd84d1fbf14d193f4212dd8dc054320267b4dfc8a59246de9c93fb786ba76463f0c09e7997b26efa17288cc06eddd0fb4aad2e4bdd4276ce  epiphany-3.34.4.tar.xz"
+sha512sums="a69247f4c282723b19536e5c53a1bd16d53422ee9fdf4752fc5f5562042e269fd44c57fc7e1dbd09733d36b0342db633f6c7e724ebbcdd88ebec25639da988d1  epiphany-3.36.1.tar.xz"

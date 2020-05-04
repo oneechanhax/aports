@@ -1,21 +1,20 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=geary
-pkgver=3.34.2
-pkgrel=3
+pkgver=3.36.2
+pkgrel=0
 pkgdesc="Geary is an email application built around conversations"
 url="https://wiki.gnome.org/Apps/Geary"
-# tests fail on armhf
-# libhandy is not available on s390x
-arch="all !armhf !s390x"
+# libhandy is not available on s390x or mips
+arch="all !s390x !mips !mips64"
 license="LGPL-2.1-or-later AND CC-BY-3.0 AND BSD-2-Clause"
 depends="iso-codes dbus:org.freedesktop.Secrets"
 makedepends="meson glib-dev gtk+3.0-dev sqlite-dev webkit2gtk-dev enchant2-dev
 	gcr-dev folks-dev libgee-dev gnome-online-accounts-dev json-glib-dev iso-codes-dev
-	libcanberra-dev libnotify-dev libsecret-dev libxml2-dev vala gmime26-dev itstool
-	appstream-glib-dev gspell-dev ytnef-dev libhandy-dev"
-checkdepends="xvfb-run"
-options="!check" # engine-tests fails
+	libcanberra-dev libnotify-dev libsecret-dev libxml2-dev vala gmime-dev itstool
+	appstream-glib-dev gspell-dev ytnef-dev libhandy-dev libpeas-dev"
+checkdepends="xvfb-run desktop-file-utils ibus"
+options="!check" # https://gitlab.gnome.org/GNOME/geary/-/issues/776
 subpackages="$pkgname-lang $pkgname-doc"
 source="https://download.gnome.org/sources/geary/${pkgver%.*}/geary-$pkgver.tar.xz"
 
@@ -32,9 +31,6 @@ build() {
 }
 
 check() {
-	# client-tests fail with
-	# ** (geary-test-client:6140): WARNING **: 22:33:28.365: WEBKIT_PROCESS_MODEL_SHARED_SECONDARY_PROCESS is deprecated and has no effect
-	[ "$CARCH" = x86 ] && return 0
 	xvfb-run ninja -C output test
 }
 
@@ -42,4 +38,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="d34886829e1330bfe7fe4891b5e368010f5742a5ac20ab057a902897df1f6c4145a882379d9dbe82e0c954a91db265b9758ddd2eb96b9c03c0efc0f6d8cc6ea0  geary-3.34.2.tar.xz"
+sha512sums="a3cca301a3668eb2e70f8bfc147abef9088de4e822efab4ecc44830fbc394265d1fa37267a1f8fa97b6e8d1ac8a8adb76e5dd9e509490ac567e05bd243e8ea20  geary-3.36.2.tar.xz"

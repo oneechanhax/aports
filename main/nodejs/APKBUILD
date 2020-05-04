@@ -48,21 +48,30 @@
 pkgname=nodejs
 # Note: Update only to even-numbered versions (e.g. 6.y.z, 8.y.z)!
 # Odd-numbered versions are supported only for 9 months by upstream.
-pkgver=12.15.0
-pkgrel=1
+pkgver=12.16.2
+pkgrel=0
 pkgdesc="JavaScript runtime built on V8 engine - LTS version"
 url="https://nodejs.org/"
 arch="all !mips64 !mips64el"
 license="MIT"
 depends="ca-certificates"
 depends_dev="libuv"
-makedepends="linux-headers python2 paxmark
-	zlib-dev libuv-dev openssl-dev c-ares-dev nghttp2-dev"
+makedepends="
+	brotli-dev
+	c-ares-dev
+	libuv-dev
+	linux-headers
+	nghttp2-dev
+	openssl-dev
+	python2
+	zlib-dev
+	"
 subpackages="$pkgname-dev $pkgname-doc npm::noarch"
 provides="nodejs-lts=$pkgver"  # for backward compatibility
 replaces="nodejs-current nodejs-lts"  # nodejs-lts for backward compatibility
 source="https://nodejs.org/dist/v$pkgver/node-v$pkgver.tar.gz
 	dont-run-gyp-files-for-bundled-deps.patch
+	unbundle-uv.patch
 	link-with-libatomic-on-mips32.patch
 	"
 builddir="$srcdir/node-v$pkgver"
@@ -71,11 +80,15 @@ prepare() {
 	default_prepare
 
 	# Remove bundled dependencies that we're not using.
-	rm -rf deps/cares deps/openssl deps/uv deps/zlib
+	rm -rf deps/brotli deps/cares deps/openssl deps/uv deps/zlib
 }
 
 build() {
 	cd "$builddir"
+
+	# Add defines recommended in libuv readme.
+	export CFLAGS="$CFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
+	export CXXFLAGS="$CXXFLAGS -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64"
 
 	case "$CARCH" in
 	mips*) _carchflags="--with-mips-arch-variant=r1 --with-mips-float-abi=soft";;
@@ -83,6 +96,7 @@ build() {
 
 	./configure --prefix=/usr \
 		$_carchflags \
+		--shared-brotli \
 		--shared-zlib \
 		--shared-libuv \
 		--shared-openssl \
@@ -90,13 +104,7 @@ build() {
 		--shared-nghttp2 \
 		--openssl-use-def-ca-store
 
-	# we need run mksnapshot at build time so paxmark it early.
-	make -C out mksnapshot BUILDTYPE=Release
-	paxmark -m out/Release/mksnapshot
-	make
-
-	# paxmark so JIT works
-	paxmark -m out/Release/node
+	make BUILDTYPE=Release
 }
 
 # TODO Run provided test suite.
@@ -111,9 +119,6 @@ package() {
 	cd "$builddir"
 
 	make DESTDIR="$pkgdir" install
-
-	# It's strange, but it really needs to be paxmarked again...
-	paxmark -m "$pkgdir"/usr/bin/node
 
 	cp -pr "$pkgdir"/usr/lib/node_modules/npm/man "$pkgdir"/usr/share
 	local d; for d in docs man; do
@@ -148,6 +153,7 @@ npm() {
 	mv "$pkgdir"/usr/lib/node_modules/npm "$subpkgdir"/usr/lib/node_modules/
 }
 
-sha512sums="b1c5412b27b85e286f7f5e6758f30659655f18570e9b114d6743cea98e902297f0bd591ffe36e2a4483a3b9e5138f5f82f5975131eaab72495a477f960b938e0  node-v12.15.0.tar.gz
+sha512sums="d24ac3c8ef70d9a73960425400d8503479c58abe24c06e9d80fcfe4038354a58d2544addb06dcdf08f338df460a801fe6574b7633a4fc09bdd4072fbe03c2f8f  node-v12.16.2.tar.gz
 3c536776e2ecb5dc677bf711a09418085b3c5e931a6eaf647f47c28e194d5c6dec354d4e7a039a5805b30fc7e83140594851e18d9120f523eec2f93539eac4db  dont-run-gyp-files-for-bundled-deps.patch
+a4e1e7bd4f32ee30ebd319ac0c2fc751166f8fdd27f491709003dfebda51cbece9412630f0b98f0b85253ccc4f066c82997ad68abb9b87dc0b47c24d09a0643a  unbundle-uv.patch
 9f60928b53447f9590c7065bcdbdd4065d10a06e8451531615791a3bd7d14f9114807e5446e0ec00e2cb7a11a277050345e34636b199db2979d7f022b31ffde4  link-with-libatomic-on-mips32.patch"

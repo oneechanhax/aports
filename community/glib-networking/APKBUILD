@@ -2,8 +2,8 @@
 # Contributor: Natanael Copa <ncopa@alpinelinux.org>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=glib-networking
-pkgver=2.62.3
-pkgrel=3
+pkgver=2.64.2
+pkgrel=0
 pkgdesc="Networking support for GLib"
 url="https://gitlab.gnome.org/GNOME/glib-networking"
 arch="all"
@@ -32,4 +32,4 @@ package() {
 	rm -rf "$pkgdir"/usr/lib/systemd
 }
 
-sha512sums="6bcf7584a4d97745e980598eb9182ba2e416471455d9c3debc4cbaea07250e395f6d7001af544ce0114a26d726e71e9b420d9756508cda09499016e89f4a6da1  glib-networking-2.62.3.tar.xz"
+sha512sums="b796d3ef82f7ceea1c69a1d4ef7cf09e88ff8e702e93abd37cca4ea2f09650c1bdfdf8d8c57360a4bbafdd8d3cf5f88f0aad668b5ce77b92b60c08b7456ffa12  glib-networking-2.64.2.tar.xz"

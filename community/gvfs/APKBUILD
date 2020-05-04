@@ -1,8 +1,8 @@
 # Contributor: Natanael Copa <ncopa@alpinelinux.org>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gvfs
-pkgver=1.42.2
-pkgrel=3
+pkgver=1.44.1
+pkgrel=0
 pkgdesc="Backends for the gio framework in GLib"
 url="https://wiki.gnome.org/Projects/gvfs"
 arch="all"
@@ -181,4 +181,4 @@ afc() {
 		usr/share/dbus-1/services/org.gtk.vfs.AfcVolumeMonitor.service \
 		usr/share/gvfs/remote-volume-monitors/afc.monitor
 }
-sha512sums="b786ae2e493099a0a1ab2756efba3690f0e241a53995013e2632b2d7e01628d52d72b47298c7a2b913c8d50f135c191b2963a7ffc0e768fc5c96a89f93401e3c  gvfs-1.42.2.tar.xz"
+sha512sums="d936e70e6daa6a7494e5cc333a53afe82b601e34e2e54b207d9a4aefdc35dd068997832be750a6857144a48fa37065cb7e6b25378952007b06988ad07dfc6006  gvfs-1.44.1.tar.xz"

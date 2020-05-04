@@ -1,7 +1,7 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=libretro-core-info
-pkgver=1.8.2
+pkgver=1.8.5
 pkgrel=0
 arch="noarch"
 url="https://www.libretro.com/"
@@ -14,4 +14,4 @@ package() {
 	DESTDIR="$pkgdir" make install
 }
 
-sha512sums="351c356b360d85d8940cefee0e2e97aee2e714e098dd0f81a8d3ec7284315a88079795f2d201c1fe16079f70b02afcfe19b5957b9f279f948eade1e23c99d2e0  libretro-core-info-1.8.2.tar.gz"
+sha512sums="28f8654d5d8b8954243218e07dec25b8d23087c8ca74017d9a7a3f8ea4086e3139588249e33ee8ff7da3f5ee527fa95bf397fbe5e9165b996fe7a1e958c00cf7  libretro-core-info-1.8.5.tar.gz"

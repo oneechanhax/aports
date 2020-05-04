@@ -1,7 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=plasma-sdk
-pkgver=5.18.2
+pkgver=5.18.4
+_pkgver=5.18.4.1
 pkgrel=0
 pkgdesc="Applications useful for Plasma Development"
 arch="all !armhf" # armhf blocked by qt5-qtdeclarative
@@ -10,11 +11,12 @@ license="GPL-2.0-or-later"
 depends="kirigami2"
 makedepends="extra-cmake-modules qt5-qtbase-dev qt5-qtdeclarative-dev qt5-qtsvg-dev karchive-dev kcompletion-dev kconfig-dev kconfigwidgets-dev kcoreaddons-dev kdbusaddons-dev kdeclarative-dev ki18n-dev kiconthemes-dev kio-dev plasma-framework-dev kservice-dev ktexteditor-dev kwidgetsaddons-dev kdoctools-dev kparts-dev"
 checkdepends="xvfb-run"
-source="https://download.kde.org/stable/plasma/$pkgver/plasma-sdk-$pkgver.tar.xz"
+source="https://download.kde.org/stable/plasma/$pkgver/plasma-sdk-$_pkgver.tar.xz"
 subpackages="$pkgname-doc $pkgname-lang"
+builddir="$srcdir/$pkgname-$_pkgver"
 
 build() {
-	cmake -B "$builddir"/build \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
@@ -22,7 +24,7 @@ build() {
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	# iconmodeltest is broken
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest -E "iconmodeltest"
 }
@@ -31,4 +33,4 @@ package() {
 	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="a66989e687d9b0d32d1d2a1d1e157b05717b4f749f0654d5d2d6cab4df4576d823daae25a5dc2080ece611c5fc799e5f37363b7536cb65e04c5ac60cfcdbbe73  plasma-sdk-5.18.2.tar.xz"
+sha512sums="b16c40a1dc22fab179a7f4edc2e9693177c145a65a521da691847da6228c5c5654621171d19f74a6c9aa3d61d76bca9ef9e71b364c32cdd7b2bd47df6f7ee1e4  plasma-sdk-5.18.4.1.tar.xz"

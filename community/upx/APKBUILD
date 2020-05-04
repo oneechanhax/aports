@@ -5,7 +5,7 @@ pkgver=3.96
 pkgrel=0
 pkgdesc="The Ultimate Packer for eXecutables"
 url="https://upx.github.io"
-arch="all !s390x !aarch64 !armhf !armv7" # Failure to build/run
+arch="all !s390x !aarch64 !armhf !armv7 !mips !mips64" # Failure to build/run
 license="GPL-2.0 Public-Domain"
 # perl-dev is used to generate man pages
 makedepends="bash perl-dev ucl-dev zlib-dev"
@@ -13,6 +13,13 @@ subpackages="$pkgname-doc"
 source="https://github.com/upx/upx/releases/download/v$pkgver/upx-$pkgver-src.tar.xz
 	0001-rm-broken-whitespace-check.patch"
 builddir="$srcdir/$pkgname-$pkgver-src"
+
+# secfixes:
+#   3.96-r0:
+#     - CVE-2018-11243
+#     - CVE-2019-14296
+#     - CVE-2019-20021
+#     - CVE-2019-20053
 
 build() {
 	make CXXFLAGS_OPTIMIZE= UPX_LZMADIR="$srcdir" all

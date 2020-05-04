@@ -1,7 +1,8 @@
+# Contributor: Leo <thinkabit.ukim@gmail.com>
 # Maintainer: prspkt <prspkt@protonmail.com>
 pkgname=eyed3
 _pkgname=eyeD3
-pkgver=0.8.12
+pkgver=0.9.5
 pkgrel=0
 pkgdesc="ID3 tag editor in Python"
 url="https://eyed3.nicfit.net/"
@@ -23,4 +24,4 @@ package() {
 	python3 setup.py install --prefix=/usr --root="$pkgdir"
 }
 
-sha512sums="7697b5f70b1e89f8ead0158352da716d8ea937207f1cf16afa276ec3d53f3a9a8f741d259c94e028b1097f8250239651af7b677089052086d391ed4f48a470fe  eyeD3-0.8.12.tar.gz"
+sha512sums="74f75bc583a6cf7ee277a581b3ef4111804fd220371b65ab4d0a4491ce8434da6ce48f32e2b845426819948e4cb2b224e8a263137b9fad5297d5b9fd57befd9e  eyeD3-0.9.5.tar.gz"

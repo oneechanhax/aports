@@ -3,19 +3,26 @@
 # Maintainer: Jakub Jirutka <jakub@jirutka.cz>
 pkgname=imagemagick6
 _pkgname=ImageMagick6
-pkgver=6.9.10.96
+pkgver=6.9.11.9
 _pkgver=${pkgver%.*}-${pkgver##*.}
 _abiver=${pkgname#imagemagick}
 pkgrel=0
 pkgdesc="A collection of tools and libraries for many image formats (legacy version $_abiver)"
 url="https://www.imagemagick.org/"
-arch="all !s390x" # librsvg
+arch="all"
 license="Apache-2.0"
 options="libtool"
 depends_dev="!${pkgname%$_abiver}-dev"
 makedepends="fontconfig-dev freetype-dev ghostscript-dev lcms2-dev
-	libjpeg-turbo-dev libpng-dev librsvg-dev libtool libxml2-dev tiff-dev
+	libjpeg-turbo-dev libpng-dev libtool libxml2-dev tiff-dev
 	zlib-dev"
+
+case "$CARCH" in
+	s390x) ;;
+	mips*) options="!check" ;;
+	*) makedepends="$makedepends librsvg-dev" ;;
+esac
+
 checkdepends="freetype fontconfig ghostscript ghostscript-fonts lcms2 graphviz"
 subpackages="$pkgname-doc $pkgname-dev $pkgname-c++:_cxx $pkgname-libs"
 source="$_pkgname-$_pkgver.tar.gz::https://github.com/ImageMagick/ImageMagick6/archive/$_pkgver.tar.gz"
@@ -192,4 +199,4 @@ _cxx() {
 	mv "$pkgdir"/usr/lib/libMagick++*.so.* "$subpkgdir"/usr/lib/
 }
 
-sha512sums="94523935a6fa2802dfb2a2ee7b8bb00c5322e2f79dec8c872d4dab3905ae0cd3e91391b8c381b82fc13aa8a6cd8d6b771e037452dddb2ca312b254c044c956e5  ImageMagick6-6.9.10-96.tar.gz"
+sha512sums="e8c823a23814b189746238648b44fa723e798a4fa088a6d86d4ee7583f9e3c0cac9c7ca3e8fe585bd06924c4d8fa2d4a15ae34ffac2fcf14b96f43cf7c456103  ImageMagick6-6.9.11-9.tar.gz"

@@ -1,7 +1,7 @@
 # Maintainer: Chloe Kudryavtsev <toast@toastin.space>
 pkgname=minio-client
 _pkgname=mc
-_pkgver='RELEASE.2020-02-05T20-07-22Z'
+_pkgver='RELEASE.2020-04-25T00-43-23Z'
 pkgver=${_pkgver#*.}
 pkgver=${pkgver%T*}
 pkgver=0.${pkgver//-}
@@ -11,7 +11,7 @@ url="https://minio.io/"
 arch="all"
 license="Apache-2.0"
 makedepends="go"
-source="$_pkgname-$_pkgver.tar.gz::https://github.com/minio/$_pkgname/archive/$_pkgver.tar.gz"
+source="$_pkgname-$pkgver.tar.gz::https://github.com/minio/$_pkgname/archive/$_pkgver.tar.gz"
 builddir="$srcdir/$_pkgname-$_pkgver"
 options="net"
 
@@ -39,4 +39,4 @@ cleanup_srcdir() {
 	go clean -modcache
 	default_cleanup_srcdir
 }
-sha512sums="bcf77211c86270c70fed0ab7c1ad25895c082a08189872691bdbdb17141e96aa9fe821c04e28ac7a935933faa7b7f06b6ad0aa743e9ad0fb61681a8e767b4f1b  mc-RELEASE.2020-02-05T20-07-22Z.tar.gz"
+sha512sums="a57d57c948fd661b2676c94edb241d3eab8294458e2dfa3f012a4d94ad773461e16dac47bde89fda0ec08c3129dbe6734daa30a21b7090e9c4f08e9d45d70039  mc-0.20200425.tar.gz"

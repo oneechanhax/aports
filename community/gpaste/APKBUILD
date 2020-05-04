@@ -1,15 +1,22 @@
 # Contributor: Rasmus Thomsen <oss@cogitri.dev>
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 pkgname=gpaste
-pkgver=3.34.1
-pkgrel=2
+pkgver=3.36.3
+pkgrel=1
 pkgdesc="Clipboard managment system"
 url="https://github.com/Keruspe/GPaste"
-arch="all !armhf !s390x !ppc64le" # limited by gnome-control-center
+arch="all !armhf !s390x !ppc64le !mips !mips64" # limited by gnome-control-center
 license="BSD-2-Clause"
 makedepends="meson gtk+3.0-dev gnome-control-center-dev dbus-dev mutter-dev
 	gjs-dev appstream-glib-dev vala"
-subpackages="$pkgname-dev $pkgname-lang $pkgname-doc $pkgname-gnome:_gnome"
+subpackages="
+	$pkgname-dev
+	$pkgname-lang
+	$pkgname-doc
+	$pkgname-gnome:_gnome
+	$pkgname-bash-completion:bashcomp:noarch
+	$pkgname-zsh-completion:zshcomp:noarch
+	"
 source="gpaste-$pkgver.tar.gz::https://github.com/Keruspe/GPaste/archive/v$pkgver.tar.gz"
 builddir="$srcdir/GPaste-$pkgver"
 
@@ -42,4 +49,20 @@ _gnome() {
 		"$subpkgdir"/usr/share
 }
 
-sha512sums="0560b7a0616eaf271d13e2db98f924894236e2714f97d80e6dce1bbb3589073b812b4c641d5fe0557a17e4e05b7506ab90418c7b45ddf953059b970fd4eac52e  gpaste-3.34.1.tar.gz"
+bashcomp() {
+	depends=""
+	pkgdesc="Bash completions for $pkgname"
+	install_if="$pkgname=$pkgver-r$pkgrel bash-completion"
+
+	amove usr/share/bash-completion/completions
+}
+
+zshcomp() {
+	depends=""
+	pkgdesc="Zsh completions for $pkgname"
+	install_if="$pkgname=$pkgver-r$pkgrel zsh"
+
+	amove usr/share/zsh/site-functions
+}
+
+sha512sums="e5fe4a31367e96089aefd1af5ed0a3ad591eee009bbc74b1b33c9c736061831979d79f2d6a5c072cf55fc6f1982ade581fe73d2039c5dbd607081683860c7b9f  gpaste-3.36.3.tar.gz"

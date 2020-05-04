@@ -1,9 +1,9 @@
 # Contributor: Francesco Colista <fcolista@alpinelinux.org>
 # Maintainer: Francesco Colista <fcolista@alpinelinux.org>
 pkgname=wt
-pkgver=4.2.1
+pkgver=4.3.1
 pkgrel=0
-pkgdesc="A C++ library and application server for developing and deploying web applications"
+pkgdesc="C++ library and application server for developing and deploying web applications"
 url="https://www.webtoolkit.eu"
 arch="all"
 license="GPL-2.0-or-later WITH openssl-exception"
@@ -18,27 +18,25 @@ subpackages="$pkgname-dev"
 source="$pkgname-$pkgver.tar.gz::https://github.com/kdeforche/wt/archive/$pkgver.tar.gz"
 
 build() {
-	mkdir -p build && cd build
-	CXXFLAGS="-fpermissive" \
-	cmake \
-	      -DCONNECTOR_HTTP=ON \
-	      -DWT_WRASTERIMAGE_IMPLEMENTATION=GraphicsMagick \
-	      -DCMAKE_INSTALL_PREFIX=/usr \
-	      -DWEBUSER=$pkgusers \
-	      -DWEBGROUP=$pkggroups \
-	      -DRUNDIR="$pkgdir"/var/run/wt \
-	      -DUSE_SYSTEM_SQLITE3=ON \
-	      -DINSTALL_EXAMPLES=ON \
-	      -DBUILD_EXAMPLES=OFF \
-	..
-	make
+	CXXFLAGS="$CXXFLAGS -fpermissive" \
+	cmake -B build . \
+		-DCMAKE_BUILD_TYPE=None \
+	    -DCONNECTOR_HTTP=ON \
+	    -DWT_WRASTERIMAGE_IMPLEMENTATION=GraphicsMagick \
+	    -DCMAKE_INSTALL_PREFIX=/usr \
+	    -DWEBUSER=$pkgusers \
+	    -DWEBGROUP=$pkggroups \
+	    -DRUNDIR="$pkgdir"/var/run/wt \
+	    -DUSE_SYSTEM_SQLITE3=ON \
+	    -DINSTALL_EXAMPLES=ON \
+	    -DBUILD_EXAMPLES=OFF
+	make -C build
 }
 
 package() {
-	cd "$builddir"/build
-	make DESTDIR=$pkgdir install
+	make -C build DESTDIR=$pkgdir install
 	rm -rf $pkgdir/usr/cmake
 	rm -rf $pkgdir/var/run
 }
 
-sha512sums="fc1b32e32a55376842ba3d3c3b1f237ab52f8978b5b22a2ed4d57e10c95f03bb2c8613a92a977f581a78457e029c45d73f33df0647e3e65709a6b30b8d1fe4d3  wt-4.2.1.tar.gz"
+sha512sums="7992b765b3b5b0509fdc5b21627bb6a5ba6aed66b2814e120ccd15f2dd3380e633d27bf00baf3e764e01046db274a56e1187e89ed6b37ecebc64a30bbfa3a3f7  wt-4.3.1.tar.gz"

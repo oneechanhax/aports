@@ -2,15 +2,15 @@
 # Maintainer: Rasmus Thomsen <oss@cogitri.dev>
 #
 # secfixes:
-#   3.32.1:
+#   3.32.1-r0:
 #     - CVE-2019-11461
 
 pkgname=nautilus
-pkgver=3.34.2
+pkgver=3.36.2
 pkgrel=0
 pkgdesc="GNOME file manager"
 url="https://wiki.gnome.org/Apps/Nautilus"
-arch="all !s390x"
+arch="all !s390x !mips !mips64" # librsvg
 license="GPL-2.0-or-later"
 depends="tracker-miners gsettings-desktop-schemas"
 depends_dev="gnome-desktop-dev gnome-autoar-dev"
@@ -26,6 +26,7 @@ build() {
 		--prefix=/usr \
 		--sysconfdir=/etc \
 		--localstatedir=/var \
+		--buildtype=plain \
 		-Dtests=headless \
 		. output
 	ninja -C output
@@ -39,4 +40,4 @@ package() {
 	DESTDIR="$pkgdir" ninja -C output install
 }
 
-sha512sums="1a4e24fea3201f68b0316b95425bbc90078baa1ae7dccef2d2e48beda4007ecf2986254cde243d310c548e47a4693d84d1255654199649ce08429a99fb3a3a51  nautilus-3.34.2.tar.xz"
+sha512sums="bc9c8b53be2d51f92938e2499d7630d2d67205689351a820e707ba8574c21d30a3d523c97cc2d917b2e01061039e6426f33dee316f946a1a30979d2f900d74fb  nautilus-3.36.2.tar.xz"

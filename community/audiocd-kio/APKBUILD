@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=audiocd-kio
-pkgver=19.12.2
-pkgrel=1
+pkgver=20.04.0
+pkgrel=0
 arch="all !armhf" # armhf blocked by extra-cmake-modules
 url="https://www.kde.org/applications/multimedia/"
 pkgdesc="Kioslave for accessing audio CDs"
@@ -12,29 +12,21 @@ source="https://download.kde.org/stable/release-service/$pkgver/src/audiocd-kio-
 subpackages="$pkgname-doc $pkgname-lang"
 options="!check" # No tests
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	CTEST_OUTPUT_ON_FAILURE=TRUE ctest
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="2420bc90cedcfd50b4c0d1dd0e442c8c55b014ffdf050880c2f85b15bfbca03ae8cf039ff7736042c72bc209441c44d29a0abd8f534a52838060693b967c3688  audiocd-kio-19.12.2.tar.xz"
+sha512sums="82de4cb38c438dbf025bd692d5f9520720475315f83529817ebe54282960d3b6f01264b1a9296db5d337d78cd2822cb473b2f72e331a1e1d326808988acf9a2b  audiocd-kio-20.04.0.tar.xz"

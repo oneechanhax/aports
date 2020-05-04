@@ -1,8 +1,8 @@
 # Contributor: Bart Ribbers <bribbers@disroot.org>
 # Maintainer: Bart Ribbers <bribbers@disroot.org>
 pkgname=konsole
-pkgver=19.12.2
-pkgrel=3
+pkgver=20.04.0
+pkgrel=0
 arch="all !armhf" # armhf blocked by qt5-qtdeclarative
 url="https://kde.org/applications/system/konsole"
 pkgdesc="KDE's terminal emulator"
@@ -18,30 +18,22 @@ checkdepends="xvfb-run"
 source="https://download.kde.org/stable/release-service/$pkgver/src/konsole-$pkgver.tar.xz"
 subpackages="$pkgname-doc $pkgname-lang"
 
-prepare() {
-	default_prepare
-
-	mkdir "$builddir"/build
-}
-
 build() {
-	cd "$builddir"/build
-	cmake "$builddir" \
+	cmake -B build \
 		-DCMAKE_BUILD_TYPE=None \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_INSTALL_LIBDIR=lib
-	make
+	make -C build
 }
 
 check() {
-	cd "$builddir"/build
+	cd build
 	# DBusTest requires running DBus
 	CTEST_OUTPUT_ON_FAILURE=TRUE xvfb-run ctest -E "DBusTest"
 }
 
 package() {
-	cd "$builddir"/build
-	DESTDIR="$pkgdir" make install
+	DESTDIR="$pkgdir" make -C build install
 }
 
-sha512sums="90d0bcf53a6721fb9bc7391be961cd6ed83fdb4c6ad1517fcaf1685e0aa2c9d4a3a7755c8036b6e54f35fa087dc13d4effb076c8218e7be5c9e13da63e12b9f9  konsole-19.12.2.tar.xz"
+sha512sums="eb260752cf62c418349a8a2ee91e5a9a8f0450190f6d8ffe3c6ac4d7131e858e84f0f520c447588f60143564eaac9b5f340d90562fe507ec27846a82d0bc73f4  konsole-20.04.0.tar.xz"
