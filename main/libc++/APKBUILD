@@ -1,0 +1,40 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="libc++"
+pkgver="10.0.0"
+pkgrel=2
+pkgdesc="no idea"
+url="https://llvm.org/"
+arch="all"
+license="NCSA"
+makedepends="cmake libc++abi-dev libc++abi-static python3 linux-headers"
+subpackages="$pkgname-static $pkgname-dev"
+source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libcxx-$pkgver.src.tar.xz"
+builddir="$srcdir/libcxx-$pkgver.src"
+
+build() {
+	mkdir "$builddir"/build/
+	cd "$builddir"/build/
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_CXX_FLAGS="-fPIC -flto $CXXFLAGS" \
+		-DCMAKE_C_FLAGS="-fPIC -flto $CFLAGS" \
+		-DLIBCXXABI_USE_LLVM_UNWINDER=On \
+		-DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=On \
+		-DLIBCXX_STATICALLY_LINK_ABI_IN_STATIC_LIBRARY=Off \
+		-DLIBCXX_CXX_STATIC_ABI_LIBRARY=/usr/lib/libc++abi.a \
+		-DLIBCXX_CXX_ABI_INCLUDE_PATHS=/usr/include \
+		-DLIBCXX_CXX_ABI=libcxxabi \
+		-DLIBCXX_HAS_MUSL_LIBC=On \
+		-DLIBCXX_USE_COMPILER_RT=On \
+		..
+	make
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="8cbcbea23c50f0d7020386d11af5b736b8b43291146c11ccc543118ed1877a88adc381be2573594236e97bcf75c47408f986e5e9644a4fce57758cde47e5b641  libcxx-10.0.0.src.tar.xz"

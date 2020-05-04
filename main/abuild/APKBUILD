@@ -7,21 +7,21 @@ pkgdesc="Script to build Alpine Packages"
 url="https://git.alpinelinux.org/cgit/abuild/"
 arch="all"
 license="GPL-2.0"
-depends="fakeroot sudo pax-utils openssl apk-tools>=2.0.7-r1 libc-utils
-	attr tar pkgconf patch lzip"
+depends="fakeroot sudo pax-utils libressl apk-tools>=2.0.7-r1 libc-utils
+	attr tar pkgconf patch lzip
+	sed getopt"
 if [ "$CBUILD" = "$CHOST" ]; then
 	depends="$depends curl"
 fi
 makedepends_build="pkgconfig"
-makedepends_host="openssl-dev zlib-dev"
+makedepends_host="libressl-dev libz-dev"
 makedepends="$makedepends_host $makedepends_build"
 install="$pkgname.pre-install $pkgname.pre-upgrade"
 subpackages="apkbuild-cpan:cpan:noarch apkbuild-gem-resolver:gems:noarch
              abuild-rootbld:_rootbld:noarch $pkgname-doc"
 options="suid !check"
 pkggroups="abuild"
-source="https://dev.alpinelinux.org/archive/abuild/abuild-$_ver.tar.xz
-	"
+source="https://dev.alpinelinux.org/archive/abuild/abuild-$_ver.tar.xz"
 
 builddir="$srcdir/$pkgname-$_ver"
 
@@ -64,7 +64,7 @@ gems() {
 
 _rootbld() {
 	pkgdesc="Build packages in chroot"
-	depends="abuild bubblewrap gettext git"
+	depends="abuild bubblewrap gettext"
 	mkdir -p "$subpkgdir"
 }
 

@@ -10,7 +10,7 @@ license="ISC"
 depends="ca-certificates-cacert"
 depends_dev="openssl-dev"
 makedepends_build=""
-makedepends_host="libbsd-dev openssl-dev"
+makedepends_host="libbsd-dev libressl-dev"
 subpackages="$pkgname-dbg $pkgname-dev $pkgname-doc"
 source="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-$pkgver.tar.gz
 	Makefile

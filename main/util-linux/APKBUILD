@@ -16,13 +16,14 @@ arch="all"
 license="GPL-2.0 GPL-2.0-or-later LGPL-2.0-or-later BSD Public-Domain"
 depends="findmnt"
 makedepends_build="autoconf automake libtool"
-makedepends_host="zlib-dev ncurses-dev linux-headers libcap-ng-dev"
+makedepends_host="libz-dev linux-headers libcap-ng-dev"
 options="suid"
 source="https://www.kernel.org/pub/linux/utils/util-linux/v$_v/util-linux-$pkgver.tar.xz
 	ttydefaults.h
 	"
+# Subpackage "cfdisk" is disabled due to netbsd-curses incompatibility
 subpackages="$pkgname-doc $pkgname-dev $pkgname-bash-completion:bashcomp:noarch
-	libuuid libblkid libmount libsmartcols libfdisk sfdisk cfdisk
+	libuuid libblkid libmount libsmartcols libfdisk sfdisk
 	findmnt:_findmnt mcookie blkid setpriv"
 if [ -z "$BOOTSTRAP" ]; then
 	makedepends_host="$makedepends_host python3-dev"
@@ -57,6 +58,8 @@ build() {
 		--disable-last \
 		--disable-sulogin \
 		--disable-su \
+		--without-ncurses \
+		--without-ncursesw \
 		--with-python=3 \
 		$_bootstrap_config
 	make

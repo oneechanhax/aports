@@ -13,7 +13,7 @@ pkgdesc="Give certain users the ability to run some commands as root"
 url="https://www.sudo.ws/sudo/"
 arch="all"
 license="custom ISC"
-makedepends="zlib-dev bash mdocml"
+makedepends="libz-dev bash mdocml"
 subpackages="$pkgname-doc $pkgname-dev"
 source="https://www.sudo.ws/dist/sudo-$_realver.tar.gz
 	fix-cross-compile.patch

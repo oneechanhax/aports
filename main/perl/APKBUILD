@@ -10,7 +10,7 @@ arch="all"
 license="Artistic GPL-2.0"
 options="!fhs"
 depends_dev="perl-utils"
-makedepends="bzip2-dev zlib-dev"
+makedepends="bzip2-dev libz-dev"
 subpackages="$pkgname-doc $pkgname-dev $pkgname-utils::noarch miniperl"
 source="https://www.cpan.org/src/5.0/perl-$pkgver.tar.gz
 	musl-locale.patch

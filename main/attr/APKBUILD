@@ -24,9 +24,9 @@ build() {
 		--host=$CHOST \
 		--prefix=/ \
 		--exec-prefix=/ \
-		--sbindir=/bin \
+		--sbindir=/usr/bin \
 		--bindir=/usr/bin \
-		--libdir=/lib \
+		--libdir=/usr/lib \
 		--libexecdir=/usr/lib \
 		--includedir=/usr/include \
 		--mandir=/usr/share/man \
@@ -43,9 +43,6 @@ check() {
 
 package() {
 	make DESTDIR="$pkgdir" install
-
-	mkdir -p "$pkgdir"/usr/lib
-	mv "$pkgdir"/lib/pkgconfig "$pkgdir"/usr/lib
 }
 
 dev() {

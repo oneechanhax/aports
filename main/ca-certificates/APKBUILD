@@ -9,7 +9,7 @@ arch="all"
 license="MPL-2.0 GPL-2.0-or-later"
 depends=""
 makedepends_build="python3"
-makedepends_host="openssl-dev"
+makedepends_host="libressl-dev"
 subpackages="$pkgname-doc $pkgname-cacert"
 # c_rehash is either in libcrypto1.0 or openssl depending on package, grr.  replace both of them
 replaces="libcrypto1.0 openssl openssl1.0"

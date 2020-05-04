@@ -1,14 +1,14 @@
 # Maintainer: Natanael Copa <ncopa@alpinelinux.org>
 pkgname=texinfo
 pkgver=6.7
-pkgrel=0
+pkgrel=1
 pkgdesc="Utilities to work with and produce manuals, ASCII text, and on-line documentation from a single source file"
 url="https://www.gnu.org/software/texinfo/"
 arch="all"
 options="!check" # Test dependencies are not packaged
 license="GPL-3.0-or-later"
 depends="perl"
-makedepends="ncurses-dev perl-dev"
+makedepends="netbsd-curses-dev perl-dev"
 subpackages="$pkgname-doc"
 source="https://ftp.gnu.org/gnu/texinfo/texinfo-$pkgver.tar.xz
 	fix-build-without-NLS.patch"

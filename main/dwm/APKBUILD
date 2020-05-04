@@ -1,0 +1,33 @@
+# Contributor:
+# Maintainer:
+pkgname="dwm"
+pkgver="6.2"
+pkgrel=0
+pkgdesc="a dynamic window manager for X"
+url="https://suckless.TODO/TODO"
+arch="all"
+license="MIT/X"
+depends="libx11 build-base"
+install=""
+subpackages="$pkgname-dev $pkgname-doc"
+source=""
+builddir="$srcdir/$pkgname-$pkgver"
+option="!check"
+
+# TODO: this is a template until i get internet.
+# NOTE: compile on install isnt a bad idea. it seems pretty easy to just compile with the patches from other packages.
+# TODO: currently making "packagepatch" to patch and compile at the end of install. wait until that is finished until anything is settled.
+
+build() {
+	make VERSION=$pkgver dist	
+}
+
+package() {
+	
+}
+
+bin() {
+	pkgdesc="Pre-Built stock package for dwm"
+	depends="libx11"
+	
+}

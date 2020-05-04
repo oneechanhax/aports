@@ -1,0 +1,20 @@
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname=azaezel-keys
+pkgver=0.1
+pkgrel=0
+pkgdesc="Public keys for Azaezel Linux packages"
+url="https://github.com/oneechanhax"
+arch="all"
+license="GPL2"
+options="!check" # No testsuite
+source="azaezel-x86_64.rsa.pub"
+
+package() {
+	mkdir -p "$pkgdir"/etc/apk/keys/
+	mkdir -p "$pkgdir"/usr/share/apk/keys/
+
+	install -Dm644 "$srcdir"/azaezel-*.rsa.pub "$pkgdir"/usr/share/apk/keys/
+	ln -sv /usr/share/apk/keys/azaezel-"$CARCH".rsa.pub "$pkgdir"/etc/apk/keys
+}
+
+sha512sums="462633fbdb7bda8b619fe78f1192e91ea853d4755c872bc8af7e1d49e9d41e130ab24bca22b0c06e181dbdd9ed4cb0c2d339c4fe689ca6441bae0d8cf421d846  azaezel-x86_64.rsa.pub"

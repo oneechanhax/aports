@@ -13,8 +13,8 @@ provides="python=$pkgver-r$pkgrel"
 replaces="python"
 subpackages="$pkgname-dbg $pkgname-dev $pkgname-doc $pkgname-tests py-gdbm:gdbm
 	$pkgname-wininst"
-makedepends="expat-dev openssl-dev zlib-dev ncurses-dev bzip2-dev
-	gdbm-dev sqlite-dev libffi-dev readline-dev linux-headers paxmark"
+makedepends="expat-dev libressl-dev libz-dev netbsd-curses-dev bzip2-dev
+	gdbm-dev sqlite-dev libffi-dev libedit-dev linux-headers paxmark"
 source="https://www.python.org/ftp/python/$pkgver/Python-$pkgver.tar.xz
 	musl-find_library.patch
 	unchecked-ioctl.patch
@@ -97,7 +97,8 @@ package() {
 	rm "$pkgdir/usr/bin/2to3"
 	# we need to enable emutramp - needed for virt-manager
 	# disable mprotect - needed for cffi
-	paxmark -zm "$pkgdir"/usr/bin/python$_verbase
+	# TODO: paxmark is broken, fix it!
+	#paxmark -zm "$pkgdir"/usr/bin/python$_verbase
 }
 
 _mv_files() {

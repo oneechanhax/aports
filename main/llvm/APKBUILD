@@ -1,0 +1,180 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="llvm"
+pkgver="10.0.0"
+pkgrel=1
+pkgdesc="LLVM compiler runtime"
+url="https://llvm.org/"
+arch="all"
+license="NCSA"
+depends="libc++ libffi netbsd-curses libxml2 libz"
+makedepends="cmake python3 libc++-dev libffi-dev netbsd-curses-dev libxml2-dev libz-dev"
+subpackages="$pkgname-static $pkgname-dev
+			 $pkgname-binutils $pkgname-binutils-sym:binsym:noarch
+			 clang clang-libs:clang_libs clang-dev:clang_dev
+			 lld lld-ld:ldsym:noarch"
+source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-project-$pkgver.tar.xz"
+builddir="$srcdir/llvm-project-$pkgver/build"
+
+# NOTE: Building the other projects out-of-tree is difficult due to how clang/lld is heavily integrated with llvm.
+# FIXME: Fix above! move the other projects into their own trees afterwards(rn is just for convenience)
+
+# NOTE: I dont think we will use llvm-libc until it has matured.
+#	 even then, it needs to be tested on whether it is performant and secure.
+#	 musl-libc will be used in the meantime
+
+prepare() {
+	default_prepare
+	mkdir -v "$builddir"
+}
+
+build() {
+
+	case "$CARCH" in
+	x86*) local llvm_arch=X86;;
+	*) local llvm_arch="$CARCH";;
+  esac
+
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_CXX_FLAGS="$CXXFLAGS" \
+		-DCMAKE_C_FLAGS="$CFLAGS" \
+		-DLLVM_DEFAULT_TARGET_TRIPLE="$CTARGET" \
+		-DLLVM_HOST_TRIPLE="$CHOST" \
+		-DLLVM_TARGETS_TO_BUILD="$llvm_arch" \
+		-DLLVM_OPTIMIZED_TABLEGEN=true \
+		-DLLVM_ENABLE_PROJECTS="clang;lld" \
+		-DLLVM_ENABLE_LTO=false \
+		-DLLVM_ENABLE_PIC=true \
+		-DLLVM_ENABLE_FFI=true \
+		-DLLVM_ENABLE_LIBCXX=true \
+		-DLLVM_ENABLE_LIBXML2=true \
+		-DLLVM_ENABLE_RTTI=true \
+		-DLLVM_ENABLE_SPHINX=false \
+		-DLLVM_ENABLE_TERMINFO=true \
+		-DLLVM_ENABLE_ZLIB=true \
+		-DLLVM_BUILD_BENCHMARKS=true \
+		-DLLVM_BUILD_TESTS=true \
+		-DLLVM_BUILD_LLVM_DYLIB=true \
+		-DLLVM_LINK_LLVM_DYLIB=true \
+		-DLLVM_INSTALL_UTILS=true \
+		-DLLVM_INSTALL_BINUTILS_SYMLINKS=true \
+		-DLLVM_INCLUDE_EXAMPLES=true \
+		-DLLVM_INCLUDE_TESTS=true \
+		-DLLVM_INCLUDE_BENCHMARKS=true \
+		-DLLVM_INCLUDE_DOCS=true \
+		-DLLVM_TOOL_LLVM_ITANIUM_DEMANGLE_FUZZER_BUILD=true \
+		-DLLVM_TOOL_LLVM_MC_ASSEMBLE_FUZZER_BUILD=true \
+		-DLLVM_TOOL_LLVM_MC_DISASSEMBLE_FUZZER_BUILD=true \
+		-DLLVM_TOOL_LLVM_OPT_FUZZER_BUILD=true \
+		-DLLVM_TOOL_LLVM_MICROSOFT_DEMANGLE_FUZZER_BUILD=true \
+		-DCLANG_LINK_CLANG_DYLIB=true \
+		-DCLANG_DEFAULT_LINKER=lld \
+		-DCLANG_DEFAULT_CXX_STDLIB=libc++ \
+		-DCLANG_DEFAULT_RTLIB=compiler-rt \
+		-DCLANG_DEFAULT_UNWINDLIB=libunwind \
+		-DCLANG_VENDOR="Azaezel Linux" \
+		-DCLANG_ENABLE_STATIC_ANALYZER=false \
+		-DCLANG_ENABLE_ARCMT=false \
+	../llvm/
+	make
+}
+
+check() {
+  make check
+}
+
+package() {
+  make DESTDIR="$pkgdir" install-llvm-libraries
+}
+
+# NOTE: Extracted list from gnu binutils, used for binaries natively compiled
+_binutils_bins="addr2line ar as nm objcopy objdump ranlib readobj size strings"
+
+dev() {
+  default_dev
+
+  cd "$builddir"
+	make DESTDIR="$subpkgdir" install-llvm-headers install-cmake-exports
+
+  # Fixme?
+  local llvm_executables="$(make help | awk '
+	  function StartsWith(str, wanted) {
+		  wanted_len = length(wanted);
+		  return length(str) >= wanted_len && substr(str, 1, wanted_len) == wanted;
+	  }
+	  function EndsWith(str, wanted) {
+		  wanted_len = length(wanted);
+		  str_len = length(str);
+		  return str_len >= wanted_len && substr(str, str_len - wanted_len + 1, wanted_len) == wanted;
+	  }
+	  {
+		  while (getline) {
+			  if (StartsWith($2, "install-llvm-") && !EndsWith($2, "-stripped"))
+				  if (!EndsWith($2, "-libraries") && !EndsWith($2, "-headers"))
+					  printf("%s ", substr($2, 9, 500));
+		  }
+	  }')"
+
+  mkdir -v "$subpkgdir"/usr/bin/
+  for i in $llvm_executables; do
+		install -Dm755 "$builddir"/bin/$i "$subpkgdir"/usr/bin/
+  done
+  # Binutils subpkg will handle these
+  for i in $_binutils_bins symbolizer; do
+		rm "$subpkgdir"/usr/bin/llvm-$i
+	done
+}
+
+binutils() {
+  depends="$pkgname=$pkgver-r$pkgrel"
+
+	mkdir -vp "$subpkgdir"/usr/bin/
+	for i in $_binutils_bins symbolizer; do
+		cp -a "$builddir"/bin/llvm-$i "$subpkgdir"/usr/bin/
+	done
+}
+
+binsym() {
+	mkdir -vp "$subpkgdir"/usr/bin/
+	for i in $_binutils_bins; do
+		ln -sv /usr/bin/llvm-$i "$subpkgdir"/usr/bin/$i
+	done
+}
+
+clang() {
+  pkgdesc="C/C++ Compiler using the LLVM compiler collection"
+  depends="clang-libs=$pkgver-r$pkgrel compiler-rt~=$pkgver libunwind-dev"
+
+  # TODO: install-clang-format
+  cd "$builddir"
+  make DESTDIR="$subpkgdir" install-clang install-clang-resource-headers install-bash-autocomplete
+}
+clang_libs() {
+  depends="llvm=$pkgver-r$pkgrel"
+
+  cd "$builddir"
+  make DESTDIR="$subpkgdir" install-libclang install-clang-cpp
+}
+clang_dev() {
+  cd "$builddir"
+  make DESTDIR="$subpkgdir" install-clang-headers install-clang-cmake-exports install-clang-libraries
+  rm "$subpkgdir"/usr/lib/*.so*
+}
+
+lld() {
+  depends="llvm=$pkgver-r$pkgrel"
+
+  cd "$builddir"
+  make DESTDIR="$subpkgdir" install-lld
+}
+
+ldsym() {
+	provides="ld"
+	replaces="ld"
+	mkdir -p "$subpkgdir"/usr/bin/
+	ln -sv /usr/bin/lld "$subpkgdir"/usr/bin/ld
+}
+
+sha512sums="9d0465cca6a12a4ca3798886fa029f7342fc5d10ea46274499398f08cc740b46a67e01ea4e7ea446d244405098b7941029adb2d5df804760c49f17e25447e0f4  llvm-project-10.0.0.tar.xz"

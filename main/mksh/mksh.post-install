@@ -1,3 +1,4 @@
-#!/bin/sh
-add-shell '/bin/mksh'
+#!/usr/bin/mksh
+touch /etc/shells
+grep -qx /usr/bin/mksh /etc/shells 2> /dev/null || echo /usr/bin/mksh >>/etc/shells
 exit 0

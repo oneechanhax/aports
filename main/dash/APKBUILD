@@ -1,0 +1,44 @@
+# Contributor:
+# Maintainer:
+pkgname="dash"
+pkgver="0.5.10.2"
+pkgrel=0
+pkgdesc="a small and lightning fast shell"
+url="http://gondor.apana.org.au/~herbert/dash/"
+arch="all"
+license="BSD"
+depends=""
+makedepends=""
+install=""
+subpackages="$pkgname-doc $pkgname-sh:_sh:noarch"
+source="http://gondor.apana.org.au/~herbert/$pkgname/files/$pkgname-$pkgver.tar.gz"
+builddir="$srcdir/$pkgname-$pkgver"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var
+	make
+}
+
+check() {
+	make check
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+_sh() {
+	pkgdesc="Use dash as /bin/sh"
+	provides="/bin/sh"
+
+	mkdir -p "$subpkgdir"/usr/bin/
+	ln -s /usr/bin/dash "$subpkgdir"/usr/bin/sh
+}
+
+sha512sums="0ae29be77794df0ba254967649b9728611a75fbb3acd32ab6634d76399d1ce97c7d12d31da465482a7e4f3207093415c496c39525cace9b78ab3cb9444dd7640  dash-0.5.10.2.tar.gz"

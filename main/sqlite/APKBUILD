@@ -7,7 +7,7 @@ pkgdesc="C library that implements an SQL database engine"
 url="https://www.sqlite.org/"
 arch="all"
 license="Public-Domain"
-makedepends="readline-dev tcl-dev libtool autoconf automake"
+makedepends="libedit-dev tcl-dev libtool autoconf automake"
 subpackages="$pkgname-static $pkgname-dev $pkgname-tcl:_tcl $pkgname-libs $pkgname-doc"
 
 # compute _ver

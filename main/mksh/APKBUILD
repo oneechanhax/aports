@@ -8,12 +8,11 @@ pkgdesc="MirBSD KSH Shell"
 url="https://www.mirbsd.org/mksh"
 arch="all"
 license="BSD"
-depends=""
-depends_dev=""
+depends="grep"
 makedepends=""
 checkdepends="perl"
 install="$pkgname.post-install $pkgname.post-upgrade $pkgname.pre-deinstall"
-subpackages="$pkgname-doc"
+subpackages="$pkgname-doc $pkgname-sh:shsym:noarch"
 source="https://www.mirbsd.org/MirOS/dist/mir/$pkgname/$pkgname-$_pkgver.tgz"
 builddir="$srcdir/$pkgname"
 
@@ -30,7 +29,7 @@ prepare() {
 
 build() {
 	cd "$builddir"
-	sh Build.sh -r
+	/usr/bin/sh Build.sh -r
 }
 
 check() {
@@ -40,9 +39,17 @@ check() {
 
 package() {
 	cd "$builddir"
-	install -Dm755 mksh "$pkgdir"/bin/mksh
+	install -Dm755 mksh "$pkgdir"/usr/bin/mksh
 	install -Dm644 mksh.1 "$pkgdir"/usr/share/man/man1/mksh.1
 	install -Dm644 dot.mkshrc "$pkgdir"/usr/share/doc/mksh/dot.mkshrc
+}
+
+shsym() {
+	pkgdesc="Use mksh as /bin/sh"
+	provides="/bin/sh"
+
+	mkdir -p "$subpkgdir"/usr/bin/
+	ln -s /usr/bin/mksh "$subpkgdir"/usr/bin/sh
 }
 
 sha512sums="7d7fa557c17da4f1f62f82877a136439efb6d4f9fde52b2df39214db09868982e756df6e4fe83498f9013cbcf3252dc383b00ddfafaa4c9f143ffded7cd255b3  mksh-R57.tgz"

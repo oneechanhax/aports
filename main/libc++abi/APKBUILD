@@ -1,0 +1,51 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="libc++abi"
+pkgver="10.0.0"
+pkgrel=2
+pkgdesc="no idea"
+url="https://llvm.org/"
+arch="all"
+license="NCSA"
+makedepends="cmake libunwind-static"
+checkdepends="python"
+subpackages="$pkgname-static $pkgname-dev"
+source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libcxxabi-$pkgver.src.tar.xz
+	https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libcxx-$pkgver.src.tar.xz"
+builddir="$srcdir/libcxxabi-$pkgver.src"
+
+prepare() {
+	default_prepare
+	mkdir "$builddir"/build/
+}
+
+build() {
+	cd "$builddir"/build/
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_CXX_FLAGS="-fPIC -flto $CXXFLAGS" \
+		-DCMAKE_C_FLAGS="-fPIC -flto $CFLAGS" \
+		-DLIBCXXABI_USE_LLVM_UNWINDER=On \
+		-DLIBCXXABI_USE_COMPILER_RT=On \
+		-DLIBCXXABI_LIBCXX_PATH="$srcdir"/libcxx-$pkgver.src \
+		-DLIBCXXABI_LIBCXX_INCLUDES="$srcdir"/libcxx-$pkgver.src/include/ \
+		..
+	make
+}
+
+check() {
+	cd "$builddir"/build
+	make check-libcxxabi check-cxxabi
+}
+
+package() {
+	cd "$builddir"/build/
+	make DESTDIR="$pkgdir" install
+
+        # Needed by libc++
+        cp -r "$builddir"/include/ "$pkgdir"/usr
+}
+
+sha512sums="e58be156f924b0e613a69872c1d42190a4123e9c7a4de973e3f735a23992487df91549756c8acee81a35f9575f5b3001e748f8b01439f233660a18f4a45b0f32  libcxxabi-10.0.0.src.tar.xz
+8cbcbea23c50f0d7020386d11af5b736b8b43291146c11ccc543118ed1877a88adc381be2573594236e97bcf75c47408f986e5e9644a4fce57758cde47e5b641  libcxx-10.0.0.src.tar.xz"

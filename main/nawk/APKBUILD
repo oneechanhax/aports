@@ -1,0 +1,37 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="nawk"
+pkgver=0_git20200412
+pkgrel=1
+pkgdesc="The version of awk described in \"The AWK Programming Language\""
+giturl="https://github.com/onetrueawk/awk"
+url="$giturl"
+disturl="$(realpath ./)"
+arch="all"
+license="custom"
+subpackages="$pkgname-doc $pkgname-awk:_awk:noarch"
+source="$pkgname-$pkgver.tar.gz"
+checkdepends="awk"
+builddir="$srcdir/$pkgname-$pkgver"
+
+build() {
+	make CC="clang" CFLAGS="-Os $CFLAGS"
+}
+
+check() {
+	make test
+}
+
+package() {
+	install -Dm755 a.out "$pkgdir"/usr/bin/nawk
+	install -Dm644 awk.1 "$pkgdir"/usr/share/man/man1/nawk.1
+	install -Dm644 LICENSE "$pkgdir"/usr/share/licenses/$pkgname/LICENSE
+}
+
+_awk() {
+	pkgdesc="Symlink $pkgname to be used as the main awk program"
+	provides="awk"
+	mkdir -pv "$subpkgdir"/usr/bin/
+	ln -s /usr/bin/nawk "$subpkgdir"/usr/bin/awk
+}
+sha512sums="70c5152e20bdf7105c7406eff6a2cf63f19b3ade098efb52f81a02375f65173e2dc9351b9f8528c4fa5172224e1c38424736290b31edd5c75e822160e62ccd74  nawk-0_git20200412.tar.gz"

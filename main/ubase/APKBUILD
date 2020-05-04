@@ -1,0 +1,29 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="ubase"
+pkgver="0.2.0"
+pkgrel=0
+pkgdesc="Small portable coreutils for unix systems"
+url="https://git.suckless.org/$pkgname/"
+arch="all"
+license="MIT/X"
+subpackages="$pkgname-doc"
+source="$pkgname-$pkgver.tar.gz::https://github.com/oneechanhax/$pkgname/archive/v$pkgver.tar.gz
+	musl-sysmacros.patch"
+builddir="$srcdir/$pkgname-$pkgver"
+options="!check"
+provides="util-linux"
+
+build() {
+	make CFLAGS="$CFLAGS" $pkgname-box
+}
+
+package() {
+	make DESTDIR="$pkgdir" PREFIX=/usr/ $pkgname-box-install
+
+	# Outdated compared to sbase
+	rm "$pkgdir"/usr/bin/mknod
+}
+
+sha512sums="85a25e01a21caed509cdf22d5c37394951a5905e8d291d3c5fe5f68d67a33ec9d0bc01209556848c83069068bf30f415593a944cc2d2bdc8141af8187518c161  ubase-0.2.0.tar.gz
+94ad95f6eee92a06206d9fec784e2b3a08124dc0eeb6c6dce0175c39071b969ddd7f9b07abd822d2bbf7e9faf46dc0fe38dd7162ea775a336f7c96c38a357b2c  musl-sysmacros.patch"

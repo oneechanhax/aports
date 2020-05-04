@@ -1,0 +1,32 @@
+# Contributor: Rebekah Rowe
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="libz"
+pkgver="1.2.11"
+pkgrel=0
+pkgdesc="zlib debloated"
+url="https://sortix.org/libz/"
+arch="all"
+license="zlib"
+depends=""
+depends_dev="musl-dev"
+makedepends="$depends_dev"
+subpackages="$pkgname-static $pkgname-dev $pkgname-doc"
+source="https://gitlab.com/sortix/libz/-/archive/master/libz-master.tar.gz"
+builddir="$srcdir/$pkgname-master/"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var
+	make
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="615b2d08e47595847b21ac401b688986a9246e1baa6c0063d157cd394630a46d82d7892cb6daaf537a44af59ff313c7cf4c8cb82d1a317837c0995a229f419b3  libz-master.tar.gz"

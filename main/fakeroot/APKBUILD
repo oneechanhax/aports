@@ -46,7 +46,8 @@ build() {
 
 	make
 	cd doc
-	po4a -k 0 --rm-backups --variable "srcdir=../doc/" po4a/po4a.cfg
+	# Nah, i dont rly care about docs
+	#po4a -k 0 --rm-backups --variable "srcdir=../doc/" po4a/po4a.cfg
 }
 
 package() {

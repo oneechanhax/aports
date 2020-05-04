@@ -1,1 +1,4 @@
-tcsh.post-install
+#!/bin/sh
+add-shell '/bin/tcsh'
+add-shell '/bin/csh'
+exit 0

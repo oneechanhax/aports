@@ -1,0 +1,33 @@
+diff --git a/Makefile b/Makefile
+index 4a3c3f69c3..e1f4c52a7f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -26,7 +26,7 @@ OBJS = $(PROGOBJS) $(LIBOBJS)
+ 
+ ALL_INCLUDES = $(HEADERS)
+ ifneq ($(LIBINTL), NONE)
+-ALL_LIBS=libintl.a
++ALL_LIBS=libintl.a libintl.so
+ endif
+ ALL_TOOLS=msgfmt msgmerge xgettext autopoint
+ ALL_M4S=$(sort $(wildcard m4/*.m4))
+@@ -63,6 +63,9 @@ libintl.a: $(LIBOBJS)
+ 	$(AR) rc $@ $(LIBOBJS)
+ 	$(RANLIB) $@
+ 
++libintl.so: $(LIBOBJS)
++	$(CC) -shared -fpic $(LIBOBJS) -o $@
++
+ msgmerge: $(OBJS)
+ 	$(CC) -o $@ src/msgmerge.o $(PARSEROBJS) $(LDFLAGS) $(LDLIBS)
+ 
+@@ -78,6 +81,9 @@ autopoint: src/autopoint.in
+ $(DESTDIR)$(libdir)/%.a: %.a
+ 	$(INSTALL) -D -m 755 $< $@
+ 
++$(DESTDIR)$(libdir)/%.so: %.so
++	$(INSTALL) -D -m 755 $< $@
++
+ $(DESTDIR)$(includedir)/%.h: include/%.h
+ 	$(INSTALL) -D -m 644 $< $@
+ 

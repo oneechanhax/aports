@@ -1,0 +1,38 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="openmp"
+pkgver="10.0.0"
+pkgrel=0
+pkgdesc="Paralellization framework"
+url="https://llvm.org/"
+arch="all"
+license="NCSA"
+depends=""
+makedepends="cmake"
+subpackages="$pkgname-dev"
+source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz"
+builddir="$srcdir/$pkgname-$pkgver.src"
+
+build() {
+	mkdir "$builddir"/build/
+	cd "$builddir"/build/
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+		-DCMAKE_BUILD_TYPE=Release \
+		-DCMAKE_CXX_FLAGS="-flto $CXXFLAGS" \
+		-DCMAKE_C_FLAGS="-flto $CFLAGS" \
+		..
+	make
+}
+
+check() {
+	cd "$builddir"/build/
+	make check-openmp
+}
+
+package() {
+	cd "$builddir"/build
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="07f03b8eb633f7e4dbb1b8f4f5c5fea88b14944b0b303c340b09759776bfa52a6b7c2cea35cf6e8b601fbfa580a20161fbba35b2951b3b16771b2be9000cdc3a  openmp-10.0.0.src.tar.xz"

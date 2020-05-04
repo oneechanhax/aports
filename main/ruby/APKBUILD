@@ -40,7 +40,7 @@ arch="all"
 license="Ruby BSD-2-Clause"
 depends="ca-certificates"
 depends_dev="$pkgname=$pkgver-r$pkgrel gmp-dev"
-makedepends="$depends_dev zlib-dev openssl-dev gdbm-dev db-dev readline-dev
+makedepends="$depends_dev libz-dev libressl-dev gdbm-dev db-dev libedit-dev
 	libffi-dev coreutils yaml-dev linux-headers autoconf"
 install="$pkgname.post-upgrade"
 subpackages="$pkgname-doc $pkgname-dev
@@ -77,7 +77,7 @@ builddir="$srcdir/$pkgname-$pkgver"
 
 _gemdir="/usr/lib/ruby/gems/$_abiver"
 _rubydir="/usr/lib/ruby/$_abiver"
-_chost="${CHOST/-alpine-/-}"
+_chost="$(echo "$CHOST" | sed "s/-azaezel-/-/")"
 
 case "$CARCH" in
 	x86) _arch="i386";;

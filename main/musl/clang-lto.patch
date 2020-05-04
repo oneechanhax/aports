@@ -1,0 +1,13 @@
+diff --git a/ldso/dynlink.c b/ldso/dynlink.c
+index 7ac0bf7552..c47937820c 100644
+--- a/ldso/dynlink.c
++++ b/ldso/dynlink.c
+@@ -1592,7 +1592,7 @@ static void install_new_tls(void)
+  * linker itself, but some of the relocations performed may need to be
+  * replaced later due to copy relocations in the main program. */
+ 
+-hidden void __dls2(unsigned char *base, size_t *sp)
++hidden void __dls2(unsigned char *base, size_t *sp) __attribute__((used))
+ {
+ 	if (DL_FDPIC) {
+ 		void *p1 = (void *)sp[-2];

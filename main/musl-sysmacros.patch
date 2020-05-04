@@ -1,0 +1,26 @@
+diff --git a/ls.c b/ls.c
+index 7de15ac..7145c79 100644
+--- a/ls.c
++++ b/ls.c
+@@ -1,7 +1,7 @@
+ /* See LICENSE file for copyright and license details. */
+ #include <sys/stat.h>
+ #include <sys/types.h>
+-#ifdef __GLIBC__
++#ifdef __linux__
+ #include <sys/sysmacros.h>
+ #endif
+ 
+diff --git a/tar.c b/tar.c
+index fb0df45..30a1bfe 100644
+--- a/tar.c
++++ b/tar.c
+@@ -2,7 +2,7 @@
+ #include <sys/stat.h>
+ #include <sys/time.h>
+ #include <sys/types.h>
+-#ifdef __GLIBC__
++#ifdef __linux__
+ #include <sys/sysmacros.h>
+ #endif
+ 

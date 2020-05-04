@@ -39,10 +39,6 @@ package() {
 
 	rm -rf "$pkgdir"/usr/lib/charset.alias
 	rmdir -p "$pkgdir"/usr/lib 2>/dev/null || true
-
-	mkdir "$pkgdir"/bin
-	mv "$pkgdir"/usr/bin/tar "$pkgdir"/bin/
-	ln -s /bin/tar "$pkgdir"/usr/bin/tar
 }
 
 sha512sums="1bd13854009b6ee08958481738e6bf661e40216a2befe461d06b4b350eb882e431b3a4eeea7ca1d35d37102df76194c9d933df2b18b3c5401350e9fc17017750  tar-1.32.tar.xz

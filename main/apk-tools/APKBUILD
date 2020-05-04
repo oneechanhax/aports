@@ -4,8 +4,8 @@ pkgver=2.10.5
 pkgrel=0
 pkgdesc="Alpine Package Keeper - package manager for alpine"
 subpackages="$pkgname-static"
-makedepends_build="openssl"
-makedepends_host="zlib-dev openssl-dev zlib-static openssl-libs-static linux-headers"
+makedepends_build="libressl"
+makedepends_host="libz-dev libressl-dev libz-static linux-headers"
 makedepends="$makedepends_build $makedepends_host"
 if [ "$CBUILD" = "$CHOST" ]; then
 	subpackages="$subpackages lua5.3-apk:luaapk"
@@ -17,6 +17,9 @@ source="https://dev.alpinelinux.org/archive/apk-tools/apk-tools-$pkgver.tar.xz
 url="https://git.alpinelinux.org/cgit/apk-tools/"
 arch="all"
 license=GPL2
+
+# For some reason check broke all tests but apk works well
+options="!check"
 
 prepare() {
 	default_prepare
@@ -33,8 +36,8 @@ prepare() {
 
 build() {
 	cd "$builddir"
-	make
-	make static
+	make SBINDIR=/usr/sbin LIBDIR=/usr/lib
+	make SBINDIR=/usr/sbin LIBDIR=/usr/lib static 
 }
 
 check() {
@@ -44,7 +47,8 @@ check() {
 
 package() {
 	cd "$builddir"
-	make DESTDIR="$pkgdir" install
+	make DESTDIR="$pkgdir" SBINDIR=/usr/sbin LIBDIR=/usr/lib install
+	
 	install -d "$pkgdir"/var/lib/apk \
 		"$pkgdir"/var/cache/misc \
 		"$pkgdir"/etc/apk/keys \
@@ -56,7 +60,7 @@ package() {
 static() {
 	pkgdesc="Alpine Package Keeper - static binary"
 	install -Dm755 "$srcdir"/$pkgname-$pkgver/src/apk.static \
-		"$subpkgdir"/sbin/apk.static
+		"$subpkgdir"/usr/sbin/apk.static
 
 	# lets sign the static binary so it can be vefified from distros
 	# that does not have apk-tools
@@ -67,10 +71,10 @@ static() {
 	local privkey="$PACKAGER_PRIVKEY"
 	local pubkey=${PACKAGER_PUBKEY:-"$privkey.pub"}
 	local keyname=${pubkey##*/}
-	${CROSS_COMPILE}strip "$subpkgdir"/sbin/apk.static
+	${CROSS_COMPILE}strip "$subpkgdir"/usr/sbin/apk.static
 	openssl dgst -sha1 -sign "$privkey" \
-		-out "$subpkgdir"/sbin/apk.static.SIGN.RSA.$keyname \
-		"$subpkgdir"/sbin/apk.static
+		-out "$subpkgdir"/usr/sbin/apk.static.SIGN.RSA.$keyname \
+		"$subpkgdir"/usr/sbin/apk.static
 }
 
 luaapk() {

@@ -1,0 +1,21 @@
+diff --git a/src/CMakeLists.txt b/src/CMakeLists.txt
+index b38973b0b1..3596945e84 100644
+--- a/src/CMakeLists.txt
++++ b/src/CMakeLists.txt
+@@ -79,14 +79,14 @@ if (LIBCXXABI_USE_LLVM_UNWINDER)
+   elseif (LIBCXXABI_STATICALLY_LINK_UNWINDER_IN_SHARED_LIBRARY AND (TARGET unwind_static OR HAVE_LIBUNWIND))
+     list(APPEND LIBCXXABI_SHARED_LIBRARIES unwind_static)
+   else()
+-    list(APPEND LIBCXXABI_SHARED_LIBRARIES unwind)
++    list(APPEND LIBCXXABI_SHARED_LIBRARIES /usr/lib/libunwind.a)
+   endif()
+   if (NOT LIBCXXABI_STATICALLY_LINK_UNWINDER_IN_STATIC_LIBRARY AND (TARGET unwind_shared OR HAVE_LIBUNWIND))
+     list(APPEND LIBCXXABI_STATIC_LIBRARIES unwind_shared)
+   elseif (LIBCXXABI_STATICALLY_LINK_UNWINDER_IN_STATIC_LIBRARY AND (TARGET unwind_static OR HAVE_LIBUNWIND))
+       # We handle this by directly merging libunwind objects into libc++abi.
+   else()
+-    list(APPEND LIBCXXABI_STATIC_LIBRARIES unwind)
++    list(APPEND LIBCXXABI_STATIC_LIBRARIES /usr/lib/libunwind.a)
+   endif()
+ else()
+   add_library_flags_if(LIBCXXABI_HAS_GCC_S_LIB gcc_s)

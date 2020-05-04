@@ -6,7 +6,7 @@ pkgdesc="Utility for calculation and verification of hash sums and magnet links"
 url="http://rhash.anz.ru"
 arch="all"
 license="custom"
-makedepends="openssl-dev"
+makedepends="libressl-dev"
 subpackages="$pkgname-doc $pkgname-dev $pkgname-libs"
 source="https://downloads.sourceforge.net/rhash/rhash-$pkgver-src.tar.gz
 	byteorder.patch"

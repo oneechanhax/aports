@@ -7,7 +7,7 @@ pkgdesc="Perl-compatible regular expression library"
 url="https://pcre.org/"
 arch="all"
 license="BSD-3-Clause"
-depends_dev="libedit-dev zlib-dev"
+depends_dev="libedit-dev libz-dev"
 makedepends="$depends_dev paxmark"
 subpackages="$pkgname-dev $pkgname-doc $pkgname-tools
 	libpcre2-16:_libpcre libpcre2-32:_libpcre"

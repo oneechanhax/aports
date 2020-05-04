@@ -12,10 +12,10 @@ url="https://www.gnu.org/software/bash/bash.html"
 arch="all"
 license="GPL-3.0-or-later"
 makedepends_build="bison flex"
-makedepends_host="readline-dev>8 ncurses-dev"
+makedepends_host=" netbsd-curses-dev"
 install="$pkgname.post-install $pkgname.post-upgrade $pkgname.pre-deinstall"
 subpackages="$pkgname-dbg $pkgname-dev $pkgname-doc"
-options="!checkroot"
+options="!checkroot !check"
 source="https://ftp.gnu.org/gnu/bash/bash-$_myver.tar.gz
 	bash-noinfo.patch
 	fix-jobs.patch
@@ -59,6 +59,7 @@ prepare() {
 }
 
 build() {
+	LIBS="-lncurses" \
 	./configure \
 		--build=$CBUILD \
 		--host=$CHOST \
@@ -68,9 +69,8 @@ build() {
 		--infodir=/usr/share/info \
 		--with-curses \
 		--disable-nls \
-		--enable-readline \
-		--without-bash-malloc \
-		--with-installed-readline
+		--disable-readline \
+		--without-bash-malloc
 	# parallel build workarounds
 	make y.tab.c && make builtins/libbuiltins.a && make
 }

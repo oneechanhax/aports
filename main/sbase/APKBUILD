@@ -1,0 +1,33 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="sbase"
+pkgver="0.0.1"
+pkgrel=0
+pkgdesc="Small portable coreutils for unix systems"
+url="https://git.suckless.org/$pkgname/"
+arch="all"
+license="MIT/X"
+subpackages="$pkgname-doc $pkgname-tar:_tar"
+source="$pkgname-$pkgver.tar.gz::https://github.com/oneechanhax/$pkgname/archive/v$pkgver.tar.gz"
+builddir="$srcdir/$pkgname-$pkgver"
+options="!check"
+
+# TODO: remove programs from box that are given by musl-utils
+# TODO: Find out if not using "box" saves on ram vs smaller programs. ram is of importance
+build() {
+	make CFLAGS="$CFLAGS" $pkgname-box
+}
+
+package() {
+	make DESTDIR="$pkgdir" PREFIX=/usr/ $pkgname-box-install
+
+	# Musl-utils
+	rm "$pkgdir"/usr/bin/getconf
+}
+
+_tar() {
+	mkdir -vp "$subpkgdir"/usr/bin
+	mv "$pkgdir"/usr/bin/tar "$subpkgdir"/usr/bin/
+}
+
+sha512sums="a8593b73679bd59686d893dff956cefed223dd8d74987e9de02a726388068c95e8b03a87b8698be787b9013ebdff28af617ef5a14157445b037801b750a30221  sbase-0.0.1.tar.gz"

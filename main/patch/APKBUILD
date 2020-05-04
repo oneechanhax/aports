@@ -53,7 +53,7 @@ build() {
 }
 
 check() {
-	make SHELL=bash check
+	make SHELL=dash check
 }
 
 package() {

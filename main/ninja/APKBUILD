@@ -1,0 +1,50 @@
+# Contributor: k0r10n <k0r10n.dev@gmail.com>
+# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+pkgname=ninja
+pkgver=1.10.0
+pkgrel=0
+pkgdesc="Small build system with a focus on speed"
+url="https://ninja-build.org/"
+arch="all"
+license="Apache-2.0"
+checkdepends="gtest"
+makedepends="asciidoctor python3 re2c"
+# NOTE: doc ommited due to comp failures
+subpackages=" $pkgname-bashcomp $pkgname-zshcomp"
+source="$pkgname-$pkgver.tar.gz::https://github.com/martine/ninja/archive/v$pkgver.tar.gz"
+
+# Wut?
+_py3_sitelib() {
+	python3 -c 'import sysconfig; print(sysconfig.get_path("platlib"))'
+}
+
+build() {
+	python3 ./configure.py --bootstrap
+	#asciidoctor doc/manual.asciidoc
+}
+
+check() {
+	./ninja ninja_test
+	./ninja_test --gtest_filter=-SubprocessTest.SetWithLots
+}
+
+package() {
+	install -m755 -D ninja "$pkgdir/usr/bin/ninja"
+
+	#install -m644 -D doc/manual.asciidoc \
+	#	"$pkgdir/usr/share/doc/ninja/manual.asciidoc"
+	#install -m644 -D doc/manual.html \
+	#	"$pkgdir/usr/share/doc/ninja/manual.html"
+
+	install -m644 -D misc/ninja_syntax.py \
+		"${pkgdir}$(_py3_sitelib)/ninja_syntax.py"
+
+	install -m644 -D "$builddir"/misc/bash-completion \
+		"$subpkgdir"/usr/share/bash-completion/completions/ninja
+
+	install -Dm644 "$builddir"/misc/zsh-completion \
+		"$subpkgdir"/usr/share/zsh/site-functions/_ninja
+}
+
+
+sha512sums="5ed47ef1ff18a03eb73296629679a8617a08ee443e10e28ae9cb24e4506f84fe1eb142888adea9a62364b626b35817def8c55ba956c9b3cbc7b82d3e62293044  ninja-1.10.0.tar.gz"
