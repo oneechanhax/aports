@@ -1,1 +1,3 @@
-$mirror/$version/main
+/main
+/devel
+/gnu

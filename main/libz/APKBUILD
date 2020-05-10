@@ -1,17 +1,15 @@
 # Contributor: Rebekah Rowe
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="libz"
-pkgver="1.2.11"
+pkgver="1.2.8.2015.12.26"
 pkgrel=0
 pkgdesc="zlib debloated"
 url="https://sortix.org/libz/"
 arch="all"
 license="zlib"
-depends=""
-depends_dev="musl-dev"
-makedepends="$depends_dev"
+makedepends="musl-dev"
 subpackages="$pkgname-static $pkgname-dev $pkgname-doc"
-source="https://gitlab.com/sortix/libz/-/archive/master/libz-master.tar.gz"
+source="https://sortix.org/libz/release/libz-$pkgver.tar.gz"
 builddir="$srcdir/$pkgname-master/"
 
 build() {
@@ -25,6 +23,9 @@ build() {
 	make
 }
 
+check() {
+	make check
+}
 package() {
 	make DESTDIR="$pkgdir" install
 }

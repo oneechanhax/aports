@@ -1,5 +1,5 @@
 # Contributor: Eivind Uggedal <eu@eju.no>
-# Maintainer: Sören Tempel <soeren+alpinelinux@soeren-tempel.net>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=mksh
 pkgver=57
 _pkgver=R$pkgver
@@ -9,7 +9,6 @@ url="https://www.mirbsd.org/mksh"
 arch="all"
 license="BSD"
 depends="grep"
-makedepends=""
 checkdepends="perl"
 install="$pkgname.post-install $pkgname.post-upgrade $pkgname.pre-deinstall"
 subpackages="$pkgname-doc $pkgname-sh:shsym:noarch"

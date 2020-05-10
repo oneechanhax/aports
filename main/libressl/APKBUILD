@@ -1,5 +1,5 @@
-# Contributor:
-# Maintainer:
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="libressl"
 pkgver="3.0.2"
 pkgrel=0
@@ -7,12 +7,9 @@ pkgdesc="ssl and crypto libraries"
 url="https://www.libressl.org/"
 arch="all"
 license="BSD"
-depends=""
-depends_dev=""
-makedepends="$depends_dev cmake"
+makedepends="cmake"
 subpackages="$pkgname-dev $pkgname-doc"
 source="https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/$pkgname-$pkgver.tar.gz"
-builddir="$srcdir/$pkgname-$pkgver/"
 options="!check"
 
 build() {

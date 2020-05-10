@@ -1,19 +1,12 @@
-# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+# Contributor: Natanael Copa <ncopa@alpinelinux.org>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=apk-tools
 pkgver=2.10.5
 pkgrel=0
 pkgdesc="Alpine Package Keeper - package manager for alpine"
-subpackages="$pkgname-static"
-makedepends_build="libressl"
-makedepends_host="libz-dev libressl-dev libz-static linux-headers"
-makedepends="$makedepends_build $makedepends_host"
-if [ "$CBUILD" = "$CHOST" ]; then
-	subpackages="$subpackages lua5.3-apk:luaapk"
-	makedepends="$makedepends lua5.3-dev"
-fi
-source="https://dev.alpinelinux.org/archive/apk-tools/apk-tools-$pkgver.tar.xz
-	"
-
+subpackages="$pkgname-static lua5.3-apk:luaapk"
+makedepends="libressl-dev libz-static linux-headers lua5.3-dev"
+source="https://dev.alpinelinux.org/archive/apk-tools/apk-tools-$pkgver.tar.xz"
 url="https://git.alpinelinux.org/cgit/apk-tools/"
 arch="all"
 license=GPL2
@@ -23,35 +16,25 @@ options="!check"
 
 prepare() {
 	default_prepare
-	cd "$builddir"
 	sed -i -e 's:-Werror::' Make.rules
 	echo "FULL_VERSION=$pkgver-r$pkgrel" > config.mk
-	if [ "$CBUILD" = "$CHOST" ]; then
-		echo "LUAAPK=YesPlease" >> config.mk
-	else
-		echo "LUAAPK=" >> config.mk
-	fi
-	echo "export LUAAPK" >> config.mk
+	echo "export LUAAPK=YesPlease" >> config.mk
 }
 
 build() {
-	cd "$builddir"
 	make SBINDIR=/usr/sbin LIBDIR=/usr/lib
-	make SBINDIR=/usr/sbin LIBDIR=/usr/lib static 
+	make SBINDIR=/usr/sbin LIBDIR=/usr/lib static
 }
 
 check() {
-	cd "$builddir"
 	make check
 }
 
 package() {
-	cd "$builddir"
 	make DESTDIR="$pkgdir" SBINDIR=/usr/sbin LIBDIR=/usr/lib install
-	
+
 	install -d "$pkgdir"/var/lib/apk \
 		"$pkgdir"/var/cache/misc \
-		"$pkgdir"/etc/apk/keys \
 		"$pkgdir"/etc/apk/protected_paths.d
 	# the shipped README is empty
 	rm -r "$pkgdir"/usr/share/
@@ -64,14 +47,13 @@ static() {
 
 	# lets sign the static binary so it can be vefified from distros
 	# that does not have apk-tools
-	local abuild_conf=${ABUILD_CONF:-"/etc/abuild.conf"}
 	local abuild_home=${ABUILD_USERDIR:-"$HOME/.abuild"}
 	local abuild_userconf=${ABUILD_USERCONF:-"$abuild_home/abuild.conf"}
 	[ -f "$abuild_userconf" ] && . "$abuild_userconf"
 	local privkey="$PACKAGER_PRIVKEY"
 	local pubkey=${PACKAGER_PUBKEY:-"$privkey.pub"}
 	local keyname=${pubkey##*/}
-	${CROSS_COMPILE}strip "$subpkgdir"/usr/sbin/apk.static
+	${CROSS_COMPILE}llvm-strip "$subpkgdir"/usr/sbin/apk.static
 	openssl dgst -sha1 -sign "$privkey" \
 		-out "$subpkgdir"/usr/sbin/apk.static.SIGN.RSA.$keyname \
 		"$subpkgdir"/usr/sbin/apk.static

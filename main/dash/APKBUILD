@@ -1,20 +1,17 @@
-# Contributor:
-# Maintainer:
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="dash"
 pkgver="0.5.10.2"
-pkgrel=0
+pkgrel=3
 pkgdesc="a small and lightning fast shell"
 url="http://gondor.apana.org.au/~herbert/dash/"
 arch="all"
 license="BSD"
-depends=""
-makedepends=""
-install=""
-subpackages="$pkgname-doc $pkgname-sh:_sh:noarch"
+subpackages="$pkgname-doc $pkgname-sh:shsym:noarch"
 source="http://gondor.apana.org.au/~herbert/$pkgname/files/$pkgname-$pkgver.tar.gz"
-builddir="$srcdir/$pkgname-$pkgver"
 
 build() {
+	CFLAGS="-fPIE $CFLAGS" \
 	./configure \
 		--build=$CBUILD \
 		--host=$CHOST \
@@ -33,7 +30,7 @@ package() {
 	make DESTDIR="$pkgdir" install
 }
 
-_sh() {
+shsym() {
 	pkgdesc="Use dash as /bin/sh"
 	provides="/bin/sh"
 

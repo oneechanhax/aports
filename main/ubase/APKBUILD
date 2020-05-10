@@ -1,18 +1,20 @@
 # Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="ubase"
-pkgver="0.2.0"
+pkgver="0"
 pkgrel=0
 pkgdesc="Small portable coreutils for unix systems"
 url="https://git.suckless.org/$pkgname/"
 arch="all"
 license="MIT/X"
 subpackages="$pkgname-doc"
-source="$pkgname-$pkgver.tar.gz::https://github.com/oneechanhax/$pkgname/archive/v$pkgver.tar.gz
+source="$pkgname-$pkgver.tar.gz
 	musl-sysmacros.patch"
-builddir="$srcdir/$pkgname-$pkgver"
+giturl="git://git.suckless.org/ubase"
+disturl="$(realpath ./)"
+
 options="!check"
-provides="util-linux"
+provides="base-sysutils"
 
 build() {
 	make CFLAGS="$CFLAGS" $pkgname-box
@@ -22,6 +24,7 @@ package() {
 	make DESTDIR="$pkgdir" PREFIX=/usr/ $pkgname-box-install
 
 	# Outdated compared to sbase
+	# TODO: patch out
 	rm "$pkgdir"/usr/bin/mknod
 }
 

@@ -1,13 +1,12 @@
-# Contributor:
-# Maintainer:
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="libunwind"
 pkgver="10.0.0"
-pkgrel=1
+pkgrel=0
 pkgdesc="stack tracing library"
 url="https://llvm.org/"
 arch="all"
-license="NCSA"
-depends=""
+license="Apache-2.0"
 makedepends="cmake libc++-dev"
 subpackages="$pkgname-static $pkgname-dev"
 source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/$pkgname-$pkgver.src.tar.xz"
@@ -21,8 +20,8 @@ build() {
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_CXX_FLAGS="-fPIC -flto $CXXFLAGS" \
-		-DCMAKE_C_FLAGS="-fPIC -flto $CFLAGS" \
+		-DCMAKE_CXX_FLAGS="-fPIC $CXXFLAGS" \
+		-DCMAKE_C_FLAGS="-fPIC $CFLAGS" \
 		-DLIBUNWIND_USE_COMPILER_RT=ON \
 		cmake ..
 	make

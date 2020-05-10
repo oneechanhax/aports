@@ -1,19 +1,18 @@
-# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+# Contributor: Natanael Copa <ncopa@alpinelinux.org>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=sed
 pkgver=4.8
 pkgrel=0
-subpackages="$pkgname-doc"
 pkgdesc="GNU stream editor"
 url="https://www.gnu.org/software/sed"
 arch="all"
 license="GPL-3.0-or-later"
-makedepends="perl"
-checkdepends="diffutils"
-install="$pkgname.post-deinstall"
 # GNU's master site seems to be down. use a mirror for now
 #source="https://ftp.gnu.org/pub/gnu/$pkgname/$pkgname-$pkgver.tar.xz
-source="https://ftp.heanet.ie/mirrors/ftp.gnu.org/gnu/sed/sed-$pkgver.tar.xz
-	"
+source="https://ftp.heanet.ie/mirrors/ftp.gnu.org/gnu/sed/sed-$pkgver.tar.xz"
+subpackages="$pkgname-doc"
+makedepends="perl"
+checkdepends="diffutils"
 # testsuite fails because busybox provides a /usr/bin/timeout
 options="!checkroot !check"
 

@@ -1,4 +1,5 @@
-# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+# Contributor: Natanael Copa <ncopa@alpinelinux.org>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=fakeroot
 pkgver=1.24
 pkgrel=0
@@ -6,7 +7,6 @@ pkgdesc="Gives a fake root environment, useful for building packages as a non-pr
 arch="all"
 license="GPL-3.0-or-later"
 url="https://packages.debian.org/fakeroot"
-depends=
 options="!checkroot"
 checkdepends="bash"
 makedepends_build="libtool autoconf automake po4a"
@@ -21,21 +21,15 @@ source="http://ftp.debian.org/debian/pool/main/f/fakeroot/fakeroot_$pkgver.orig.
 	xstatjunk.patch
 	fix-shell-in-fakeroot.patch
 	"
-builddir="$srcdir"/$pkgname-$pkgver
 
 check() {
-	cd "$builddir"
 	make check
 }
 
 build() {
-	cd "$builddir"
-
-	if [ "$CLIBC" = "musl" ]; then
-		# musl does not have _STAT_VER, it's really not used for
-		# anything, so define it as zero (just like uclibc does)
-		export CFLAGS="-D_STAT_VER=0 $CFLAGS"
-	fi
+	# musl does not have _STAT_VER, it's really not used for
+	# anything, so define it as zero (just like uclibc does)
+	export CFLAGS="-D_STAT_VER=0 $CFLAGS"
 
 	CONFIG_SHELL=/bin/sh ./bootstrap
 	CONFIG_SHELL=/bin/sh ./configure \
@@ -45,13 +39,12 @@ build() {
 		--disable-static
 
 	make
-	cd doc
-	# Nah, i dont rly care about docs
+	#cd doc
+	# Nah, i dont rly care about docs atm
 	#po4a -k 0 --rm-backups --variable "srcdir=../doc/" po4a/po4a.cfg
 }
 
 package() {
-	cd "$builddir"
 	make DESTDIR="$pkgdir" install
 }
 

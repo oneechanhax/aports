@@ -1,5 +1,5 @@
 # Contributor: ScrumpyJack <scrumpyjack@st.ilet.to>
-# Maintainer: ScrumpyJack <scrumpyjack@st.ilet.to>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=lzip
 pkgver=1.21
 pkgrel=1
@@ -9,7 +9,6 @@ arch="all"
 license="GPL-2.0-or-later"
 subpackages="$pkgname-doc"
 source="https://download.savannah.gnu.org/releases/$pkgname/$pkgname-$pkgver.tar.gz"
-builddir="$srcdir/$pkgname-$pkgver"
 
 build() {
 	cd "$builddir"

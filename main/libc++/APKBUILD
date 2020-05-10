@@ -2,11 +2,11 @@
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="libc++"
 pkgver="10.0.0"
-pkgrel=2
+pkgrel=1
 pkgdesc="no idea"
 url="https://llvm.org/"
 arch="all"
-license="NCSA"
+license="Apache-2.0"
 makedepends="cmake libc++abi-dev libc++abi-static python3 linux-headers"
 subpackages="$pkgname-static $pkgname-dev"
 source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libcxx-$pkgver.src.tar.xz"

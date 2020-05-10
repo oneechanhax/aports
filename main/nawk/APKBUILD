@@ -2,20 +2,20 @@
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="nawk"
 pkgver=0_git20200412
-pkgrel=1
+pkgrel=0
 pkgdesc="The version of awk described in \"The AWK Programming Language\""
-giturl="https://github.com/onetrueawk/awk"
-url="$giturl"
-disturl="$(realpath ./)"
+url="https://github.com/onetrueawk/awk"
 arch="all"
 license="custom"
 subpackages="$pkgname-doc $pkgname-awk:_awk:noarch"
 source="$pkgname-$pkgver.tar.gz"
+makedepends="make bison"
 checkdepends="awk"
-builddir="$srcdir/$pkgname-$pkgver"
+giturl="$url"
+disturl="$(realpath ./)"
 
 build() {
-	make CC="clang" CFLAGS="-Os $CFLAGS"
+	make CC="clang" HOSTCC="clang" CFLAGS="-O3 $CFLAGS"
 }
 
 check() {

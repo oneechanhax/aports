@@ -1,13 +1,8 @@
 # Contributor: Sören Tempel <soeren+alpine@soeren-tempel.net>
 # Contributor: Łukasz Jendrysik <scadu@yandex.com>
-# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=sudo
-pkgver=1.8.31
-if [ "${pkgver%_*}" != "$pkgver" ]; then
-	_realver=${pkgver%_*}${pkgver#*_}
-else
-	_realver=$pkgver
-fi
+pkgver=1.8.9
 pkgrel=0
 pkgdesc="Give certain users the ability to run some commands as root"
 url="https://www.sudo.ws/sudo/"
@@ -15,19 +10,11 @@ arch="all"
 license="custom ISC"
 makedepends="libz-dev bash mdocml"
 subpackages="$pkgname-doc $pkgname-dev"
-source="https://www.sudo.ws/dist/sudo-$_realver.tar.gz
+source="https://www.sudo.ws/dist/sudo-$pkgver.tar.gz
 	fix-cross-compile.patch
 	SIGUNUSED.patch
 	"
 options="suid"
-
-# secfixes:
-#   1.8.31-r0:
-#     - CVE-2019-18634
-#   1.8.28-r0:
-#     - CVE-2019-14287
-#   1.8.20_p2-r0:
-#     - CVE-2017-1000368
 
 build() {
 	./configure \

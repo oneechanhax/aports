@@ -1,6 +1,6 @@
 # Contributor: Leo <thinkabit.ukim@gmail.com>
 # Contributor: Sören Tempel <soeren+alpine@soeren-tempel.net>
-# Maintainer: Natanael Copa <ncopa@alpinelinux.org>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=pax-utils
 pkgver=1.2.5
 pkgrel=0
@@ -8,12 +8,11 @@ pkgdesc="ELF related utils for ELF 32/64 binaries"
 url="https://wiki.gentoo.org/wiki/Hardened/PaX_Utilities"
 arch="all"
 license="GPL-2.0-only"
-depends="scanelf"
-makedepends_host="linux-headers libcap-dev"
-makedepends="$makedepends_host"
-checkdepends="bash python3 py3-elftools"
 source="https://dev.gentoo.org/~slyfox/distfiles/pax-utils-$pkgver.tar.xz"
 subpackages="$pkgname-doc scanelf:_scanelf"
+depends="scanelf"
+makedepends="linux-headers libcap-dev"
+checkdepends="bash python3 py3-elftools"
 
 build() {
 	make USE_CAP=yes
@@ -28,7 +27,7 @@ check() {
 package() {
 	make DESTDIR="$pkgdir/" install
 
-	# Don't conflict with main/lddtree
+	# Don't conflict with main/lddtree, FIXME: add as subpkg
 	rm -f "$pkgdir"/usr/bin/lddtree
 }
 
