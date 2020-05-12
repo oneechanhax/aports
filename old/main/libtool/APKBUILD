@@ -14,6 +14,7 @@ makedepends="m4 help2man"
 checkdepends="gawk autoconf automake gzip"
 subpackages="libltdl-static libltdl $pkgname-doc"
 
+# Alternative: https://git.midipix.org/cgit.cgi/slibtool
 # 1 test presently fails on Alpine (need to investigate):
 #  69: shlibpath_overrides_runpath                     FAILED (shlibpath.at:68)
 options="libtool !check"

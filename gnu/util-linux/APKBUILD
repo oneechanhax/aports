@@ -33,7 +33,7 @@ else
 fi
 makedepends="$makedepends_build $makedepends_host"
 replaces="e2fsprogs util-linux-ng"
-provides="getopt"
+provides="base-sysutils getopt"
 
 prepare() {
 	default_prepare

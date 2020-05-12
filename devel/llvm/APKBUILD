@@ -7,7 +7,6 @@ pkgdesc="LLVM compiler runtime"
 url="https://llvm.org/"
 arch="all"
 license="Apache-2.0"
-depends="libc++ libffi netbsd-curses libxml2 libz"
 makedepends="cmake python3 libc++-dev libffi-dev netbsd-curses-dev libxml2-dev libz-dev"
 subpackages="$pkgname-static $pkgname-dev
 			 $pkgname-binutils $pkgname-binutils-sym:binsym:noarch
@@ -30,11 +29,10 @@ prepare() {
 }
 
 build() {
-
 	case "$CARCH" in
 	x86*) local llvm_arch=X86;;
 	*) local llvm_arch="$CARCH";;
-  esac
+	esac
 
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
@@ -83,54 +81,55 @@ build() {
 }
 
 check() {
-  make check
+	make check
 }
 
 package() {
-  make DESTDIR="$pkgdir" install-llvm-libraries
+	make DESTDIR="$pkgdir" install-llvm-libraries
 }
 
 # NOTE: Extracted list from gnu binutils, used for binaries natively compiled
 _binutils_bins="addr2line ar as nm objcopy objdump ranlib readobj size strings strip"
 
 dev() {
-  default_dev
+	default_dev
 
-  cd "$builddir"
-	make DESTDIR="$subpkgdir" install-llvm-headers install-cmake-exports
+	cd "$builddir"
+	make DESTDIR="$subpkgdir" install-llvm-headers install-cmake-exports install-FileCheck
 
-  # Fixme?
-  local llvm_executables="$(make help | awk '
-	  function StartsWith(str, wanted) {
-		  wanted_len = length(wanted);
-		  return length(str) >= wanted_len && substr(str, 1, wanted_len) == wanted;
-	  }
-	  function EndsWith(str, wanted) {
-		  wanted_len = length(wanted);
-		  str_len = length(str);
-		  return str_len >= wanted_len && substr(str, str_len - wanted_len + 1, wanted_len) == wanted;
-	  }
-	  {
-		  while (getline) {
-			  if (StartsWith($2, "install-llvm-") && !EndsWith($2, "-stripped"))
-				  if (!EndsWith($2, "-libraries") && !EndsWith($2, "-headers"))
-					  printf("%s ", substr($2, 9, 500));
-		  }
-	  }')"
+	# Fixme?
+	local llvm_executables="$(make help | awk '
+		function StartsWith(str, wanted) {
+			wanted_len = length(wanted);
+			return length(str) >= wanted_len && substr(str, 1, wanted_len) == wanted;
+		}
+		function EndsWith(str, wanted) {
+			wanted_len = length(wanted);
+			str_len = length(str);
+			return str_len >= wanted_len && substr(str, str_len - wanted_len + 1, wanted_len) == wanted;
+		}
+		{
+			while (getline) {
+				if (StartsWith($2, "install-llvm-") && !EndsWith($2, "-stripped"))
+					if (!EndsWith($2, "-libraries") && !EndsWith($2, "-headers"))
+						printf("%s ", substr($2, 9, 500));
+			}
+		}'
+	)"
 
-  mkdir -v "$subpkgdir"/usr/bin/
-  for i in $llvm_executables; do
+	mkdir -v "$subpkgdir"/usr/bin/
+	for i in $llvm_executables; do
 		cp -a "$builddir"/bin/$i "$subpkgdir"/usr/bin/
 		chmod 755 "$builddir"/bin/$i
-  done
-  # Binutils subpkg will handle these
-  for i in $_binutils_bins symbolizer; do
+	done
+	# Binutils subpkg will handle these
+	for i in $_binutils_bins symbolizer; do
 		rm "$subpkgdir"/usr/bin/llvm-$i
 	done
 }
 
 binutils() {
-  depends="$pkgname=$pkgver-r$pkgrel"
+	depends="$pkgname=$pkgver-r$pkgrel"
 
 	mkdir -vp "$subpkgdir"/usr/bin/
 	for i in $_binutils_bins symbolizer; do
@@ -146,30 +145,30 @@ binsym() {
 }
 
 clang() {
-  pkgdesc="C/C++ Compiler using the LLVM compiler collection"
-  depends="clang-libs=$pkgver-r$pkgrel compiler-rt~=$pkgver libunwind-dev"
+	pkgdesc="C/C++ Compiler using the LLVM compiler collection"
+	depends="clang-libs=$pkgver-r$pkgrel compiler-rt~=$pkgver libunwind-dev"
 
-  # TODO: install-clang-format
-  cd "$builddir"
-  make DESTDIR="$subpkgdir" install-clang install-clang-resource-headers install-bash-autocomplete
+	# TODO: install-clang-format
+	cd "$builddir"
+	make DESTDIR="$subpkgdir" install-clang install-clang-resource-headers install-bash-autocomplete
 }
 clang_libs() {
-  depends="llvm=$pkgver-r$pkgrel"
+	depends="llvm=$pkgver-r$pkgrel"
 
-  cd "$builddir"
-  make DESTDIR="$subpkgdir" install-libclang install-clang-cpp
+	cd "$builddir"
+	make DESTDIR="$subpkgdir" install-libclang install-clang-cpp
 }
 clang_dev() {
-  cd "$builddir"
-  make DESTDIR="$subpkgdir" install-clang-headers install-clang-cmake-exports install-clang-libraries
-  rm "$subpkgdir"/usr/lib/*.so*
+	cd "$builddir"
+	make DESTDIR="$subpkgdir" install-clang-headers install-clang-cmake-exports install-clang-libraries
+	rm "$subpkgdir"/usr/lib/*.so*
 }
 
 lld() {
-  depends="llvm=$pkgver-r$pkgrel"
+	depends="llvm=$pkgver-r$pkgrel"
 
-  cd "$builddir"
-  make DESTDIR="$subpkgdir" install-lld
+	cd "$builddir"
+	make DESTDIR="$subpkgdir" install-lld
 }
 
 ldsym() {
@@ -179,4 +178,4 @@ ldsym() {
 	ln -sv /usr/bin/lld "$subpkgdir"/usr/bin/ld
 }
 
-sha512sums="9d0465cca6a12a4ca3798886fa029f7342fc5d10ea46274499398f08cc740b46a67e01ea4e7ea446d244405098b7941029adb2d5df804760c49f17e25447e0f4  llvm-project-10.0.0.tar.xz"
+sha512sums="9d0465cca6a12a4ca3798886fa029f7342fc5d10ea46274499398f08cc740b46a67e01ea4e7ea446d244405098b7941029adb2d5df804760c49f17e25447e0f4	llvm-project-10.0.0.tar.xz"

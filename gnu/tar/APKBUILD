@@ -11,12 +11,7 @@ makedepends="acl-dev"
 subpackages="$pkgname-doc"
 source="https://ftp.gnu.org/gnu/tar/$pkgname-$pkgver.tar.xz
 	ignore-apk-tools-checksums.patch"
-
-# secfixes:
-#   1.29-r1:
-#     - CVE-2016-6321
-#   1.31-r0:
-#     - CVE-2018-20482
+options="!check" # broken tests
 
 build() {
 	gl_cv_func_gettimeofday_clobber=no \

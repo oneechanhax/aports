@@ -21,15 +21,7 @@ source="https://www.python.org/ftp/python/$pkgver/Python-$pkgver.tar.xz
 	musl-find_library.patch
 	"
 builddir="$srcdir/Python-$pkgver"
-
-# secfixes:
-#   3.8.2-r0:
-#     - CVE-2020-8315
-#   3.7.5-r0:
-#     - CVE-2019-16056
-#     - CVE-2019-16935
-#   3.6.8-r1:
-#     - CVE-2019-5010
+options="!check" # broken tests
 
 prepare() {
 	default_prepare

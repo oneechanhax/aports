@@ -1,25 +1,20 @@
 # Contributor: Natanael Copa <ncopa@alpinelinux.org>
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
-pkgname=alpine-base
+pkgname=azaezel-base
 pkgver=1
 pkgrel=0
 pkgdesc="Meta package for minimal base"
 url="https://alpinelinux.org"
 arch="noarch"
 license="MIT"
-depends="azaezel-baselayout apk-tools azaezel-keys base-utils base-sysutils"
+depends="base-layout apk-tools azaezel-keys base-utils base-sysutils"
 provides="base"
+options="!check"
+
+build() {
+	:
+}
 
 package() {
-	mkdir -p "$pkgdir"/etc
-
-	# create os-release
-	cat >"$pkgdir"/etc/os-release<<EOF
-NAME="Azaezel Linux"
-ID=azaezel
-VERSION_ID=$pkgver
-PRETTY_NAME="Azaezel $_rel"
-HOME_URL="https://TODO.org/"
-BUG_REPORT_URL="https://TODO.org/"
-EOF
+	mkdir -p "$pkgdir"
 }

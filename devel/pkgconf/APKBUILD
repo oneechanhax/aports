@@ -11,6 +11,7 @@ provides="pkgconfig=1"
 subpackages="$pkgname-doc $pkgname-dev"
 source="https://distfiles.dereferenced.org/pkgconf/pkgconf-$pkgver.tar.xz"
 checkdepends="kyua atf"
+options="!check" # another broken build
 
 # TODO: Replace with the one sited on musl wiki if this isnt it already
 

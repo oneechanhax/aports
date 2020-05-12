@@ -7,7 +7,7 @@ pkgdesc="no idea"
 url="https://llvm.org/"
 arch="all"
 license="Apache-2.0"
-makedepends="cmake libc++abi-dev libc++abi-static python3 linux-headers"
+makedepends="cmake libc++abi-dev libc++abi-static python3 linux-headers llvm-static"
 subpackages="$pkgname-static $pkgname-dev"
 source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libcxx-$pkgver.src.tar.xz"
 builddir="$srcdir/libcxx-$pkgver.src"
@@ -18,8 +18,8 @@ build() {
 	cmake \
 		-DCMAKE_INSTALL_PREFIX=/usr \
 		-DCMAKE_BUILD_TYPE=Release \
-		-DCMAKE_CXX_FLAGS="-fPIC -flto $CXXFLAGS" \
-		-DCMAKE_C_FLAGS="-fPIC -flto $CFLAGS" \
+		-DCMAKE_CXX_FLAGS="-fPIC $CXXFLAGS" \
+		-DCMAKE_C_FLAGS="-fPIC $CFLAGS" \
 		-DLIBCXXABI_USE_LLVM_UNWINDER=On \
 		-DLIBCXX_ENABLE_STATIC_ABI_LIBRARY=On \
 		-DLIBCXX_STATICALLY_LINK_ABI_IN_STATIC_LIBRARY=Off \

@@ -2,19 +2,20 @@
 # Contributor: Łukasz Jendrysik <scadu@yandex.com>
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=sudo
-pkgver=1.8.9
+pkgver=1.8.31p1
 pkgrel=0
 pkgdesc="Give certain users the ability to run some commands as root"
 url="https://www.sudo.ws/sudo/"
 arch="all"
 license="custom ISC"
 makedepends="libz-dev bash mdocml"
+checksepends="diffutils"
 subpackages="$pkgname-doc $pkgname-dev"
 source="https://www.sudo.ws/dist/sudo-$pkgver.tar.gz
 	fix-cross-compile.patch
 	SIGUNUSED.patch
 	"
-options="suid"
+options="suid !check" # Dash broke test
 
 build() {
 	./configure \
@@ -34,7 +35,7 @@ build() {
 	# Workaround until SIGUNUSED.patch is not needed anymore
 	rm lib/util/mksiglist.h lib/util/mksigname.h
 	make -C lib/util DEVEL=1 mksiglist.h mksigname.h
-	make
+	make HOSTCC="$CC"
 }
 
 check() {
@@ -49,6 +50,6 @@ package() {
 	rm -rf "$pkgdir"/var/run
 }
 
-sha512sums="b9e408a322938c7a712458e9012d8a5f648fba5b23a5057cf5d8372c7f931262595f1575c32c32b9cb1a04af670ff4611e7df48d197e5c4cc038d6b65439a28a  sudo-1.8.31.tar.gz
+sha512sums="9344fd1d8a8445e8afb9c5628cdc832fe32ea29199f071f35fb6ec694371801556df560f4382afec199f468b1f3264ad5e3a89e964612e571b8d911f823724cc  sudo-1.8.31p1.tar.gz
 f0f462f40502da2194310fe4a72ec1a16ba40f95a821ba9aa6aabaa423d28c4ab26b684afa7fb81c2407cf60de9327bdab01de51b878c5d4de49b0d62645f53c  fix-cross-compile.patch
 1f81f85f9dea6ee7e66d9b180611115cf8945f01cde19f5666ac09c759ae0c9a49fb464672650ec216e43d9159ff97c9ba786d5cae5917642ab1f31c29af8546  SIGUNUSED.patch"

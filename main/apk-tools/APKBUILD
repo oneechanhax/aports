@@ -4,8 +4,8 @@ pkgname=apk-tools
 pkgver=2.10.5
 pkgrel=0
 pkgdesc="Alpine Package Keeper - package manager for alpine"
-subpackages="$pkgname-static lua5.3-apk:luaapk"
-makedepends="libressl-dev libz-static linux-headers lua5.3-dev"
+subpackages="$pkgname-static"
+makedepends="libressl-dev libz-static libunwind-static linux-headers"
 source="https://dev.alpinelinux.org/archive/apk-tools/apk-tools-$pkgver.tar.xz"
 url="https://git.alpinelinux.org/cgit/apk-tools/"
 arch="all"
@@ -18,12 +18,15 @@ prepare() {
 	default_prepare
 	sed -i -e 's:-Werror::' Make.rules
 	echo "FULL_VERSION=$pkgver-r$pkgrel" > config.mk
-	echo "export LUAAPK=YesPlease" >> config.mk
+	echo "export LUAAPK=" >> config.mk
+	echo "CC=\"$CC\"" >> config.mk
+	echo "AR=\"$AR\""
+	echo "LD=\"$LD\""
 }
 
 build() {
-	make SBINDIR=/usr/sbin LIBDIR=/usr/lib
-	make SBINDIR=/usr/sbin LIBDIR=/usr/lib static
+	make CC="$CC" AR="$AR" LD="$LD" SBINDIR=/usr/sbin LIBDIR=/usr/lib
+	make CC="$CC" AR="$AR" LD="$LD" SBINDIR=/usr/sbin LIBDIR=/usr/lib static
 }
 
 check() {
@@ -31,7 +34,7 @@ check() {
 }
 
 package() {
-	make DESTDIR="$pkgdir" SBINDIR=/usr/sbin LIBDIR=/usr/lib install
+	make CC="$CC" AR="$AR" LD="$LD" DESTDIR="$pkgdir" SBINDIR=/usr/sbin LIBDIR=/usr/lib install
 
 	install -d "$pkgdir"/var/lib/apk \
 		"$pkgdir"/var/cache/misc \

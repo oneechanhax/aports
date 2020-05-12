@@ -1,6 +1,6 @@
 # Contributor: Sören Tempel <soeren+alpine@soeren-tempel.net>
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
-pkgname=azaezel-baselayout
+pkgname="azaezel-baselayout"
 pkgver=0.1.0
 pkgrel=0
 pkgdesc="Azaezel base dir structure and init scripts"
@@ -9,7 +9,7 @@ arch="all"
 license="GPL-2.0-only"
 pkggroups="shadow"
 options="!fhs !check"
-source="crontab
+source="
 	color_prompt
 	locale
 
@@ -19,6 +19,7 @@ source="crontab
 	protocols
 	services
 	"
+provides="base-layout"
 builddir="$srcdir/build"
 
 prepare() {
@@ -42,34 +43,13 @@ package() {
 		dev/pts \
 		dev/shm \
 		etc \
-		etc/apk \
-		etc/conf.d \
-		etc/crontabs \
-		etc/init.d \
-		etc/modprobe.d \
-		etc/modules-load.d \
-		etc/network/if-down.d \
-		etc/network/if-post-down.d \
-		etc/network/if-pre-up.d \
-		etc/network/if-up.d \
-		etc/opt \
-		etc/periodic/15min \
-		etc/periodic/daily \
-		etc/periodic/hourly \
-		etc/periodic/monthly \
-		etc/periodic/weekly \
-		etc/profile.d \
-		etc/sysctl.d \
 		home \
-		media/cdrom \
-		media/floppy \
-		media/usb \
 		mnt \
 		proc \
 		run \
 		sys \
 		usr/bin \
-		usr/lib/modules-load.d \
+		usr/lib \
 		usr/lib/sysctl.d \
 		usr/local/bin \
 		usr/local/lib \
@@ -87,8 +67,7 @@ package() {
 		var/log \
 		var/opt \
 		var/spool \
-		var/spool/cron \
-		var/mail
+		var/spool/cron
 
 	ln -s /usr/bin "$pkgdir"/bin
 	ln -s /usr/lib "$pkgdir"/lib
@@ -99,11 +78,9 @@ package() {
 	install -d -m 0700 "$pkgdir"/root
 	install -d -m 1777 "$pkgdir"/tmp "$pkgdir"/var/tmp
 
-	install -m600 "$srcdir"/crontab "$pkgdir"/etc/crontabs/root
 	install -m644 \
 		"$srcdir"/color_prompt \
-		"$srcdir"/locale \
-		"$pkgdir"/etc/profile.d/
+		"$srcdir"/locale
 
 	echo "localhost" > "$pkgdir"/etc/hostname
 	cat > "$pkgdir"/etc/hosts <<-EOF
@@ -125,9 +102,6 @@ package() {
 		Please support development on github!
 
 		You may change this message by editing /etc/motd.
-	EOF
-	cat > "$pkgdir"/etc/sysctl.conf <<-EOF
-		# content of this file will override /etc/sysctl.d/*
 	EOF
 	# TODO, how does this work? what part of alpine uses this?????? open-rc?
 	# if so remove/rewrite for s6
@@ -193,10 +167,18 @@ package() {
 	ln -s /etc/crontabs "$pkgdir"/var/spool/cron/crontabs
 	ln -s /proc/mounts "$pkgdir"/etc/mtab
 	ln -s /var/mail "$pkgdir"/var/spool/mail
-}
 
-sha512sums="6e169c0975a1ad1ad871a863e8ee83f053de9ad0b58d94952efa4c28a8c221445d9e9732ad8b52832a50919c2f39aa965a929b3d5b3f9e62f169e2b2e0813d82  crontab
-7fcb5df98b0f19e609cb9444b2e6ca5ee97f5f308eb407436acdd0115781623fd89768a9285e9816e36778e565b6f27055f2a586a58f19d6d880de5446d263c4  color_prompt
+	# create os-release
+	cat >"$pkgdir"/etc/os-release<<EOF
+NAME="Azaezel Linux"
+ID=azaezel
+VERSION_ID=$pkgver
+PRETTY_NAME="Azaezel $_rel"
+HOME_URL="https://TODO.org/"
+BUG_REPORT_URL="https://TODO.org/"
+EOF
+}
+sha512sums="7fcb5df98b0f19e609cb9444b2e6ca5ee97f5f308eb407436acdd0115781623fd89768a9285e9816e36778e565b6f27055f2a586a58f19d6d880de5446d263c4  color_prompt
 ff94cd77c79a523b79f18ddb6df5d489bd78879e63f2916c0584bf5177cace702663986bd366cbdfdbd9da950a6f32fb21037cab8d43658e892818f02dfae297  locale
 abb391a9b5c2b418ad9ea15dcc373a0a0946e5e438d371d00d4bd6c8c60fa81613429a3b8d4313970dcc7eae527793a874c31a9b5a62706f450ab9bb9e8db405  group
 06d12a7b9ca14fe17e412d0f24814620b67d035ae859be7906cbf4782dd69e359a6a555dafb98060b7fb7e4714aaa676c88d9017cded36e6d8398e23369bb290  passwd

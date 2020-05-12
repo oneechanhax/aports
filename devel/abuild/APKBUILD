@@ -1,23 +1,24 @@
 # Contributer: Natanael Copa <ncopa@alpinelinux.org>
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=abuild
-pkgver=0_git20200509
+pkgver=0_git20200511
 pkgrel=0
 pkgdesc="Script to build Alpine Packages"
 giturl="https://github.com/oneechanhax/abuild"
-url="$giturl"
-disturl="$(realpath ./)"
+url="https://github.com/oneechanhax/abuild"
 arch="all"
 license="GPL-2.0"
-depends="fakeroot sudo pax-utils libressl apk-tools>=2.0.7-r1 libc-utils
+depends="libressl apk-tools fakeroot ldd pax-utils sudo
 	attr tar pkgconf patch lzip
-	sed /usr/bin/getopt"
-makedepends="pkgconfig libressl-dev libz-dev"
+	sed awk getopt"
+makedepends="make pkgconfig libressl-dev libz-dev"
 subpackages="apkbuild-cpan:cpan:noarch apkbuild-gem-resolver:gems:noarch
              abuild-rootbld:_rootbld:noarch $pkgname-doc"
 options="suid !check"
 pkggroups="abuild"
 source="$pkgname-$pkgver.tar.gz"
+giturl="$url"
+disturl="$(realpath ./)"
 
 builddir="$srcdir/$pkgname-$pkgver"
 
@@ -64,4 +65,4 @@ _rootbld() {
 	mkdir -p "$subpkgdir"
 }
 
-sha512sums="4e41c4ab1a3fb55babd5d70e2aaa3082e343ef833b65c7cb011b93b862b7b58cd828e13e3bbc582b96356ea88734d473820cd7ba666620af41a6f136061cdf82  abuild-0_git20200509.tar.gz"
+sha512sums="1a043548e9bb426cc21977e23164c927664012fe87c760d1dd6b33d472a3325c8a9af8c3c402354abaa0bdc52a70e2173678e0be336d5eeb3510d4aaa4befeae  abuild-0_git20200511.tar.gz"
