@@ -7,12 +7,13 @@ pkgdesc="no idea"
 url="https://llvm.org/"
 arch="all"
 license="Apache-2.0"
-makedepends="cmake libunwind-static"
+makedepends="cmake libunwind-static python"
 checkdepends="llvm-dev"
 subpackages="$pkgname-static $pkgname-dev"
 source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libcxxabi-$pkgver.src.tar.xz
 	https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/libcxx-$pkgver.src.tar.xz"
 builddir="$srcdir/libcxxabi-$pkgver.src"
+options="!check" # requires some cirgular dependancies
 
 prepare() {
 	default_prepare

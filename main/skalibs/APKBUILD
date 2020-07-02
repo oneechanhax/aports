@@ -1,0 +1,28 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="skalibs"
+pkgver="2.9.2.1"
+pkgrel=0
+pkgdesc="Library most software on skarnet.org uses."
+url="http://skarnet.org/software/$pkgname/"
+arch="all"
+license="ISC"
+subpackages="$pkgname-static $pkgname-dev"
+source="http://skarnet.org/software/$pkgname/$pkgname-$pkgver.tar.gz"
+options="!check"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var
+	make
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+sha512sums="bd507faf30f0564fb8d3e5f86de04ab4b39961dab2497ba9f4a81980a57f7ff68cad366b9847b25d555b5b9263460d13f096e1774d080d1d286979f2e7324c54  skalibs-2.9.2.1.tar.gz"

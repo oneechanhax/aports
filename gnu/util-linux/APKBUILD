@@ -19,18 +19,11 @@ makedepends_build="autoconf automake libtool"
 makedepends_host="libz-dev linux-headers libcap-ng-dev"
 options="suid"
 source="https://www.kernel.org/pub/linux/utils/util-linux/v$_v/util-linux-$pkgver.tar.xz
-	ttydefaults.h
-	"
+	ttydefaults.h"
 # Subpackage "cfdisk" is disabled due to netbsd-curses incompatibility
 subpackages="$pkgname-doc $pkgname-dev $pkgname-bash-completion:bashcomp:noarch
 	libuuid libblkid libmount libsmartcols libfdisk sfdisk
-	findmnt:_findmnt mcookie blkid setpriv"
-if [ -z "$BOOTSTRAP" ]; then
-	makedepends_host="$makedepends_host python3-dev"
-	subpackages="$subpackages py3-libmount:_py3"
-else
-	_bootstrap_config="--without-python"
-fi
+	findmnt:_findmnt mcookie blkid"
 makedepends="$makedepends_build $makedepends_host"
 replaces="e2fsprogs util-linux-ng"
 provides="base-sysutils getopt"
@@ -50,6 +43,7 @@ build() {
 		--host=$CHOST \
 		--with-sysroot=$CBUILDROOT \
 		--prefix=/usr \
+		--exec-prefix=/usr \
 		--enable-raw \
 		--disable-uuidd \
 		--disable-nls \
@@ -68,6 +62,10 @@ build() {
 
 package() {
 	make -j1 DESTDIR="$pkgdir" -C "$builddir" install
+	mv -v "$pkgdir"/bin/* "$pkgdir"/usr/bin/
+	mv -v "$pkgdir"/sbin/* "$pkgdir"/usr/sbin/
+	mv -v "$pkgdir"/lib/* "$pkgdir"/usr/lib/
+	rmdir -v "$pkgdir"/lib "$pkgdir"/bin "$pkgdir"/sbin
 	# use pkg-config
 }
 
@@ -91,57 +89,57 @@ blkid() {
 	pkgdesc="block device identification tool"
 	depends=""
 	replaces="util-linux-ng"
-	mkdir -p "$subpkgdir"/sbin
-	mv "$pkgdir"/sbin/blkid "$subpkgdir"/sbin/
+	mkdir -p "$subpkgdir"/usr/sbin
+	mv "$pkgdir"/usr/sbin/blkid "$subpkgdir"/usr/sbin/
 }
 
 libuuid() {
 	pkgdesc="DCE compatible Universally Unique Identifier library"
 	depends=""
-	mkdir -p "$subpkgdir"/lib
-	mv "$pkgdir"/lib/libuuid* "$subpkgdir"/lib/
+	mkdir -p "$subpkgdir"/usr/lib
+	mv "$pkgdir"/usr/lib/libuuid* "$subpkgdir"/usr/lib/
 }
 
 libblkid() {
 	pkgdesc="Block device identification library from util-linux"
 	depends=""
-	mkdir -p "$subpkgdir"/lib
-	mv "$pkgdir"/lib/libblkid* "$subpkgdir"/lib/
+	mkdir -p "$subpkgdir"/usr/lib
+	mv "$pkgdir"/usr/lib/libblkid* "$subpkgdir"/usr/lib/
 }
 
 libmount() {
 	pkgdesc="Block device identification library from util-linux"
 	depends=""
-	mkdir -p "$subpkgdir"/lib
-	mv "$pkgdir"/lib/libmount.so.* "$subpkgdir"/lib/
+	mkdir -p "$subpkgdir"/usr/lib
+	mv "$pkgdir"/usr/lib/libmount.so.* "$subpkgdir"/usr/lib/
 }
 
 libsmartcols() {
 	pkgdesc="Formatting library for ls-like programs."
 	depends=""
-	mkdir -p "$subpkgdir"/lib
-	mv "$pkgdir"/lib/libsmartcols.so.* "$subpkgdir"/lib/
+	mkdir -p "$subpkgdir"/usr/lib
+	mv "$pkgdir"/usr/lib/libsmartcols.so.* "$subpkgdir"/usr/lib/
 }
 
 libfdisk() {
 	pkgdesc="Partitioning library for fdisk-like programs"
 	depends=""
-	mkdir -p "$subpkgdir"/lib
-	mv "$pkgdir"/lib/libfdisk.so.* "$subpkgdir"/lib/
+	mkdir -p "$subpkgdir"/usr/lib
+	mv "$pkgdir"/usr/lib/libfdisk.so.* "$subpkgdir"/usr/lib/
 }
 
 sfdisk() {
 	pkgdesc="Partition table manipulator from util-linux"
 	depends=""
-	mkdir -p "$subpkgdir"/sbin
-	mv "$pkgdir"/sbin/sfdisk "$subpkgdir"/sbin/
+	mkdir -p "$subpkgdir"/usr/sbin
+	mv "$pkgdir"/usr/sbin/sfdisk "$subpkgdir"/usr/sbin/
 }
 
 cfdisk() {
 	pkgdesc="Curses based partition table manipulator from util-linux"
 	depends=""
-	mkdir -p "$subpkgdir"/sbin
-	mv "$pkgdir"/sbin/cfdisk "$subpkgdir"/sbin/
+	mkdir -p "$subpkgdir"/usr/sbin
+	mv "$pkgdir"/usr/sbin/cfdisk "$subpkgdir"/usr/sbin/
 }
 
 mcookie() {
@@ -162,8 +160,8 @@ _findmnt() {
 	pkgdesc="findmnt from util-linux"
 	depends=""
 	replaces=""
-	mkdir -p "$subpkgdir"/bin
-	mv "$pkgdir"/bin/findmnt "$subpkgdir"/bin
+	mkdir -p "$subpkgdir"/usr/bin
+	mv "$pkgdir"/usr/bin/findmnt "$subpkgdir"/usr/bin
 }
 
 _py3() {

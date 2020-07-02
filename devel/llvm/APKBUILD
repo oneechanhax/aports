@@ -2,22 +2,23 @@
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="llvm"
 pkgver="10.0.0"
-pkgrel=0
+pkgrel=2
 pkgdesc="LLVM compiler runtime"
 url="https://llvm.org/"
 arch="all"
 license="Apache-2.0"
 makedepends="cmake python3 libc++-dev libffi-dev netbsd-curses-dev libxml2-dev libz-dev"
-subpackages="$pkgname-static $pkgname-dev
-			 $pkgname-binutils $pkgname-binutils-sym:binsym:noarch
-			 clang clang-libs:clang_libs clang-dev:clang_dev
-			 lld lld-ld:ldsym:noarch"
+subpackages="$pkgname-dev
+	$pkgname-binutils $pkgname-binutils-sym:binsym:noarch
+	clang clang-libs:clang_libs clang-dev:clang_dev
+	lld lld-ld:ldsym:noarch"
 source="https://github.com/llvm/llvm-project/releases/download/llvmorg-$pkgver/llvm-project-$pkgver.tar.xz"
 builddir="$srcdir/llvm-project-$pkgver/build"
 options="!check" # Too many failed tests
 
 # NOTE: Building the other projects out-of-tree is difficult due to how clang/lld is heavily integrated with llvm.
 # FIXME: Fix above! move the other projects into their own trees afterwards(rn is just for convenience)
+# TODO: test/fix cross compiling https://llvm.org/docs/HowToCrossCompileLLVM.html
 
 # NOTE: I dont think we will use llvm-libc until it has matured.
 #	 even then, it needs to be tested on whether it is performant and secure.
@@ -95,7 +96,7 @@ dev() {
 	default_dev
 
 	cd "$builddir"
-	make DESTDIR="$subpkgdir" install-llvm-headers install-cmake-exports install-FileCheck
+	make DESTDIR="$subpkgdir" install-llvm-headers install-cmake-exports
 
 	# Fixme?
 	local llvm_executables="$(make help | awk '
@@ -116,9 +117,10 @@ dev() {
 			}
 		}'
 	)"
+	local install_bins="FileCheck count not yaml-bench bugpoint dsymutil llc lli-child-target lli obj2yaml opt sancov sanstats verify-uselistorder yaml2obj"
 
-	mkdir -v "$subpkgdir"/usr/bin/
-	for i in $llvm_executables; do
+	mkdir -vp "$subpkgdir"/usr/bin
+	for i in $llvm_executables $install_bins; do
 		cp -a "$builddir"/bin/$i "$subpkgdir"/usr/bin/
 		chmod 755 "$builddir"/bin/$i
 	done

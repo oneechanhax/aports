@@ -2,7 +2,7 @@
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname=sed
 pkgver=4.8
-pkgrel=0
+pkgrel=1
 pkgdesc="GNU stream editor"
 url="https://www.gnu.org/software/sed"
 arch="all"
@@ -37,7 +37,8 @@ check() {
 
 package() {
 	make DESTDIR="$pkgdir" install
-
+	#mkdir -pv "$pkgdir"/usr/bin/
+	#mv "$pkgdir"/bin/sed "$pkgdir"/usr/bin/
 	rm -rf "$pkgdir"/usr/lib/charset.alias || true
 	rmdir -p "$pkgdir"/usr/lib 2>/dev/null || true
 }

@@ -1,0 +1,36 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="s6"
+pkgver="2.9.1.0"
+pkgrel=1
+pkgdesc="s6 is a small suite of programs for UNIX, to allow process supervision"
+url="http://skarnet.org/software/$pkgname/"
+arch="all"
+license="ISC"
+makedepends="skalibs-dev>=2.9.2.0 execline-dev>=2.6.0.0"
+subpackages="$pkgname-dev"
+source="http://skarnet.org/software/$pkgname/$pkgname-$pkgver.tar.gz"
+options="!check"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var \
+		--enable-shared \
+		--disable-static \
+		--disable-allstatic
+	make
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+dev() {
+	default_dev
+}
+sha512sums="190660ed3af678b304230c688d3364a20dfb8d6e944314506bc27c90fc2ccf1062c7b2931df93620dd3b6f5f794d6119d984f28cb2f4562c1abb8609270b90f5  s6-2.9.1.0.tar.gz"

@@ -1,0 +1,33 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="s6-rc"
+pkgver="0.5.1.2"
+pkgrel=2
+pkgdesc="Program to allow linux to init with s6"
+url="http://skarnet.org/software/$pkgname/"
+arch="all"
+license="ISC"
+makedepends="make>=3.81 skalibs-dev>=2.9.2.0 execline-dev>=2.6.0.0 s6-dev>=2.9.1.0"
+subpackages="$pkgname-dev"
+source="http://skarnet.org/software/$pkgname/$pkgname-$pkgver.tar.gz"
+options="!check"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var \
+		--enable-shared \
+		--disable-static \
+		--disable-allstatic
+	make
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="d52b8b22c709f5d8df7d54d70363f06f7b64b841019d046e9ecaf2cb5f1d319ce8995da5eb5aafb9627f993abfe213c4f75ae3ad6cadad2b3a3175271989ac95  s6-rc-0.5.1.2.tar.gz"

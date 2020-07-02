@@ -1,33 +1,31 @@
 # Contributor: Rebekah Rowe
 # Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
 pkgname="libz"
-pkgver="1.2.8.2015.12.26"
+pkgdesc="modern zlib fork"
+pkgver=0_git20200601
 pkgrel=0
-pkgdesc="zlib debloated"
 url="https://sortix.org/libz/"
+giturl="https://gitlab.com/sortix/libz -b v1.2.11"
 arch="all"
 license="zlib"
 makedepends="musl-dev"
 subpackages="$pkgname-static $pkgname-dev $pkgname-doc"
-source="https://sortix.org/libz/release/libz-$pkgver.tar.gz"
-builddir="$srcdir/$pkgname-master/"
+source="$pkgname-$pkgver.tar.gz"
+disturl="$(realpath ./)"
+options="!check"
 
 build() {
-	./configure \
-		--build=$CBUILD \
-		--host=$CHOST \
-		--prefix=/usr \
-		--sysconfdir=/etc \
-		--mandir=/usr/share/man \
-		--localstatedir=/var
+	echo "Need: $builddir"
+	echo "Has: $(realpath ./)"
+	cmake \
+		-DCMAKE_INSTALL_PREFIX=/usr \
+                -DCMAKE_BUILD_TYPE=Release \
+	.
+
 	make
 }
 
-check() {
-	make check
-}
 package() {
 	make DESTDIR="$pkgdir" install
 }
-
-sha512sums="615b2d08e47595847b21ac401b688986a9246e1baa6c0063d157cd394630a46d82d7892cb6daaf537a44af59ff313c7cf4c8cb82d1a317837c0995a229f419b3  libz-master.tar.gz"
+sha512sums="47bc97f0085efc2973998c904999275a183d9f1f9718eb48d4f412332b6dc8bf4eff95da96b9c403051a9164e3c1c202912bebfb3783996232b412ea5533f07d  libz-0_git20200601.tar.gz"

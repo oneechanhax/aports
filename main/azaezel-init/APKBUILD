@@ -1,0 +1,39 @@
+# Contributor: Rebekah Rowe<rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe<rebekahrowe9999@gmail.com>
+pkgname="azaezel-init"
+pkgver=""
+pkgrel=0
+pkgdesc=""
+url=""
+arch="all"
+license=""
+depends=""
+makedepends=""
+install="$pkgname.pre-install $pkgname.post-install"
+subpackages="$pkgname-dev $pkgname-doc"
+source="
+	azaezel-init.initd
+	azaezel-init.confd
+	"
+builddir="$srcdir/"
+
+build() {
+	# Replace with proper build command(s)
+	:
+}
+
+check() {
+	# Replace with proper check command(s)
+	:
+}
+
+package() {
+	# Replace with proper package command(s)
+	:
+
+	install -m755 -D "$srcdir"/$pkgname.initd \
+		"$pkgdir"/etc/init.d/$pkgname
+	install -m644 -D "$srcdir"/$pkgname.confd \
+		"$pkgdir"/etc/conf.d/$pkgname
+}
+

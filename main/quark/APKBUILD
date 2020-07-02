@@ -1,0 +1,24 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="quark"
+pkgver=0_git20200514
+pkgrel=0
+pkgdesc="quark is an extremely small and simple HTTP GET/HEAD-only web server for static content."
+url="https://git.suckless.org/quark/"
+arch="all"
+license="ISC"
+subpackages="$pkgname-doc"
+source="$pkgname-$pkgver.tar.gz"
+giturl="git://git.suckless.org/quark"
+disturl="$(realpath ./)"
+options="!check"
+
+build() {
+	make CFLAGS="$CFLAGS"
+}
+
+package() {
+	make DESTDIR="$pkgdir" PREFIX=/usr/ install
+}
+
+sha512sums="89ab0452f911cb37bf5a94992ab3d43f9d92ef1b48a2860231ff3f817afe4acbfcd2462199990ee42393836cb6bf75ecaed25d4862e499fc34541f9dc06d1e5a  quark-0_git20200514.tar.gz"

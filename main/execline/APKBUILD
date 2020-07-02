@@ -1,0 +1,33 @@
+# Contributor: Rebekah Rowe <rebekahrowe9999@gmail.com>
+# Maintainer: Rebekah Rowe <rebekahrowe9999@gmail.com>
+pkgname="execline"
+pkgver="2.6.0.2"
+pkgrel=0
+pkgdesc="a (non-interactive) scripting language"
+url="http://skarnet.org/software/$pkgname/"
+arch="all"
+license="ISC"
+depends_static="$pkgname-dev"
+makedepends="make=>3.81 skalibs-dev>=2.9.2.1"
+subpackages="$pkgname-static $pkgname-dev"
+source="http://skarnet.org/software/$pkgname/$pkgname-$pkgver.tar.gz"
+options="!check"
+
+build() {
+	./configure \
+		--build=$CBUILD \
+		--host=$CHOST \
+		--prefix=/usr \
+		--sysconfdir=/etc \
+		--mandir=/usr/share/man \
+		--localstatedir=/var \
+		--enable-shared \
+		--disable-allstatic
+	make
+}
+
+package() {
+	make DESTDIR="$pkgdir" install
+}
+
+sha512sums="915823af0d557fc7a181e088ce319568e62ea4bf743704e498786422c97b991e6b09447c7cff7d7dda520d391773ef4b2fea68e44479c02766966256719bb4c0  execline-2.6.0.2.tar.gz"
